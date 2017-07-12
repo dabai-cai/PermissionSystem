@@ -4,7 +4,9 @@ import cn.scau.hjr.model.TUser;
 import cn.scau.hjr.model.TUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository(value = "userDao")
 public interface TUserMapper {
     int countByExample(TUserExample example);
 
