@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public void addUser(TUser record) {
         TUser user=new TUser();
         user.setUserName("huangirngon");
-           userDao.insert(user)
+           userDao.insert(user);
         System.out.println("添加成功!");
     }
 }
