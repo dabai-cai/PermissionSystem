@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Zhangxq on 2016/7/15.
  */
 
-@Repository
+@Repository(value = "usermapper")
 public interface UserDao {
 
     User selectUserById(@Param("userId") Long userId);

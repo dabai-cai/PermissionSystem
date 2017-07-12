@@ -1,5 +1,6 @@
 package cn.scau.hjr.service;
 
+import cn.scau.hjr.model.TUser;
 import cn.scau.hjr.model.User;
 
 import java.util.List;
@@ -9,9 +10,6 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> getAllUser();
+   void addUser(TUser user);
 
-    User getUserByPhoneOrEmail(String emailOrPhone, Short state);
-
-    User getUserById(Long userId);
 }

@@ -1,6 +1,8 @@
 package cn.scau.hjr.service.impl;
 
+import cn.scau.hjr.dao.TUserMapper;
 import cn.scau.hjr.dao.UserDao;
+import cn.scau.hjr.model.TUser;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
 import org.springframework.stereotype.Service;
@@ -17,18 +19,13 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
     
-    @Resource
-    private UserDao userDao;
+    @Resource(name="userDao")
+    private TUserMapper userDao;
 
-    public User getUserById(Long userId) {
-        return userDao.selectUserById(userId);
-    }
-    
-    public User getUserByPhoneOrEmail(String emailOrPhone, Short state) {
-        return userDao.selectUserByPhoneOrEmail(emailOrPhone,state);
-    }
-    
-    public List<User> getAllUser() {
-        return userDao.selectAllUser();
+    public void addUser(TUser record) {
+        TUser user=new TUser();
+        user.setUserName("huangirngon");
+           userDao.insert(user)
+        System.out.println("添加成功!");
     }
 }

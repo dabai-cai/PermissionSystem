@@ -1,5 +1,6 @@
 package cn.scau.hjr.controller;
 
+import cn.scau.hjr.model.TUser;
 import cn.scau.hjr.model.User;
 import cn.scau.hjr.service.UserService;
 import org.apache.log4j.Logger;
@@ -26,8 +27,19 @@ public class UserController {
     @RequestMapping("/showUser")
     public String showUser(HttpServletRequest request, Model model){
         log.info("查询所有用户信息");
-        List<User> userList = userService.getAllUser();
-        model.addAttribute("userList",userList);
+       // List<User> userList = userService.getAllUser();
+       // model.addAttribute("userList",userList);
         return "showUser";
+    }
+    @RequestMapping("/add")
+    public String addUser(HttpServletRequest request,Model model)
+    {
+        long i=1;
+        TUser user=new TUser();
+        user.setUserName("huang");
+        userService.addUser(user);
+      //  User user=userService.getUserById(i);
+       // System.out.println(user);
+        return "add";
     }
 }
