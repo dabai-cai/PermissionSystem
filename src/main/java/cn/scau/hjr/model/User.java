@@ -1,4 +1,4 @@
-package com.heitian.ssm.model;
+package cn.scau.hjr.model;
 
 import java.util.Date;
 

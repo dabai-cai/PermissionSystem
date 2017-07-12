@@ -1,6 +1,6 @@
-package com.heitian.ssm.service;
+package cn.scau.hjr.service;
 
-import com.heitian.ssm.model.User;
+import cn.scau.hjr.model.User;
 
 import java.util.List;
 

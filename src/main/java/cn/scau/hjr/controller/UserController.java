@@ -1,7 +1,7 @@
-package com.heitian.ssm.controller;
+package cn.scau.hjr.controller;
 
-import com.heitian.ssm.model.User;
-import com.heitian.ssm.service.UserService;
+import cn.scau.hjr.model.User;
+import cn.scau.hjr.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

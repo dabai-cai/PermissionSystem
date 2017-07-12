@@ -10,11 +10,11 @@
                         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 自动扫描 -->
-    <context:component-scan base-package="com.heitian.ssm"/>
+    <context:component-scan base-package="cn.scau.hjr"/>
 
     <!-- 第一种方式：加载一个properties文件 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:jdbc.properties"/>
+        <property name="location" value="classpath:properties/jdbc.properties"/>
     </bean>
 
 
@@ -36,7 +36,7 @@
     <!-- 配置数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
-        <
+
         <property name="driverClassName" value="${driverClasss}"/>
         <property name="url" value="${jdbcUrl}"/>
         <property name="username" value="${username}"/>
@@ -57,12 +57,12 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:mapping/*.xml"></property>
+        <property name="mapperLocations" value="classpath:mapping/UserMapper.xml"></property>
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.heitian.ssm.dao"/>
+        <property name="basePackage" value="cn.scau.hjr.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 

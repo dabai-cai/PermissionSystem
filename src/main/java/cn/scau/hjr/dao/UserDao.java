@@ -1,6 +1,6 @@
-package com.heitian.ssm.dao;
+package cn.scau.hjr.dao;
 
-import com.heitian.ssm.model.User;
+import cn.scau.hjr.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
