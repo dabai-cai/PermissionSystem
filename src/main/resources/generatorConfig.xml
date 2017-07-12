@@ -52,8 +52,12 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table tableName="t_user"></table>
-
+        <table tableName="UserModel"></table>
+        <table tableName="role_user"></table>
+        <table tableName="role"></table>
+        <table tableName="permission"></table>
+        <table tableName="role_permission"></table>
+        <table tableName="black_id"></table>
         <!-- 有些表的字段需要指定java类型
          <table schema="" tableName="">
             <columnOverride column="" javaType="" />
