@@ -15,7 +15,7 @@
     <schema id="9" parent="1" name="sys"/>
     <schema id="10" parent="1" name="world"/>
     <table id="11" parent="2" name="admin"/>
-    <table id="12" parent="2" name="black_ip"/>
+    <table id="12" parent="2" name="black_id"/>
     <table id="13" parent="2" name="bookinfo"/>
     <table id="14" parent="2" name="chatuser"/>
     <table id="15" parent="2" name="guest_admin"/>

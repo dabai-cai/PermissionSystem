@@ -1,6 +1,6 @@
 package cn.scau.hjr.controller;
 
-import cn.scau.hjr.model.TUser;
+import cn.scau.hjr.model.User;
 import cn.scau.hjr.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -32,18 +32,16 @@ public class UserController {
     @RequestMapping("/add")
     public String addUser(HttpServletRequest request,Model model)
     {
-        long i=1;
-        TUser user=new TUser();
-        user.setUserName("huang");
+        User user=new User();
+        user.setUsername("大白菜");
+        user.setPassword("4");
+       // user.setAccount(4);
         userService.addUser(user);
-      //  User user=userService.getUserById(i);
-       // System.out.println(user);
-        return "user/add";
+        return "/user/add";
     }
     @RequestMapping(value={"login"})
     public String userLogin(HttpServletRequest request)
     {
-
         return "user/success";
     }
 
