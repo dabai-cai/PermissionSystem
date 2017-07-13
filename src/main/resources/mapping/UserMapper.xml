@@ -25,33 +25,12 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.scau.hjr.model.User" >
-    insert into user (account, password,
-      username, sex,
+    insert into user (user_id, account, password, 
+      username, register_time, sex, 
       age, phone)
-    values (#{account,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
-      #{username,jdbcType=VARCHAR},  #{sex,jdbcType=VARCHAR},
+    values (#{userId,jdbcType=INTEGER}, #{account,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{sex,jdbcType=VARCHAR}, 
       #{age,jdbcType=INTEGER}, #{phone,jdbcType=INTEGER})
-  </insert>
-  <insert id="addUser" parameterType="cn.scau.hjr.model.User" >
-    <!--
-       将insert插入的数据的主键返回到User对象中;
-       select last_insert_id():得到刚insert进去记录的主键值，只适用于自增主键;
-       keyProperty:将查询到的主键值，设置到parameterType指定的对象的那个属性
-       order:select last_insert_id()执行顺序，相对于insert语句来说它的执行顺序。
-       resultType:指定select last_insert_id()的结果类型;
-    -->
-    <selectKey keyProperty="user_id" order="AFTER" resultType="java.lang.Integer">
-      select last_insert_id()
-    </selectKey>
-    <!--
-       使用mysql的uuid()，实现非自增主键的返回。
-       执行过程:通过uuid()得到主键，将主键设置到user对象的Id的属性中，其次，在insert执行时，从user对象中取出Id属性值;
-    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
-       select uuid()
-   </selectKey>
-       insert into t_user (id,username,birthday,sex,address) values(#{id},#{username},#{birthday},#{sex},#{address})
-    -->
-    insert into user(account,username,password,sex,phone,age) values(#{account},#{username},#{password},#{sex},#{phone},#{age})
   </insert>
   <insert id="insertSelective" parameterType="cn.scau.hjr.model.User" >
     insert into user
