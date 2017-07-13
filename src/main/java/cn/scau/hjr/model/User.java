@@ -2,90 +2,84 @@ package cn.scau.hjr.model;
 
 import java.util.Date;
 
-/**
- * Created by Zhangxq on 2016/7/15.
- */
 public class User {
+    private Integer userId;
 
-    private Long id;
-    private String userName;
-    private String userPhone;
-    private String userEmail;
-    private String userPwd;
-    private String pwdSalt;
-    private Date createTime;
-    private Date modifyTime;
-    private Short isDelete;
+    private Integer account;
 
-    public Long getId() {
-        return id;
+    private String password;
+
+    private String username;
+
+    private Date registerTime;
+
+    private String sex;
+
+    private Integer age;
+
+    private Integer phone;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public Integer getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(Integer account) {
+        this.account = account;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
-    public String getUserPwd() {
-        return userPwd;
+    public Date getRegisterTime() {
+        return registerTime;
     }
 
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
+    public void setRegisterTime(Date registerTime) {
+        this.registerTime = registerTime;
     }
 
-    public String getPwdSalt() {
-        return pwdSalt;
+    public String getSex() {
+        return sex;
     }
 
-    public void setPwdSalt(String pwdSalt) {
-        this.pwdSalt = pwdSalt;
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public Date getModifyTime() {
-        return modifyTime;
+    public Integer getPhone() {
+        return phone;
     }
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public Short getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Short isDelete) {
-        this.isDelete = isDelete;
+    public void setPhone(Integer phone) {
+        this.phone = phone;
     }
 }
