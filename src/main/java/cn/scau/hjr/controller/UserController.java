@@ -30,14 +30,14 @@ public class UserController {
         return "user/showUser";
     }
     @RequestMapping("/add")
-    public String addUser(HttpServletRequest request,Model model)
+    public String addUser(HttpServletRequest request)
     {
         User user=new User();
-        user.setUsername("大白菜");
-        user.setPassword("4");
-       // user.setAccount(4);
-        userService.addUser(user);
-        return "/user/add";
+        user.setUsername("哈哈7944");
+        user.setPassword("呵呵70055");
+        user.setAccount(986576);
+      userService.addUser(user);
+        return "/user/success";
     }
     @RequestMapping(value={"login"})
     public String userLogin(HttpServletRequest request)

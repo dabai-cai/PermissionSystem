@@ -1,7 +1,9 @@
 package cn.scau.hjr.dao;
 
 import cn.scau.hjr.model.User;
+import org.springframework.stereotype.Repository;
 
+@Repository(value = "userDao")
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
 
@@ -14,4 +16,5 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+    void addUser(User user);
 }

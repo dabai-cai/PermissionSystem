@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     public void addUser(User record) {
 
-        userDao.insert(record);
+        userDao.addUser(record);
         System.out.println("添加成功了!");
     }
 
