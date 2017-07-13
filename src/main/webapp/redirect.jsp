@@ -12,7 +12,7 @@
 </head>
 <body>
 <%
-    response.sendRedirect(request.getContextPath()+"/user/add");
+    response.sendRedirect(request.getContextPath()+"/user/test");
 %>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package cn.scau.hjr.dao;
 
 import cn.scau.hjr.model.Role;
+import org.springframework.stereotype.Repository;
 
+@Repository(value = "roleDao")
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer roleId);
 
@@ -10,6 +12,8 @@ public interface RoleMapper {
     int insertSelective(Role record);
 
     Role selectByPrimaryKey(Integer roleId);
+
+    Role selectByRoleName(String roleName);
 
     int updateByPrimaryKeySelective(Role record);
 

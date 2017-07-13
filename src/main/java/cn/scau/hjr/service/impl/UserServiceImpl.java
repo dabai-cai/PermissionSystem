@@ -1,7 +1,9 @@
 package cn.scau.hjr.service.impl;
 
 import cn.scau.hjr.dao.UserMapper;
+import cn.scau.hjr.model.Role;
 import cn.scau.hjr.model.User;
+import cn.scau.hjr.service.RoleService;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,31 @@ public class UserServiceImpl implements UserService {
 
     public void addUser(User record) {
 
-        userDao.addUser(record);
+        userDao.insert(record);
         System.out.println("添加成功了!");
     }
 
-    public void loginChk(User user) {
+    public boolean loginChk(User user) {
+        User temp=userDao.getUserByAccountAndPassword(user);
 
+        if(temp!=null)
+        {
+            return true;
+        }
+        return false;
     }
+
+    public User getUser(User user) {
+        User temp=null;
+        temp=userDao.getUserByAccountAndPassword(user);
+        return temp;
+    }
+
+    public  User selectByPrimaryKey(Integer userId)
+    {
+        User user=userDao.selectByPrimaryKey(userId);
+        return user;
+    }
+
+
 }

@@ -55,4 +55,11 @@
     set rolename = #{rolename,jdbcType=VARCHAR}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
+
+
+  <!-- selectByRoleName  -->
+  <select id="selectByRoleName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from role where rolename =#{rolename}
+  </select>
+
 </mapper>

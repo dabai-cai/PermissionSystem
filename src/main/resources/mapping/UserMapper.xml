@@ -15,7 +15,7 @@
     user_id, account, password, username, register_time, sex, age, phone
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where user_id = #{userId,jdbcType=INTEGER}
@@ -25,19 +25,16 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.scau.hjr.model.User" >
-    insert into user (user_id, account, password, 
-      username, register_time, sex, 
+    insert into user (account, password,
+      username,sex,
       age, phone)
-    values (#{userId,jdbcType=INTEGER}, #{account,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
-      #{username,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{sex,jdbcType=VARCHAR}, 
+    values (#{account,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
       #{age,jdbcType=INTEGER}, #{phone,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.scau.hjr.model.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
-      </if>
       <if test="account != null" >
         account,
       </if>
@@ -47,9 +44,7 @@
       <if test="username != null" >
         username,
       </if>
-      <if test="registerTime != null" >
-        register_time,
-      </if>
+
       <if test="sex != null" >
         sex,
       </if>
@@ -125,4 +120,8 @@
       phone = #{phone,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+  <select id="getUserByAccountAndPassword" parameterType="cn.scau.hjr.model.User" resultMap="BaseResultMap">
+    select * from user where account=#{account} and password=#{password}
+  </select>
 </mapper>

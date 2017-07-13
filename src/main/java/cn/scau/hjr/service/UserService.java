@@ -9,6 +9,8 @@ import cn.scau.hjr.model.User;
 public interface UserService {
 
    void addUser(User user);
-   void loginChk(User user);
+   boolean loginChk(User user);
+   User getUser(User user);
+   User selectByPrimaryKey(Integer userId);
 
 }

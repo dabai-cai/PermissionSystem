@@ -68,4 +68,9 @@
       role_id = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--  selectByUserIdAndRoleId(int userId,int roleId) -->
+  <select id="selectByUserIdAndRoleId" resultMap="BaseResultMap" parameterType="cn.scau.hjr.model.RoleUser" >
+    select * from role_user where user_id=#{userId} and role_id=#{roleId}
+  </select>
 </mapper>
