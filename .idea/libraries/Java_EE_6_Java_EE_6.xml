@@ -9,6 +9,7 @@
       <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jsp.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.annotation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../javaWeb学习/jar包/pager-taglib_jar包/pager-taglib.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Zhangxq on 2016/7/15.
@@ -53,14 +54,30 @@ public class UserController {
         System.out.println("post");
         int account=Integer.parseInt(request.getParameter("account"));
         String password=request.getParameter("password");
+        String username=request.getParameter("username");
+
+        String sex=request.getParameter("sex");
+        int phone=Integer.parseInt(request.getParameter("phone"));
+        int age=Integer.parseInt(request.getParameter("age"));
         User user=new User();
         user.setAccount(account);
-        System.out.println(account);
-        System.out.println(password);
+
         user.setPassword(password);
-        System.out.println(user);
-        userService.addUser(user);
+
+        user.setSex(sex);
+
+        user.setPhone(phone);
+
+        user.setAge(age);
+
+
+        user.setUsername(username);
+
+        if(userService.addUser(user))
         return "/user/success";
+        else{
+            return "/user/registerError";
+        }
     }
 
     //跳转到登录界面
@@ -96,6 +113,8 @@ public class UserController {
             if(roleUser!=null)
             {
                 //后台管理界面
+                HttpSession session=request.getSession();
+                session.setAttribute("rootuser",user);//管理员布置到session
                 return "/BackGround/index";
             }
             else{

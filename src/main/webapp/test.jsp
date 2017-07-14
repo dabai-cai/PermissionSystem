@@ -1,8 +1,7 @@
-
-<!DOCTYPE html>
+<% boolean basePath; %><!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <base href="<%=basePath%>">
+
     <meta charset="utf-8">
     <!--支持 浏览器内核 webkit、ie-comp IE兼容、ie-stand IE标准 -->
     <meta name="renderer" content="webkit|ie-comp|ie-stand">

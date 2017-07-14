@@ -54,12 +54,12 @@
 							</span>
                     <a href="#"><strong>links</strong></a>
                     <span class="li-text">
-								here, or some icons: 
+								here, or some icons:
 							</span>
                     <span class="li-social">
-								<a href="#"><i class="fa fa-facebook"></i></a> 
-								<a href="#"><i class="fa fa-twitter"></i></a> 
-								<a href="#"><i class="fa fa-envelope"></i></a> 
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-envelope"></i></a>
 								<a href="#"><i class="fa fa-skype"></i></a>
 							</span>
                 </li>
@@ -87,7 +87,7 @@
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3 form-box">
 
-                    <form role="form" action="/user/add" method="post" class="registration-form">
+                    <form role="form" action="/admin/addUser" method="post" class="registration-form">
 
                         <fieldset>
                             <div class="form-top">

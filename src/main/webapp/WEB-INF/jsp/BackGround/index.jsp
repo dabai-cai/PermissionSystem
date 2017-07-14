@@ -45,16 +45,16 @@
 			<li><a href="index.jsp">首页</a></li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-user.html">新建用户</a></li>
+					<li><a href="/admin/addUser">新建用户</a></li>
 					<li class="divider"></li>
-					<li><a href="users.html">管理用户</a></li>
+					<li><a href="/admin/userManager">管理用户</a></li>
 				</ul>
 			  </li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-role.html">新建角色</a></li>
+					<li><a href="/user/add">新建角色</a></li>
 					<li class="divider"></li>
-					<li><a href="roles.html">管理角色</a></li>
+					<li><a href="/admin/userManager">管理角色</a></li>
 				</ul>
 			  </li>
 			  <li><a href="stats.html">统计</a></li>
@@ -70,7 +70,7 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> 管理</li>
-              <li><a href="users.html">用户</a></li>
+              <li><a href="/admin/userManager">用户</a></li>
               <li><a href="roles.html">角色</a></li>
               <li class="nav-header"><i class="icon-signal"></i> 统计</li>
               <li class="active"><a href="stats.html">通用</a></li>

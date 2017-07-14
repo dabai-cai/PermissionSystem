@@ -124,4 +124,24 @@
   <select id="getUserByAccountAndPassword" parameterType="cn.scau.hjr.model.User" resultMap="BaseResultMap">
     select * from user where account=#{account} and password=#{password}
   </select>
+
+  <!-- selectByAccount -->
+  <select id="selectByAccountOrUsername" parameterType="cn.scau.hjr.model.User" resultMap="BaseResultMap">
+    select * from user where account=#{account} or username=#{username}
+  </select>
+
+  <!-- 得到数据总数   -->
+  <select id="getAllUserNumber"  resultType="java.lang.Integer">
+    select count(*) from user
+  </select>
+
+  <!-- getAllUser -->
+  <select id="getAllUser"  resultMap="BaseResultMap">
+    select * from user
+  </select>
+
+  <!-- getUserListByLimitNumber   -->
+  <select id="getUserListByLimitNumber"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from user  limit #{start},#{pagesize}
+  </select>
 </mapper>
