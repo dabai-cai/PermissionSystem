@@ -25,4 +25,5 @@ public interface UserMapper {
     int getAllUserNumber();
     ArrayList<User> getAllUser();
     ArrayList<User> getUserListByLimitNumber(@Param("start") int start, @Param("pagesize") int pagesize);
+    ArrayList<User> searchUser(String key);
 }

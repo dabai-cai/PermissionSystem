@@ -6,6 +6,7 @@ import cn.scau.hjr.service.RoleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/7/13 0013.
@@ -25,5 +26,32 @@ public class RoleServiceImpl implements RoleService {
         Role role=null;
         role=roleDao.selectByPrimaryKey(roleId);
         return role;
+    }
+
+    @Override
+    public boolean addRole(Role role) {
+        Role role1=roleDao.selectByRoleName(role.getRolename());
+        if(role1==null)
+        {
+            roleDao.insert(role);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void delRoleById(int id) {
+
+    }
+
+    @Override
+    public void delByRoleName(String rolename) {
+        roleDao.delByRoleName(rolename);
+    }
+
+    @Override
+    public ArrayList<Role> getAllRole() {
+        ArrayList<Role> roles=roleDao.getAllRole();
+        return roles;
     }
 }

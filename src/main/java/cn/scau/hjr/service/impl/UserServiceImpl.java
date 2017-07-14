@@ -1,5 +1,6 @@
 package cn.scau.hjr.service.impl;
 
+import cn.scau.hjr.dao.RoleUserMapper;
 import cn.scau.hjr.dao.UserMapper;
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.RoleService;
@@ -22,13 +23,20 @@ public class UserServiceImpl implements UserService {
     
     @Resource(name="userDao")
     private UserMapper userDao;
+    @Resource(name="roleUserDao")
+    private RoleUserMapper roleUserMapper;
 
     public boolean addUser(User record) {
 
         User user=userDao.selectByAccountOrUsername(record);
         if(user==null)
         {
-            userDao.insert(record);
+            userDao.insert(record);//添加用户
+
+            RoleUser roleUser=new RoleUser();
+            roleUser.setUserId(record.getUserId());
+            roleUser.setRoleId(2);//普通用户id
+            roleUserMapper.insert(roleUser);//用户关联角色
             System.out.println("添加成功");
             return true;
 
@@ -72,9 +80,11 @@ public class UserServiceImpl implements UserService {
         Pager pager = new Pager();//建立分页对象
 
 
-            int start = SystemData.getPageOffset();//第几条留言开始查找
+            int currentPage = SystemData.getPageOffset();//当前页
             Integer _pagesize = SystemData.getPageSize();
-            int pagesize = _pagesize.intValue();
+            int pagesize = _pagesize.intValue();//页面大小
+            int start=currentPage * pagesize - pagesize+1;
+
             /*
             得到总页数和总留言数
              */
@@ -106,7 +116,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delUserById(int id) {
+        roleUserMapper.delByUserId(id);
         userDao.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public ArrayList<User> getSearchUser(String key) {
+        ArrayList<User> userList=new ArrayList<User>();
+        userList=userDao.searchUser(key);
+        return userList;
+
     }
 
 

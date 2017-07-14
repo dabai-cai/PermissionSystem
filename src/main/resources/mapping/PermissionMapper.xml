@@ -19,8 +19,11 @@
     where permission_id = #{permissionId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.scau.hjr.model.Permission" >
-    insert into permission (permission_id, permission)
-    values (#{permissionId,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR})
+    <selectKey keyProperty="permissionId" order="AFTER" resultType="java.lang.Integer">
+      select last_insert_id()
+    </selectKey>
+    insert into permission ( permission)
+    values ( #{permission,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.scau.hjr.model.Permission" >
     insert into permission
@@ -55,4 +58,22 @@
     set permission = #{permission,jdbcType=VARCHAR}
     where permission_id = #{permissionId,jdbcType=INTEGER}
   </update>
+
+  <!-- selectByPermissionName -->
+  <select id="selectByPermissionName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from permission
+    where permission = #{permission,jdbcType=VARCHAR}
+  </select>
+  <!--delByPermissionName -->
+  <delete id="delByPermissionName" parameterType="java.lang.String" >
+    delete from permission
+    where permission = #{permission,jdbcType=VARCHAR}
+  </delete>
+
+  <!-- getAllPermission  -->
+  <select id="getAllPermission" resultMap="BaseResultMap" >
+    select * from permission
+  </select>
 </mapper>
