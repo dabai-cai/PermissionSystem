@@ -171,6 +171,18 @@ public class AdminController {
         roleUserService.insert(roleUser);
         return "/admin/UserManager";
     }
+    //删除用户角色
+    @RequestMapping(value = "/roledelUser")
+    public String roleDelUser(HttpServletRequest request)
+    {
+        int userId=Integer.parseInt(request.getParameter("userId"));
+        int roleId=Integer.parseInt(request.getParameter("roleId"));
+        RoleUser roleUser=new RoleUser();
+        roleUser.setRoleId(roleId);
+        roleUser.setUserId(userId);
+        roleUserService.delByRoleIdAndUserId(roleId,userId);
+        return "/admin/UserManager";
+    }
 
     //给角色分配权利
     @RequestMapping(value = "/permissionForRole")
@@ -196,13 +208,37 @@ public class AdminController {
     @RequestMapping(value = "/addRole",method = RequestMethod.POST)
     public void addRole(HttpServletRequest request,HttpServletResponse response) throws IOException {
         try{
-            response.sendRedirect("/admin/RoleManager");
+            String rolename= (String) request.getParameter("role");
+            Role role=new Role();
+            role.setRolename(rolename);
+            roleService.addRole(role);
+            response.sendRedirect("/admin/roleManager");
         }
         catch (Exception ex)
         {
 
         }
     }
+    @RequestMapping(value = "/delRole")
+    public void delRole(HttpServletRequest request,HttpServletResponse response)
+    {
+        try {
+            int id=Integer.parseInt(request.getParameter("id"));
+            rolePermissionService.delRolePermissionByRoleId(id);
+            roleUserService.delByRoleId(id);
+            roleService.delRoleById(id);
+            System.out.println("删除成功");
+            response.sendRedirect("/admin/roleManager");
+        } catch (IOException e) {
+            System.out.println("删除失败");
+            e.printStackTrace();
+        }
+    }
+
+
+    /*
+    角色管理界面
+     */
     @RequestMapping(value = "/roleManager",method = RequestMethod.GET)
     public String roleManager(HttpServletRequest request)
     {

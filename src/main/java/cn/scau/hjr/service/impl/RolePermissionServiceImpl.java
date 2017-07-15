@@ -56,7 +56,12 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
     @Override
     public int insert(RolePermission record) {
-        rolePermissionMapper.insert(record);
+        RolePermission rolePermission=rolePermissionMapper.selectByRoleIdAndPermission(record);
+        if(rolePermission==null)
+        {
+            rolePermissionMapper.insert(record);
+        }
+
         return 0;
     }
 }

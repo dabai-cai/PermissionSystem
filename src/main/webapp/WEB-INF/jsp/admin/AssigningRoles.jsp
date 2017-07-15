@@ -25,7 +25,7 @@
     for(Role role:roleForUser)
     {
       %>
-     <%=role.getRolename()+"," %>
+<%=role.getRolename()+"," %><a href="/admin/roledelUser?userId=<%=user.getUserId() %>&roleId=<%=role.getRoleId() %>">删除</a>
 <%
     }
 %>

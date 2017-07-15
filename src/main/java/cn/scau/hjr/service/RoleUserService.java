@@ -3,6 +3,7 @@ package cn.scau.hjr.service;
 import cn.scau.hjr.model.Role;
 import cn.scau.hjr.model.RoleUser;
 import cn.scau.hjr.model.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 
@@ -15,5 +16,7 @@ public interface RoleUserService {
     void insertRoleUser(RoleUser roleUser);
     ArrayList<RoleUser> selectByUserId(int userId);
     int insert(RoleUser record);
+    void delByRoleId(int roleId);
+    void delByRoleIdAndUserId(int roleId, int userId);
 
 }

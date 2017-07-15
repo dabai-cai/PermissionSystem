@@ -45,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void delRoleById(int id) {
-
+        roleDao.deleteByPrimaryKey(id);
     }
 
     @Override

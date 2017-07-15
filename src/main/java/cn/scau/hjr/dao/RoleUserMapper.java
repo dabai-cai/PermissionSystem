@@ -26,4 +26,6 @@ public interface RoleUserMapper {
     RoleUser selectByUserIdAndRoleId(RoleUser roleUser);
     void delByUserId(@Param("userId")int userId);
     ArrayList<RoleUser> selectByUserId(@Param("userId")int id);
+    void delByRoleId(@Param("roleId")int roleId);
+    void delByRoleIdAndUserId(@Param("roleId")int roleId,@Param("userId") int userId);
 }

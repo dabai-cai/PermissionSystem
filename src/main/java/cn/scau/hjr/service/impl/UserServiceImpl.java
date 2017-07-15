@@ -3,6 +3,8 @@ package cn.scau.hjr.service.impl;
 import cn.scau.hjr.dao.RoleUserMapper;
 import cn.scau.hjr.dao.UserMapper;
 import cn.scau.hjr.model.*;
+import cn.scau.hjr.service.PermissionService;
+import cn.scau.hjr.service.RolePermissionService;
 import cn.scau.hjr.service.RoleService;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userDao;
     @Resource(name="roleUserDao")
     private RoleUserMapper roleUserMapper;
+
 
     public boolean addUser(User record) {
 

@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/resources/index/img/favicon.png">
 
-    <title>Siimple - Free Bootstrap 3 Landing Page</title>
+    <title>index</title>
 
     <!-- Bootstrap -->
     <link href="/resources/index/css/bootstrap.css" rel="stylesheet">

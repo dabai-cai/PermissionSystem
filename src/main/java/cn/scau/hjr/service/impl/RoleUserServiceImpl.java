@@ -43,4 +43,14 @@ public class RoleUserServiceImpl implements RoleUserService {
         roleUserMapper.insert(record);
         return 1;
     }
+
+    @Override
+    public void delByRoleId(int roleId) {
+        roleUserMapper.delByRoleId(roleId);
+    }
+
+    @Override
+    public void delByRoleIdAndUserId(int roleId, int userId) {
+        roleUserMapper.delByRoleIdAndUserId(roleId,userId);
+    }
 }

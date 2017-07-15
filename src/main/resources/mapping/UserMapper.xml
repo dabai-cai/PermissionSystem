@@ -140,8 +140,8 @@
 
   <!-- getAllUser -->
   <select id="getAllUser"  resultMap="BaseResultMap">
-    select * from user
-  </select>
+  select * from user
+</select>
 
   <!-- getUserListByLimitNumber   -->
   <select id="getUserListByLimitNumber"  resultMap="BaseResultMap" parameterType="java.lang.Integer">

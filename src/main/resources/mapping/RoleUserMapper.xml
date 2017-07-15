@@ -87,4 +87,16 @@
   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select * from role_user where user_id=#{userId}
   </select>
+
+  <!-- delByRoleId -->
+  <delete id="delByRoleId" parameterType="java.lang.Integer" >
+    delete from role_user
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+
+  <!-- delByRoleIdAndUserId   -->
+  <delete id="delByRoleIdAndUserId" parameterType="java.lang.Integer" >
+    delete from role_user
+    where role_id = #{roleId,jdbcType=INTEGER} and user_id=#{userId}
+  </delete>
 </mapper>

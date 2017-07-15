@@ -25,7 +25,7 @@
 </head>
 <body>
 <a href="/admin/index">返回主页</a> <h3 align="right">欢迎管理员<%=((User) session.getAttribute("rootuser")).getUsername()%></h3>
-<a href="/admin/addrole">新建角色</a>
+<a href="/admin/addRole">新建角色</a>
 <table align="center" border="2">
     <caption>
         管理员权限
@@ -61,7 +61,7 @@
                 <%=id%>
             </td>
             <td>
-                <a href="<%=request.getContextPath()%>/admin/delrole?id=<%=role.getRoleId()%>"> 删除</a>&nbsp;&nbsp;&nbsp;
+                <a href="<%=request.getContextPath()%>/admin/delRole?id=<%=role.getRoleId()%>"> 删除</a>&nbsp;&nbsp;&nbsp;
                 <a href="/admin/permissionAassign?id=<%=role.getRoleId()%>"> 权限分配</a>
             </td>
         </tr>

@@ -1,11 +1,7 @@
 package cn.scau.hjr.controller;
 
-import cn.scau.hjr.model.Role;
-import cn.scau.hjr.model.RoleUser;
-import cn.scau.hjr.model.User;
-import cn.scau.hjr.service.RoleService;
-import cn.scau.hjr.service.RoleUserService;
-import cn.scau.hjr.service.UserService;
+import cn.scau.hjr.model.*;
+import cn.scau.hjr.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
-/**
- * Created by Zhangxq on 2016/7/15.
- */
 
 @Controller
 @RequestMapping("/user")
@@ -31,6 +25,10 @@ public class UserController {
     private RoleService roleService;
     @Resource
     private RoleUserService roleUserService;
+    @Resource
+    private RolePermissionService rolePermissionService;
+    @Resource
+    private PermissionService permissionService;
 
     @RequestMapping("/showUser")
     public String showUser( Model model){
@@ -97,6 +95,8 @@ public class UserController {
         User user=new User();
         user.setAccount(account);
         user.setPassword(password);
+        HttpSession session=request.getSession();
+        user=userService.getUser(user);//获取用户信息
         if(!userService.loginChk(user))
         {
             return "user/error";
@@ -113,21 +113,76 @@ public class UserController {
             if(roleUser!=null)
             {
                 //后台管理界面
-                HttpSession session=request.getSession();
+
                 session.setAttribute("rootuser",user);//管理员布置到session
                 return "/BackGround/index";
             }
             else{
                 //普通用户
-                return "user/success";
+                session.setAttribute("user",user);
+                return "user/index";
             }
         }
     }
+
+    @RequestMapping(value = "/searchUser")
+    public String searchUser()
+    {
+        return "";
+    }
+
 
     @RequestMapping(value = "/test")
     public String testHtml()
     {
         return "/BackGround/index";
+    }
+
+    @RequestMapping(value = "/Vippermission")
+    public String ifVip(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("userId"));
+        RoleUser roleUser=new RoleUser();
+        roleUser.setUserId(id);
+        roleUser.setRoleId(12);
+        RoleUser roleUser1= roleUserService.selectByUserIdAndRoleId(roleUser);
+        if(roleUser1==null)
+        {
+            return "/user/role/error";
+        }
+        else{
+            ArrayList<Permission> permissions=new ArrayList<Permission>();
+            ArrayList<RolePermission> rolePermissions=rolePermissionService.selectByRoleId(12);
+            for(RolePermission rolePermission:rolePermissions)
+            {
+                Permission permission=permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
+                permissions.add(permission);
+            }
+            request.setAttribute("permissions",permissions);
+            return "/user/role/vip";
+        }
+
+    }
+
+    @RequestMapping(value = "/robPermission")
+    public String ifRob(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("userId"));
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(id);
+        roleUser.setRoleId(17);
+        RoleUser roleUser1 = roleUserService.selectByUserIdAndRoleId(roleUser);
+        if (roleUser1 == null) {
+            return "/user/role/error";
+        } else {
+            ArrayList<Permission> permissions = new ArrayList<Permission>();
+            ArrayList<RolePermission> rolePermissions = rolePermissionService.selectByRoleId(17);
+            for (RolePermission rolePermission : rolePermissions) {
+                Permission permission = permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
+                permissions.add(permission);
+            }
+            request.setAttribute("permissions", permissions);
+            return "/user/role/rob";
+        }
     }
 
 }
