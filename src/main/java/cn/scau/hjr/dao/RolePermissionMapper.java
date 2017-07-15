@@ -21,4 +21,5 @@ public interface RolePermissionMapper {
     int updateByPrimaryKey(RolePermission record);
     RolePermission selectByRoleIdAndPermission(RolePermission rolePermission);
     void delRolePermissionByRoleId(@Param("roleId")int roleId);
+    void delByRoleIdAndPermissionId(RolePermission rolePermission);
 }

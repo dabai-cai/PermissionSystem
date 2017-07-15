@@ -25,8 +25,8 @@
 <%
     for(Permission permission:permissionsForRole)
     {
-%>
-<%=permission.getPermission()+"," %>
+%>delPermissionRole
+<%=permission.getPermission()+"," %><a href="/admin/delPermissionRole?roleId=<%=role.getRoleId()%>&permissionId=<%=permission.getPermissionId() %>">删除</a>
 <%
     }
 %>

@@ -16,4 +16,5 @@ public interface RolePermissionService {
     RolePermission selectByPrimaryKey(Integer id);
     ArrayList<RolePermission> selectByRoleId(@Param("roleId")Integer id);
     int insert(RolePermission record);
+    void delByRoleIdAndPermissionId(RolePermission rolePermission);
 }

@@ -197,6 +197,20 @@ public class AdminController {
         return "/admin/RoleManager";
     }
 
+    //删除角色的权利
+    @RequestMapping(value = "/delPermissionRole")
+    public String delPermissionRole(HttpServletRequest request)
+    {
+        int roleId=Integer.parseInt(request.getParameter("roleId"));
+        int permissionId=Integer.parseInt(request.getParameter("permissionId"));
+        RolePermission rolePermission=new RolePermission();
+        rolePermission.setPermissionId(permissionId);
+        rolePermission.setRoleId(roleId);
+        rolePermissionService.delByRoleIdAndPermissionId(rolePermission);
+
+        return "/admin/RoleManager";
+    }
+
     /*
     角色管理
      */

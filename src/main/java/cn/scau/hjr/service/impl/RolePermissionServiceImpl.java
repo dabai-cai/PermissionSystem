@@ -64,4 +64,9 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
         return 0;
     }
+
+    @Override
+    public void delByRoleIdAndPermissionId(RolePermission rolePermission) {
+        rolePermissionMapper.delByRoleIdAndPermissionId(rolePermission);
+    }
 }
