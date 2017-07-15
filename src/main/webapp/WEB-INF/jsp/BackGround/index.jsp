@@ -54,7 +54,7 @@
 				<ul class="dropdown-menu">
 					<li><a href="/admin/addRole">新建角色</a></li>
 					<li class="divider"></li>
-					<li><a href="/admin/RoleManager">管理角色</a></li>
+					<li><a href="/admin/roleManager">管理角色</a></li>
 				</ul>
 			  </li>
 			  <li><a href="stats.html">统计</a></li>
@@ -71,7 +71,7 @@
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> 管理</li>
               <li><a href="/admin/userManager">用户</a></li>
-              <li><a href="roles.html">角色</a></li>
+              <li><a href="/admin/roleManager">角色</a></li>
               <li class="nav-header"><i class="icon-signal"></i> 统计</li>
               <li class="active"><a href="stats.html">通用</a></li>
               <li><a href="user-stats.html">用户</a></li>

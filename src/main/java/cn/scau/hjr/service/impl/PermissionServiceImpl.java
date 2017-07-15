@@ -3,6 +3,7 @@ package cn.scau.hjr.service.impl;
 import cn.scau.hjr.dao.PermissionMapper;
 import cn.scau.hjr.model.Permission;
 import cn.scau.hjr.service.PermissionService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2017/7/14 0014.
  */
+@Service
 public class PermissionServiceImpl implements PermissionService {
     @Resource
     private PermissionMapper permissionMapper;
@@ -38,5 +40,13 @@ public class PermissionServiceImpl implements PermissionService {
     public ArrayList<Permission> getAllPermission() {
         ArrayList<Permission> permissions=permissionMapper.getAllPermission();
         return permissions;
+    }
+
+    @Override
+    public Permission selectByPrimaryKey(Integer permissionId) {
+        Permission permission=null;
+        permission=permissionMapper.selectByPrimaryKey(permissionId);
+        return permission;
+
     }
 }

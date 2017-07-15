@@ -77,4 +77,15 @@
   </select>
 
 
+  <!-- getRoleListByLimitNumber  -->
+  <!-- getUserListByLimitNumber   -->
+  <select id="getRoleListByLimitNumber"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from role  limit #{start},#{pagesize}
+  </select>
+
+
+  <!-- getAllRoleNumber  -->
+  <select id="getAllRoleNumber"  resultType="java.lang.Integer">
+    select count(*) from role
+  </select>
 </mapper>

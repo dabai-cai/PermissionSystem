@@ -1,12 +1,7 @@
 package cn.scau.hjr.controller;
 
-import cn.scau.hjr.model.Pager;
-import cn.scau.hjr.model.Role;
-import cn.scau.hjr.model.RoleUser;
-import cn.scau.hjr.model.User;
-import cn.scau.hjr.service.RoleService;
-import cn.scau.hjr.service.RoleUserService;
-import cn.scau.hjr.service.UserService;
+import cn.scau.hjr.model.*;
+import cn.scau.hjr.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +30,10 @@ public class AdminController {
     private RoleService roleService;
     @Resource
     private RoleUserService roleUserService;
+    @Resource
+    private RolePermissionService rolePermissionService;
+    @Resource
+    private PermissionService permissionService;
 
 
     /*
@@ -147,7 +146,20 @@ public class AdminController {
         request.setAttribute("roles",roles);
         return "/admin/AssigningRoles";
     }
+    @RequestMapping(value = "permissionAassign")
+    public String permissionAassign(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("id"));
+        Role role=roleService.selectByPrimaryKey(id);
+        List< Permission> permissions=this.getPermissionNotForRole(id);
+        Set<Permission> permissionsForRole=this.getPermissionsForRole(id);
+        request.setAttribute("permissionsForRole",permissionsForRole);
+        request.setAttribute("role",role);
+        request.setAttribute("permissions",permissions);
+        return "/admin/permissionAassign";
+    }
 
+    //给用户分配角色
     @RequestMapping(value = "/roleForUser")
     public String roleForUser(HttpServletRequest request)
     {
@@ -160,6 +172,18 @@ public class AdminController {
         return "/admin/UserManager";
     }
 
+    //给角色分配权利
+    @RequestMapping(value = "/permissionForRole")
+    public String permissionForRole(HttpServletRequest request)
+    {
+        int roleId=Integer.parseInt(request.getParameter("roleId"));
+        int permissionId=Integer.parseInt(request.getParameter("permissionId"));
+        RolePermission rolePermission=new RolePermission();
+        rolePermission.setPermissionId(permissionId);
+        rolePermission.setRoleId(roleId);
+        rolePermissionService.insert(rolePermission);
+        return "/admin/RoleManager";
+    }
 
     /*
     角色管理
@@ -179,13 +203,29 @@ public class AdminController {
 
         }
     }
-    @RequestMapping(value = "/RoleManager")
-    public String roleIndex()
+    @RequestMapping(value = "/roleManager",method = RequestMethod.GET)
+    public String roleManager(HttpServletRequest request)
+    {
+        Pager pager=null;
+        pager=roleService.getRolePager();
+        HttpSession session=request.getSession();
+        session.setAttribute("pager",pager);
+        System.out.println("pager:"+pager);
+        return "/admin/RoleManager";
+    }
+
+    @RequestMapping(value = "/roleManager",method = RequestMethod.POST)
+    public String roleManager()
     {
         return "/admin/RoleManager";
     }
 
 
+
+
+    /*
+    获取用户分配的角色
+     */
     private Set getRolesForUser(int id)
     {
         List<RoleUser> roleUsers=roleUserService.selectByUserId(id);
@@ -198,6 +238,9 @@ public class AdminController {
         return roles;
     }
 
+    /*
+    获取用户未分配的角色
+     */
     private List<Role> getRolesNotForUser(int id)
     {
         List<Role> allRoles=roleService.getAllRole();
@@ -218,6 +261,47 @@ public class AdminController {
 
         }
         return roles;
+    }
+
+    /*
+    获取角色分配的权利
+     */
+    private Set<Permission> getPermissionsForRole(int id)
+    {
+        List<RolePermission> RolePermissions=rolePermissionService.selectByRoleId(id);
+        Set<Permission> permissions=new HashSet<Permission>();
+        for(RolePermission rolePermission:RolePermissions)
+        {
+            Permission permission=permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
+            permissions.add(permission);
+        }
+        return permissions;
+    }
+
+    /*
+    获取角色未分配的权利
+     */
+
+    private List<Permission> getPermissionNotForRole(int id)
+    {
+        List<Permission> allPermissions=permissionService.getAllPermission();
+        Set<Permission> permissionssForRole=this.getPermissionsForRole(id);
+        List<Permission> Permissions=new ArrayList<Permission>();
+        Set<Permission> set =permissionssForRole;
+        Set rolenameSet=new HashSet<String>();
+        for(Permission permission:set){
+            rolenameSet.add(permission.getPermission());
+        }
+        for(Permission permission:allPermissions)
+        {
+            String permissionName=permission.getPermission();
+            if(rolenameSet.add(permissionName))
+            {
+                Permissions.add(permission);
+            }
+
+        }
+        return Permissions;
     }
 
 }

@@ -1,6 +1,7 @@
 package cn.scau.hjr.dao;
 
 import cn.scau.hjr.model.Role;
+import cn.scau.hjr.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,9 +19,10 @@ public interface RoleMapper {
 
     Role selectByRoleName(@Param("rolename")String roleName);
     void delByRoleName(@Param("rolename")String rolename);
-    ArrayList<Role> getAllRole();
     int updateByPrimaryKeySelective(Role record);
-
+    ArrayList<Role> getAllRole();
+    ArrayList<Role> getRoleListByLimitNumber(@Param("start")int start, @Param("pagesize")int pagesize);
+    int getAllRoleNumber();
 
 
     int updateByPrimaryKey(Role record);

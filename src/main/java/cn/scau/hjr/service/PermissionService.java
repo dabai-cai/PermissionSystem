@@ -12,4 +12,5 @@ public interface PermissionService {
     void delPermissionById(int permissionId);
     void delByPermissionName(String permissionName);
     ArrayList<Permission> getAllPermission();
+    Permission selectByPrimaryKey(Integer permissionId);
 }

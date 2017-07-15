@@ -76,4 +76,6 @@
   <select id="getAllPermission" resultMap="BaseResultMap" >
     select * from permission
   </select>
+
+  <!--  -->
 </mapper>
