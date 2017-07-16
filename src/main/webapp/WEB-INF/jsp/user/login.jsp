@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
 <head>
@@ -29,6 +30,106 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/resources/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/resources/assets/ico/apple-touch-icon-57-precomposed.png">
 
+    <style>
+        /*CSS源代码*/
+
+        @import url('http://cdn.gbtags.com/twitter-bootstrap/3.2.0/css/bootstrap.min.css');
+
+        body {
+            background: url('/resources/register/img/backgrounds/1.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            color:#fff;
+            background-color:#333;
+            font-family: 'microsoft yahei' ,Arial,sans-serif;
+        }
+
+        /* bootstrap 3 helpers */
+
+        .navbar-form input, .form-inline input {
+            width:auto;
+        }
+
+        header {
+            height:480px;
+        }
+
+        #nav.affix {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index:10;
+        }
+
+        #sidebar.affix-top {
+            position: static;
+        }
+
+        #sidebar.affix {
+            position: fixed;
+            top: 180px;
+        }
+
+
+
+
+        a:link, a:visited {
+            color:#eee;
+        }
+
+        .block {
+            background-color:rgba(0,0,0,0.2);
+            height:370px;
+            padding-left:12px;
+            padding-right:12px;
+        }
+
+        .block-sm {
+            height:180px;
+        }
+
+        .btn-flat {
+            border-radius:0px;
+            border-width:0;
+            background-image:none;
+            padding:16px;
+            margin:0 auto;
+            margin-top:15px;
+            width:70%;
+            font-size:20pt;
+        }
+
+        /* mini carousel */
+        .carousel-inner img {
+            width:100%;
+            height:100%;
+        }
+
+        #myCarousel {
+            font-size:90%;
+        }
+
+        .carousel-controls-mini {
+            margin-left:42%;
+        }
+
+        .carousel-controls-mini > a {
+            border:1px solid #eee;
+            margin:1px;
+            width:20px;
+            display:block;
+            float:left;
+            text-align:center;
+        }
+
+        #carousel-bounding-box {
+            margin:0 auto;
+            width:300px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -40,13 +141,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2 text">
-                    <h1><strong>Bootstrap</strong> Login Form</h1>
-                    <div class="description">
-                        <p>
-                            This is a free responsive login form made with Bootstrap.
-                            Download it on <a href="http://azmind.com"><strong>AZMIND</strong></a>, customize and use it as you like!
-                        </p>
-                    </div>
+                    <h1><strong>PermissionSystem</strong></h1>
                 </div>
             </div>
             <div class="row">
@@ -107,6 +202,28 @@
 <!--[if lt IE 10]>
 <scripaindex"/resources/assets/js/placeholder.js"></script>
 <![endif]-->
+
+<script>
+    /*Javascript代码片段*/
+
+    $('#nav').affix({
+        offset: {
+            top: $('header').height()
+        }
+    });
+
+    $('#sidebar').affix({
+        offset: {
+            top: 500
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fac45a0f68a119fbe4d1c4c3ac3044dbd' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
 </body>
 

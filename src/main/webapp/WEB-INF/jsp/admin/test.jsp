@@ -49,8 +49,6 @@
                             <li><a href="/user/Vippermission?userId=<%=user.getUserId()%>">会员专享</a></li>
                             <li class="divider"></li>
                             <li><a href="/user/studentPermission?userId=<%=user.getUserId() %>">学生特权</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/user/TeacherPermission?userId=<%=user.getUserId() %>">教师通道</a></li>
                         </ul>
                     </li>
 
@@ -60,53 +58,53 @@
     </div>
 </div>
 <table align="center" class="table">
-        <div class="form-group" align="center">
-            <div class="form-group">
-                <form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/user/searchUser">
-                    <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate ><button type="submit" class="btn btn-lg btn-primary website-submit">查询</button>
-                </form>
-            </div>
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                修改个人信息
-            </button>
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                &times;
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel">
-                                个人信息
-                            </h4>
-                        </div>
-                        <form method="post" action="/user/update?userId=<%=user.getUserId() %>">
-                            <div class="modal-body">
-                                用户名：<input name="username" type="text" value="<%=user.getUsername()%>" class="form-control input-lg website-input">
-                            </div>
-                            <div class="modal-body">
-                                密码：<input name="password" type="text" value="<%=user.getPassword()%>" class="form-control input-lg website-input">
-                            </div>
-                            <div class="modal-body">
-                                年龄：<input name="age" type="text" value="<%=user.getAge()%>" class="form-control input-lg website-input">
-                            </div>
-                            <div class="modal-body">
-                                电话：<input name="phone" type="text" value="<%=user.getPhone()%>" class="form-control input-lg website-input">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                    提交修改
-                                </button>
-                            </div>
-                        </form>
-
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
+    <div class="form-group" align="center">
+        <div class="form-group">
+            <form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/user/searchUser">
+                <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate ><button type="submit" class="btn btn-lg btn-primary website-submit">查询</button>
+            </form>
         </div>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            修改个人信息
+        </button>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            个人信息
+                        </h4>
+                    </div>
+                    <form method="post" action="/user/update?userId=<%=user.getUserId() %>">
+                        <div class="modal-body">
+                            用户名：<input name="username" type="text" value="<%=user.getUsername()%>" class="form-control input-lg website-input">
+                        </div>
+                        <div class="modal-body">
+                            密码：<input name="password" type="text" value="<%=user.getPassword()%>" class="form-control input-lg website-input">
+                        </div>
+                        <div class="modal-body">
+                            年龄：<input name="age" type="text" value="<%=user.getAge()%>" class="form-control input-lg website-input">
+                        </div>
+                        <div class="modal-body">
+                            电话：<input name="phone" type="text" value="<%=user.getPhone()%>" class="form-control input-lg website-input">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                提交修改
+                            </button>
+                        </div>
+                    </form>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
     <tr>
         <td>
             用户名：
@@ -125,7 +123,7 @@
     <%
         for(User user1:users)
         {
-            %>
+    %>
     <td><%=user1.getUsername()%></td>
     <td><%=user1.getAge()%></td>
     <td><%=user1.getSex()%></td>

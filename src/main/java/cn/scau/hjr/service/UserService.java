@@ -19,5 +19,6 @@ public interface UserService {
    Pager getUserPager();
    void delUserById(int id);
    ArrayList<User> getSearchUser(String key);
+   int updateByPrimaryKey(User record);
 
 }

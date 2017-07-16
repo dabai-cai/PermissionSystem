@@ -47,7 +47,7 @@ public class AdminController {
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public String addUser(HttpServletRequest request)
     {
-        System.out.println("post");
+
         int account=Integer.parseInt(request.getParameter("account"));
         String password=request.getParameter("password");
         String username=request.getParameter("username");
@@ -70,7 +70,13 @@ public class AdminController {
         user.setUsername(username);
 
         if(userService.addUser(user))
-            return "/BackGround/index";
+        {   Pager pager=null;
+            pager=userService.getUserPager();
+            HttpSession session=request.getSession();
+            session.setAttribute("pager",pager);
+            return "/admin/UserManager";
+        }
+
         else{
             return "/admin/addUserError";
         }
@@ -110,6 +116,31 @@ public class AdminController {
 
     }
 
+    @RequestMapping(value = "/updateUser")
+    public String userUpdate(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("id"));
+        User user0=new User();
+        user0.setUserId(id);
+        String username=request.getParameter("username");
+        String password=request.getParameter("password");
+        int age=Integer.parseInt(request.getParameter("age"));
+        int phone=Integer.parseInt(request.getParameter("phone"));
+        String sex=request.getParameter("sex");
+        user0.setSex(sex);
+        user0.setUsername(username);
+        user0.setAge(age);
+        user0.setPhone(phone);
+        user0.setPassword(password);
+        userService.updateByPrimaryKey(user0);
+        User user=userService.selectByPrimaryKey(id);
+        Pager pager=null;
+        pager=userService.getUserPager();
+        HttpSession session=request.getSession();
+        session.setAttribute("pager",pager);
+        System.out.println("pager:"+pager);
+        return "/admin/UserManager";
+    }
     @RequestMapping(value="searchUser")
     public String searchUser(HttpServletRequest resquest)
     {
@@ -125,13 +156,6 @@ public class AdminController {
         return "/BackGround/index";
     }
 
-
-    @RequestMapping(value = "update")
-    public String update(HttpServletRequest request)
-    {
-        int userId=Integer.parseInt(request.getParameter("id"));
-        return "/admin/UserManager";
-    }
 
 
     @RequestMapping(value = "/AssigningRoles")
@@ -250,6 +274,8 @@ public class AdminController {
     }
 
 
+
+
     /*
     角色管理界面
      */
@@ -260,7 +286,6 @@ public class AdminController {
         pager=roleService.getRolePager();
         HttpSession session=request.getSession();
         session.setAttribute("pager",pager);
-        System.out.println("pager:"+pager);
         return "/admin/RoleManager";
     }
 
@@ -354,4 +379,37 @@ public class AdminController {
         return Permissions;
     }
 
+    /*
+    权限管理
+     */
+    @RequestMapping(value = "/addPermission")
+    public String addPermission(HttpServletRequest request,HttpSession session)
+    {
+        String permissionName=request.getParameter("permission");
+        Permission permission=new Permission();
+        permission.setPermission(permissionName);
+        permissionService.addPermission(permission);
+        ArrayList<Permission> permissions=permissionService.getAllPermission();
+        session.setAttribute("permissions",permissions);
+        return "/admin/PermissionManager";
+    }
+    @RequestMapping(value = "/PermissionManager")
+    public String PermissionManager(HttpSession session)
+    {
+        ArrayList<Permission> permissions=permissionService.getAllPermission();
+        session.setAttribute("permissions",permissions);
+        return "/admin/PermissionManager";
+    }
+
+    //删除权利
+    @RequestMapping(value = "/delPermission")
+    public String delPermission(HttpServletRequest request,HttpSession session)
+    {
+        int id=Integer.parseInt(request.getParameter("id"));
+        rolePermissionService.delByPermissionId(id);
+        permissionService.delPermissionById(id);
+        ArrayList<Permission> permissions=permissionService.getAllPermission();
+        session.setAttribute("permissions",permissions);
+        return "/admin/PermissionManager";
+    }
 }

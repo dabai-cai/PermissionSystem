@@ -114,13 +114,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.scau.hjr.model.User" >
     update user
-    set account = #{account,jdbcType=INTEGER},
+    set
       password = #{password,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
-      register_time = #{registerTime,jdbcType=TIMESTAMP},
-      sex = #{sex,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      phone = #{phone,jdbcType=INTEGER}
+      phone = #{phone,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 

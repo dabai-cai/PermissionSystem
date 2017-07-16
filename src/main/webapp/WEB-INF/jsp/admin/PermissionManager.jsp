@@ -4,12 +4,11 @@
     Author     : Administrator
 --%>
 
-<%@page import="cn.scau.hjr.model.Role"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="cn.scau.hjr.model.Pager"%>
 <%@ page import="cn.scau.hjr.model.Role" %>
 <%@ page import="cn.scau.hjr.model.User" %>
+<%@ page import="cn.scau.hjr.model.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -54,11 +53,6 @@
                 <ul class="nav">
                     <li class="dropdown"><a href="/admin/index" class="dropdown-toggle" data-toggle="dropdown">首页 <b class="caret"></b></a>
                     </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/admin/addRole">新建角色</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -69,7 +63,7 @@
         管理员权限
     </caption>
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        新建角色
+        新建权利
     </button>
     <!-- 模态框（Modal） -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -80,12 +74,12 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        新建一个角色
+                        新建一个权利
                     </h4>
                 </div>
-                <form method="post" action="/admin/addRole">
+                <form method="post" action="/admin/addPermission">
                     <div class="modal-body">
-                        角色名：<input name="role" type="text" value="如：总统" class="form-control input-lg website-input">
+                        权利名：<input name="permission" type="text" value="如：电影票打折" class="form-control input-lg website-input">
                     </div>
 
                     <div class="modal-footer">
@@ -100,13 +94,13 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-    <form action="/admin/updare" method="post">
+   
         <tr>
             <td>
-                角色名：
+                权利名：
             </td>
             <td>
-                角色id
+                权利id
             </td>
             <td>
                 管理员操作：
@@ -114,12 +108,12 @@
         </tr>
 
         <%
-            Pager pager =(Pager) session.getAttribute("pager");
-            ArrayList roleList = (ArrayList) pager.getpagerData();
-            for (int i = 0; i < roleList.size(); i++) {
-                Role role = (Role) roleList.get(i);
-                String name = role.getRolename();
-                int id=role.getRoleId();
+            ArrayList<Permission> permissions =(ArrayList<Permission>) session.getAttribute("permissions");
+            
+            for (int i = 0; i < permissions.size(); i++) {
+                Permission p  = (Permission) permissions.get(i);
+                String name = p.getPermission();
+                int id=p.getPermissionId();
 
         %>
         <tr >
@@ -130,27 +124,12 @@
                 <%=id%>
             </td>
             <td>
-                <a href="<%=request.getContextPath()%>/admin/delRole?id=<%=role.getRoleId()%>"> 删除</a>&nbsp;&nbsp;&nbsp;
-                <a href="/admin/permissionAassign?id=<%=role.getRoleId()%>"> 权限分配</a>
+                <a href="<%=request.getContextPath()%>/admin/delPermission?id=<%=p.getPermissionId()%>"> 删除</a>
             </td>
         </tr>
         <%
             }
         %>
-    </form>
-    <tr>
-
-        <td>
-            <a href="/admin/roleManager/">首页</a>&nbsp;第
-            <%                for (int i = 1; i <= pager.getTotalPage(); i++) {
-            %>
-            <a href="/admin/roleManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
-            <%
-                }
-            %>页
-        </td>
-
-    </tr>
 </table>
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/jquery.flot.js"></script>

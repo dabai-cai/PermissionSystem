@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">  
-	<title>简洁Bootstrap响应式后台管理系统模板下载</title>	
-	<meta name="keywords" content="Bootstrap模板,Bootstrap3模版,Bootstrap模板下载,Bootstrap后台模板,Bootstrap教程,Bootstrap中文,后台管理系统模板,后台模板下载,后台管理系统,后台管理模板" />
-	<meta name="description" content="JS代码网提供Bootstrap模板,后台管理系统模板,后台管理界面,Bootstrap后台板版下载" />
+	<title>后台管理</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/resources/css/bootstrap.css" rel="stylesheet">
 	<link href="/resources/css/site.css" rel="stylesheet">
     <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="/resources/js/html5.js"></script>
     <![endif]-->
 	<!--[if lte IE 8]><script src="/resources/js/excanvas.min.js"></script><![endif]-->
     <style type="text/css">
@@ -30,7 +30,7 @@
           </a>
           <a class="brand" href="#">Admin</a>
           <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.html"><i class="icon-user"></i> Admin</a>
+			<a class="btn" href="#"><i class="icon-user"></i> Admin</a>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="caret"></span>
             </a>
@@ -42,7 +42,7 @@
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-			<li><a href="index.jsp">首页</a></li>
+			<li><a href="/admin/index">首页</a></li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="/admin/addUser">新建用户</a></li>
@@ -54,15 +54,16 @@
 				<ul class="dropdown-menu">
 					<li><a href="/admin/addRole">新建角色</a></li>
 					<li class="divider"></li>
-					<li><a href="/admin/RoleManager">管理角色</a></li>
+					<li><a href="/admin/roleManager">管理角色</a></li>
 				</ul>
 			  </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="/admin/addPermission">新建权限</a></li>
                     <li class="divider"></li>
                     <li><a href="/admin/PermissionManager">权限管理</a></li>
                 </ul>
-
+                </li>
             </ul>
           </div>
         </div>

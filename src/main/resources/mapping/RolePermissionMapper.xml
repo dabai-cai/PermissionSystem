@@ -101,4 +101,10 @@
     delete from role_permission
     where role_id = #{roleId,jdbcType=INTEGER} and permission_id=#{permissionId,jdbcType=INTEGER}
   </delete>
+
+  <!--  delByPermissionId  -->
+  <delete id="delByPermissionId" parameterType="java.lang.Integer" >
+    delete from role_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
 </mapper>

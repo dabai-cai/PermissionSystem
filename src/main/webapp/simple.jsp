@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +10,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/resources/index/img/favicon.png">
 
-    <title>index</title>
+    <title>权限管理系统</title>
 
     <!-- Bootstrap -->
     <link href="/resources/index/css/bootstrap.css" rel="stylesheet">
@@ -69,7 +71,7 @@
                     <!-- slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="/resources/index/img/slide1.png" alt="">
+                           <img src="/resources/index/img/slide1.png" alt="">
                         </div>
                         <div class="item">
                             <img src="/resources/index/img/slide2.png" alt="">

@@ -89,11 +89,19 @@ public class UserController {
     @RequestMapping(value={"/login"},method = RequestMethod.POST)
     public String userLogin(HttpServletRequest request)
     {
-
-        int account=Integer.parseInt(request.getParameter("account"));
         String password=request.getParameter("password");
         User user=new User();
-        user.setAccount(account);
+
+        try{
+            int account=Integer.parseInt(request.getParameter("account"));
+            user.setAccount(account);
+        }catch (NumberFormatException nfe)
+        {
+            System.out.println(nfe.getMessage());
+        }
+
+
+
         user.setPassword(password);
         HttpSession session=request.getSession();
         user=userService.getUser(user);//获取用户信息
@@ -120,23 +128,41 @@ public class UserController {
             else{
                 //普通用户
                 session.setAttribute("user",user);
+                ArrayList<User> temp1=new ArrayList<User>();
+                request.setAttribute("searchUsers",temp1);
                 return "user/index";
             }
         }
     }
 
-    @RequestMapping(value = "/searchUser")
-    public String searchUser()
+    //用户主页
+    @RequestMapping(value = "/index")
+    public String index()
     {
-        return "";
+        return "user/index";
     }
 
+    @RequestMapping(value="searchUser")
+    public String searchUser(HttpServletRequest resquest)
+    {
+        String key=resquest.getParameter("searchUser");
+        ArrayList<User> userList=userService.getSearchUser(key);
+        resquest.setAttribute("searchUsers",userList);
+        return "/user/index";
+    }
 
     @RequestMapping(value = "/test")
     public String testHtml()
     {
         return "/BackGround/index";
     }
+
+
+
+
+
+
+
 
     @RequestMapping(value = "/Vippermission")
     public String ifVip(HttpServletRequest request)
@@ -164,7 +190,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/robPermission")
+    @RequestMapping(value = "/studentPermission")
     public String ifRob(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("userId"));
         RoleUser roleUser = new RoleUser();
@@ -183,6 +209,54 @@ public class UserController {
             request.setAttribute("permissions", permissions);
             return "/user/role/rob";
         }
+    }
+
+    //TeacherPermission
+    @RequestMapping(value = "/TeacherPermission")
+    public String ifTeacher(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("userId"));
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(id);
+        roleUser.setRoleId(18);
+        RoleUser roleUser1 = roleUserService.selectByUserIdAndRoleId(roleUser);
+        if (roleUser1 == null) {
+            return "/user/role/error";
+        } else {
+            ArrayList<Permission> permissions = new ArrayList<Permission>();
+            ArrayList<RolePermission> rolePermissions = rolePermissionService.selectByRoleId(18);
+            for (RolePermission rolePermission : rolePermissions) {
+                Permission permission = permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
+                permissions.add(permission);
+            }
+            request.setAttribute("permissions", permissions);
+            return "/user/role/teacher";
+        }
+    }
+
+
+
+
+
+    @RequestMapping(value = "/update")
+    public String userUpdate(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("userId"));
+        User user0=new User();
+        user0.setUserId(id);
+        String username=request.getParameter("username");
+        String password=request.getParameter("password");
+        int age=Integer.parseInt(request.getParameter("age"));
+        int phone=Integer.parseInt(request.getParameter("phone"));
+        user0.setUsername(username);
+        user0.setAge(age);
+        user0.setPhone(phone);
+        user0.setPassword(password);
+        userService.updateByPrimaryKey(user0);
+        User user=userService.selectByPrimaryKey(id);
+        HttpSession session=request.getSession();
+        session.setAttribute("user",user);//更新用户信息
+        request.setAttribute("searchUsers",new ArrayList<User>());//防止jsp界面get到空指针
+        return "/user/index";
     }
 
 }

@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>学生专享</title>
+    <title>教师专享</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
     <!--[if lt IE 9]>
@@ -24,7 +24,7 @@
 </head>
 <body>
 <div class="page-header">
-    <h1>学生专享</h1>
+    <h1>教师特权</h1>
 </div>
 <% ArrayList<Permission> permissions=(ArrayList<Permission>)request.getAttribute("permissions");%>
 <%  int i=1;
