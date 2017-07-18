@@ -1,261 +1,352 @@
-<%-- 
-    Document   : root
-    Created on : 2017-4-20, 21:33:05
-    Author     : Administrator
---%>
+
+<!DOCTYPE html>
 <%@page import="cn.scau.hjr.model.User"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="cn.scau.hjr.model.Pager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Carousel Template for Bootstrap</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>管理员界面</title>  <link href="/resources/css/bootstrap.css" rel="stylesheet">
-    <link href="/resources/css/bootstrap.css" rel="stylesheet">
-    <link href="/resources/css/site.css" rel="stylesheet">
-    <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="/resources/js/html5.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--  IE10 viewport hack for Surface/desktop Windows 8 bug
+<link href="http://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!--[if lte IE 8]><script src="/resources/js/excanvas.min.js"></script><![endif]-->
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
-    </style>
 </head>
 <body>
-<!-- 导航栏 -->
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#">Admin</a>
-            <div class="btn-group pull-right">
-                <a class="btn" href="#"><i class="icon-user"></i>Admin</a>
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="divider"></li>
-                    <li><a href="#">退出</a></li>
-                </ul>
+<div class="container text-center">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+</div>
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">用户信息修改</h4>
             </div>
 
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="dropdown"><a href="/admin/index" class="dropdown-toggle" data-toggle="dropdown">首页 <b class="caret"></b></a>
-                    </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/admin/addRole">新建用户</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="modal-body">
+                <form id="updateform">
+                    <div class="form-group">
+                        <label for="loginname" class="control-label">用户名:</label>
+                        <input type="text" class="form-control" id="loginname" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="account" class="control-label">账号:</label>
+                        <input type="text" class="form-control" id="account" name="account" placeholder="123456">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPwd" class="control-label">密码:</label>
+                        <input type="password" class="form-control" id="newPwd" name="password" >
+                    </div>
+                    <div class="form-group">
+                        <label for="checkPwd" class="control-label">确认密码:</label>
+                        <input type="password" class="form-control" id="checkPwd" name="checkPwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex" class="control-label">性别:</label>
+                        <input type="text" class="form-control" id="sex" name="sex" placeholder="男">
+                    </div>
+                    <div class="form-group">
+                        <label for="age" class="control-label">年龄:</label>
+                        <input type="text" class="form-control" id="age" name="age" placeholder="23">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="control-label">电话:</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="232323">
+                    </div>
+
+                    <div class="text-right">
+                        <span id="returnMessage" class="glyphicon"> </span>
+                        <button type="button" class="btn btn-default right" data-dismiss="modal">关闭</button>
+                        <button id="submitBtn" type="button" class="btn btn-primary">添加</button>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- 主体   -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 
-    <form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
-        <div>
-            <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate >
-            <button type="submit" class="btn btn-lg btn-primary website-submit">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
-            </button>
-        </div>
-    </form>
+<script type='text/javascript'>
+    var form = $('#updateform');
+    $(document).ready(function () {
+
+        form.bootstrapValidator({
+            message: '输入值不合法',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: '用户名不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 30,
+                            message: '请输入3到30个字符'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                            message: '用户名只能由字母、数字、点、下划线和汉字组成 '
+                        }
+                    }
+                }
+                , phone: {
+                    validators: {
+                        notEmpty: {
+                            message: '手机号不能为空'
+                        },
+                        regexp: {
+                            regexp: "^([0-9]{7})?$",
+                            message: '手机号码格式错误'
+                        }
+                    }
+                }
+                ,account: {
+                    validators: {
+                        notEmpty: {
+                            message: '账号不能为空'
+                        },
+
+                        regexp: {
+                            regexp: "^([0-9]{7})?$",
+                            message: '账号为7位纯数字'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '*新密码不能为空'
+                        }
+                    }
+                },
+                checkPwd: {
+                    validators: {
+                        notEmpty: {
+                            message: '*确认密码不能为空'
+                        },
+                        identical: {
+                            field: 'password',
+                            message: '*两次输入密码不一致'
+                        }
+                    }
+                }
+            }
+        });
+    });
+    $("#submitBtn").click(function () {
+//进行表单验证
+        var bv = form.data('bootstrapValidator');
+        bv.validate();
+        $.ajax({
+            type:"post",
+            url:"/admin/addUser",
+            data:$("#updateform").serialize(),
+            success:function(data){
+                $("#span-1").text(data.str);
+                $('#exampleModal').modal('hide')
+
+            }
+        })
+
+    });
+</script>
+<button onclick="javascript:window.location.href='/admin/index';"
+        class="btn btn-primary btn-lg">返回主页
+    <span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <table align="center" class="table">
     <caption>
         管理员权限
     </caption>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            新建用户
-        </button>
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            用户信息
-                        </h4>
-                    </div>
-                    <form method="post" action="/admin/addUser">
-                        <div class="modal-body">
-                            账号：<input name="account" type="text" value="如：5555555" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-body">
-                            用户名：<input name="username" type="text" value="如：老干妈" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-body">
-                            密码：<input name="password" type="text" value="如：bilibili" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-body">
-                            性别：<input name="sex" type="text" value="如：男" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-body">
-                            年龄：<input name="age" type="text" value="如：998" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-body">
-                            电话：<input name="phone" type="text" value="如：0663888" class="form-control input-lg website-input">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+    <tr>
+        <td>
+            编号
+        </td>
+        <td>
+            用户名：
+        </td>
+        <td>
+            账号
+        </td>
+        <td>
+            用户密码：
+        </td>
+        <td>
+            性别
+        </td>
+        <td>
+            管理员操作：
+        </td>
+    </tr>
+    <%
+        Pager pager =(Pager) session.getAttribute("pager");
+        ArrayList userList = (ArrayList) pager.getpagerData();
+        for (int i = 0; i < userList.size(); i++) {
+            User user = (User) userList.get(i);
+
+            String name = user.getUsername();
+            String password = user.getPassword();
+            String sex = user.getSex();
+            int acount=user.getAccount();
+            int age=0;int phone=0;
+            try{
+                age=user.getAge();
+            }catch (NullPointerException npe)
+            {
+            }
+            try {
+                phone=user.getPhone();
+            }catch (NullPointerException npe)
+            {
+
+            }
+
+
+    %>
+    <tr>
+        <td>
+            <%=i+1%>
+        </td>
+        <td contenteditable="true" name="">
+            <%=name%>
+        </td>
+        <td>
+            <%=acount %>
+        </td>
+        <td contenteditable="true">
+            <%=password%>
+        </td>
+        <td contenteditable="true">
+            <%=sex%>
+        </td >
+        <td>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa<%=i+1%>">
+                修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="myModa<%=i+1%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<%=i+1%>" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
                             </button>
-                            <button type="submit" class="btn btn-primary">
-                                添加
-                            </button>
+                            <h4 class="modal-title" id="myModalLabel<%=i+1%>">
+                                修改用户信息
+                            </h4>
                         </div>
-                    </form>
 
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-
-            <tr>
-                <td>
-                    用户名：
-                </td>
-                <td>
-                    账号
-                </td>
-                <td>
-                    用户密码：
-                </td>
-                <td>
-                    性别
-                </td>
-                <td>
-                    管理员操作：
-                </td>
-            </tr>
-            <%
-                Pager pager =(Pager) session.getAttribute("pager");
-                ArrayList userList = (ArrayList) pager.getpagerData();
-                for (int i = 0; i < userList.size(); i++) {
-                    User user = (User) userList.get(i);
-
-                    String name = user.getUsername();
-                    String password = user.getPassword();
-                    String sex = user.getSex();
-                    int acount=user.getAccount();
-                    int age=0;int phone=0;
-                    try{
-                         age=user.getAge();
-                    }catch (NullPointerException npe)
-                    {
-                    }
-                    try {
-                        phone=user.getPhone();
-                    }catch (NullPointerException npe)
-                    {
-
-                    }
-
-
-            %>
-            <tr>
-                <td contenteditable="true" name="">
-                    <%=name%>
-                </td>
-                <td>
-                    <%=acount %>
-                </td>
-                <td contenteditable="true">
-                    <%=password%>
-                </td>
-                <td contenteditable="true">
-                    <%=sex%>
-                </td >
-                <td>
-
-                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa<%=i+1%>">
-                                修改
-                            </button>
-                            <!-- 模态框（Modal） -->
-                            <div class="modal fade" id="myModa<%=i+1%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<%=i+1%>" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4 class="modal-title" id="myModalLabel<%=i+1%>">
-                                                修改用户信息
-                                            </h4>
-                                        </div>
-
-                                        <% System.out.println(user.getUsername()+":"+user.getUserId());  %>
-                                        <form method="post" action="/admin/updateUser?id=<%=user.getUserId() %>">
-                                        <div class="modal-body">
-                                            用户名：<input name="username" type="text" value="<%=name%>" class="form-control input-lg website-input">
-                                        </div>
-                                        <div class="modal-body">
-                                            密码：<input name="password" type="text" value="<%=password%>" class="form-control input-lg website-input">
-                                        </div>
-                                        <div class="modal-body">
-                                            性别：<input name="sex" type="text" value="<%=sex%>" class="form-control input-lg website-input">
-                                        </div>
-                                        <div class="modal-body">
-                                            年龄：<input name="age" type="text" value="<%=age%>" class="form-control input-lg website-input">
-                                        </div>
-                                        <div class="modal-body">
-                                            电话：<input name="phone" type="text" value="<%=phone%>" class="form-control input-lg website-input">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">
-                                                修改
-                                            </button>
-                                        </div>
-                                        </form>
-
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal -->
+                        <% System.out.println(user.getUsername()+":"+user.getUserId());  %>
+                        <form method="post" action="/admin/updateUser?id=<%=user.getUserId() %>" id="userform">
+                            <div class="modal-body">
+                                用户名：<input name="username" type="text" value="<%=name%>" class="form-control input-lg website-input">
                             </div>
+                            <div class="modal-body">
+                                密码：<input name="password" type="text" value="<%=password%>" class="form-control input-lg website-input">
+                            </div>
+                            <div class="modal-body">
+                                性别：<input name="sex" type="text" value="<%=sex%>" class="form-control input-lg website-input">
+                            </div>
+                            <div class="modal-body">
+                                年龄：<input name="age" type="text" value="<%=age%>" class="form-control input-lg website-input">
+                            </div>
+                            <div class="modal-body">
+                                电话：<input name="phone" type="text" value="<%=phone%>" class="form-control input-lg website-input">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="updateBtn">
+                                    修改
+                                </button>
+                            </div>
+                        </form>
 
+                    </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                </div><!-- /.modal -->
+            </div>
+            <button onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>';"
+                    class="btn btn-primary btn-lg">删除
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+            <button onclick="javascript:window.location.href='/admin/AssigningRoles?id=<%=user.getUserId()%>';"
+                    class="btn btn-primary btn-lg">分配角色
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+    <tr>
 
-                    <button onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>';"
-                            class="btn btn-primary btn-lg">删除
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                    <button onclick="javascript:window.location.href='/admin/AssigningRoles?id=<%=user.getUserId()%>';"
-                            class="btn btn-primary btn-lg">分配角色
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                </td>
-            </tr>
+        <td>
+            <a href="/admin/userManager/">首页</a>&nbsp;第
+            <%                for (int i = 1; i <= pager.getTotalPage(); i++) {
+            %>
+            <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
             <%
                 }
-            %>
-        <tr>
+            %>页
+        </td>
 
-            <td>
-                <a href="/admin/userManager/">首页</a>&nbsp;第
-                <%                for (int i = 1; i <= pager.getTotalPage(); i++) {
-                %>
-                <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
-                <%
-                    }
-                %>页
-            </td>
-
-        </tr>
+    </tr>
 </table>
-<script src="/resources/js/jquery.js"></script>
-<script src="/resources/js/jquery.flot.js"></script>
-<script src="/resources/js/jquery.flot.resize.js"></script>
-<script src="/resources/js/bootstrap.min.js"></script>
+<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
+    <table>
+        <tr>
+            <td>
+                <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate >
+
+            </td>
+            <td>
+                <button type="submit" class="btn btn-lg btn-primary website-submit">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
+                </button>
+            </td>
+        </tr>
+    </table>
+
+
+</form>
+
 </body>
 </html>

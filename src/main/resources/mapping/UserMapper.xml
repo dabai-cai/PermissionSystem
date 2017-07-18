@@ -139,12 +139,12 @@
 
   <!-- getAllUser -->
   <select id="getAllUser"  resultMap="BaseResultMap">
-  select * from user
+  select * from user ORDER BY user_id DESC
 </select>
 
   <!-- getUserListByLimitNumber   -->
   <select id="getUserListByLimitNumber"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select * from user  limit #{start},#{pagesize}
+    select * from user  ORDER BY user_id DESC limit #{start},#{pagesize}
   </select>
 
   <!--模糊查找用户    -->
