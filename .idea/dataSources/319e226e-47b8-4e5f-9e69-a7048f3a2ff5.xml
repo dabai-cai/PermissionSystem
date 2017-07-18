@@ -41,7 +41,7 @@
     <table id="31" parent="2" name="votedata1"/>
     <table id="32" parent="2" name="voteitem"/>
     <table id="33" parent="2" name="voteuser"/>
-    <table id="34" parent="11" name="user"/>
+    <table id="34" parent="11" name="users"/>
     <column id="35" parent="12" name="username">
       <Position>1</Position>
       <DataType>varchar(20)|0</DataType>

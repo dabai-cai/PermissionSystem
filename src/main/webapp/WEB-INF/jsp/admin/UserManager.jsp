@@ -76,7 +76,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                     <div class="text-right">
                         <span id="returnMessage" class="glyphicon"> </span>
                         <button type="button" class="btn btn-default right" data-dismiss="modal">关闭</button>
-                        <button id="submitBtn" type="button" class="btn btn-primary">添加</button>
+                        <button id="submitBtn" type="button" class="btn btn-primary" data-toggle="modal" >添加</button>
 
                     </div>
                 </form>
@@ -84,6 +84,33 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myaddModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myaddModal">
+                    添加
+                </h4>
+                <div class="modal-body">
+                    用户添加成功
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+
+        </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+    </div><!-- /.modal -->
+</div>
+
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
@@ -172,12 +199,19 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             success:function(data){
                 $("#span-1").text(data.str);
                 $('#exampleModal').modal('hide')
-
+                $('#addModal').modal.show()
             }
         })
 
     });
 </script>
+
+
+
+
+
+
+
 <button onclick="javascript:window.location.href='/admin/index';"
         class="btn btn-primary btn-lg">返回主页
     <span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
@@ -200,7 +234,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     </caption>
     <tr>
         <td>
-            编号
+            编号:
         </td>
         <td>
             用户名：
@@ -243,9 +277,12 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
 
 
     %>
+    <tbody>
     <tr>
         <td>
-            <%=i+1%>
+            <div>
+                <%=i+1%>
+            </div>
         </td>
         <td contenteditable="true" name="">
             <%=name%>
@@ -276,7 +313,6 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                             </h4>
                         </div>
 
-                        <% System.out.println(user.getUsername()+":"+user.getUserId());  %>
                         <form method="post" action="/admin/updateUser?id=<%=user.getUserId() %>" id="userform">
                             <div class="modal-body">
                                 用户名：<input name="username" type="text" value="<%=name%>" class="form-control input-lg website-input">
@@ -305,9 +341,56 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                     </div><!-- /.modal-content glyphicon glyphicon-pencil -->
                 </div><!-- /.modal -->
             </div>
-            <button onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>';"
-                    class="btn btn-primary btn-lg">删除
+
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#userModa<%=i+1%>">
+                查看<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            </button>
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="userModa<%=i+1%>" tabindex="-1" role="dialog" aria-labelledby="userModalLabel<%=i+1%>" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="userModalLabel<%=i+1%>">
+                                用户个人信息
+                            </h4>
+                        </div>
+
+                            <div class="modal-body">
+                                用户名：<span><%=name%></span>
+                            </div>
+                            <div class="modal-body">
+                                密码：<span><%=password%></span>
+                            </div>
+                            <div class="modal-body">
+                                性别：<span><%=sex%></span>
+                            </div>
+                            <div class="modal-body">
+                                年龄：<span><%=age%></span>
+                            </div>
+                            <div class="modal-body">
+                                电话：<span><%=phone%></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+
+                            </div>
+
+                    </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                </div><!-- /.modal -->
+            </div>
+
+
+            <button class="btn btn-primary btn-lg"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>';"
+                    >删除
                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+
+
+
+
             <button onclick="javascript:window.location.href='/admin/AssigningRoles?id=<%=user.getUserId()%>';"
                     class="btn btn-primary btn-lg">分配角色
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -329,6 +412,8 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
         </td>
 
     </tr>
+    </tbody>
+
 </table>
 <form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
     <table>
