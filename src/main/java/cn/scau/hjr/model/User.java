@@ -5,7 +5,7 @@ import java.util.Date;
 public class User {
     private Integer userId;
 
-    private Integer account;
+    private String  account;
 
     private String password;
 
@@ -17,7 +17,7 @@ public class User {
 
     private Integer age;
 
-    private Integer phone;
+    private String  phone;
 
     public Integer getUserId() {
         return userId;
@@ -27,11 +27,11 @@ public class User {
         this.userId = userId;
     }
 
-    public Integer getAccount() {
+    public String  getAccount() {
         return account;
     }
 
-    public void setAccount(Integer account) {
+    public void setAccount(String account) {
         this.account = account;
     }
 
@@ -75,11 +75,11 @@ public class User {
         this.age = age;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 }

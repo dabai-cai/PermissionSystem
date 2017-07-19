@@ -8,7 +8,6 @@ import cn.scau.hjr.service.RolePermissionService;
 import cn.scau.hjr.service.RoleService;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
-import cn.scau.hjr.util.ShiroUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,20 +64,20 @@ public class UserServiceImpl implements UserService {
     public User getUser(User user) {
         User temp=null;
         temp=userDao.getUserByAccountAndPassword(user);
-        temp.setPassword(ShiroUtils.deCodeToString(temp.getPassword()));
+    //    temp.setPassword(ShiroUtils.deCodeToString(temp.getPassword()));
         return temp;
     }
 
     public  User selectByPrimaryKey(Integer userId)
     {
         User user=userDao.selectByPrimaryKey(userId);
-        user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
+     //   user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
         return user;
     }
 
     public User selectByAccountOrUsername(User user) {
         User user1=userDao.selectByAccountOrUsername(user);
-        user1.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
+    //    user1.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
         return user1;
     }
 
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService {
             userList=userDao.getUserListByLimitNumber(start,pagesize);
             for(User user:(ArrayList<User>)userList)
             {
-                user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
+            //    user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
             }
             pager.setpagerData(userList);
 
@@ -137,7 +136,7 @@ public class UserServiceImpl implements UserService {
         userList=userDao.searchUser(key);
         for(User user:userList)
         {
-            user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
+           // user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
         }
         return userList;
 
@@ -153,6 +152,82 @@ public class UserServiceImpl implements UserService {
     public ArrayList<User> getAllUser() {
 
         return userDao.getAllUser();
+    }
+
+    @Override
+    public Pager getSearchPager(String name) {
+        Pager pager = new Pager();//建立分页对象
+
+
+        int currentPage = SystemData.getPageOffset();//当前页
+        Integer _pagesize = SystemData.getPageSize();
+        int pagesize = _pagesize.intValue();//页面大小
+        int start=currentPage * pagesize - pagesize;
+
+            /*
+            得到总页数和总留言数和用户数据
+             */
+        int totalPage = 0;
+        int totalGuest = 0;
+        List<User> userList = new ArrayList<User>();//用来存储留言数据的list
+        userList=userDao.searchUser(name);
+        ArrayList<User> searchUserList=new ArrayList<User>();//保存当前页的数据
+        if(userList.size()!=0)
+        {
+            totalGuest=userList.size();
+            totalPage = (totalGuest - 1) / pagesize + 1;//总页数
+
+            pager.setPageSize(pagesize);
+            pager.setPageOffset(SystemData.getPageOffset());
+            pager.setTotalPage(totalPage);
+            pager.setTotalGuest(totalGuest);
+            pager.setStart(start);
+
+            //只取当前页面的留言，并存到List中
+
+
+            int ifOutIndex=start*pagesize+pagesize;
+            if(ifOutIndex>=userList.size())
+            {
+                for(int i=start;i<userList.size();i++)
+                {
+                    User user=userList.get(i);
+                    searchUserList.add(user);
+                }
+            }
+            else{
+                for(int i=start;i<start+pagesize;i++)
+                {
+                    User user=userList.get(i);
+                    searchUserList.add(user);
+                }
+
+            }
+
+            for(User user:searchUserList)
+            {
+           //     user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
+            }
+            pager.setpagerData(searchUserList);
+
+            /*
+            配置pager
+             */
+        }
+        else{//没有数据
+            totalGuest=0;
+            totalPage = 0;
+            pager.setPageSize(pagesize);
+            pager.setPageOffset(SystemData.getPageOffset());
+            pager.setTotalPage(totalPage);
+            pager.setTotalGuest(totalGuest);
+            pager.setStart(start);
+
+            pager.setpagerData(searchUserList);
+        }
+
+
+        return pager;
     }
 
 

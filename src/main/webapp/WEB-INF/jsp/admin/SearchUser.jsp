@@ -89,8 +89,9 @@
             String name = user.getUsername();
             String password = user.getPassword();
             String sex = user.getSex();
-            int acount=user.getAccount();
-            int age=0;int phone=0;
+            String acount=user.getAccount();
+            int age=0;
+            String phone=null;
             try{
                 age=user.getAge();
             }catch (NullPointerException npe)

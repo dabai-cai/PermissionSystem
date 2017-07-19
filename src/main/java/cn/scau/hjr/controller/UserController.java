@@ -2,7 +2,6 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
-import cn.scau.hjr.util.ShiroUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +50,12 @@ public class UserController {
     public String addUser(HttpServletRequest request)
     {
         System.out.println("post");
-        int account=Integer.parseInt(request.getParameter("account"));
+        String account= request.getParameter("account");
         String password=request.getParameter("password");
         String username=request.getParameter("username");
 
         String sex=request.getParameter("sex");
-        int phone=Integer.parseInt(request.getParameter("phone"));
+        String  phone=request.getParameter("phone");
         int age=Integer.parseInt(request.getParameter("age"));
         User user=new User();
         user.setAccount(account);
@@ -92,19 +91,12 @@ public class UserController {
     {
         String password=request.getParameter("password");
         User user=new User();
-
-        try{
-            int account=Integer.parseInt(request.getParameter("account"));
+            String account=request.getParameter("account");
             user.setAccount(account);
-        }catch (NumberFormatException nfe)
-        {
-            System.out.println(nfe.getMessage());
-        }
-
-
-
-        System.out.println(password);
-        user.setPassword(ShiroUtils.encodeToString(password));//密码加密
+            user.setPassword(password);
+            System.out.println("账号:"+account);
+          System.out.println("密码:"+password);
+     //   user.setPassword(//ShiroUtils.encodeToString(password));//密码加密
         HttpSession session=request.getSession();
 
         if(!userService.loginChk(user))
@@ -239,7 +231,7 @@ public class UserController {
         String username=request.getParameter("username");
         String password=request.getParameter("password");
         int age=Integer.parseInt(request.getParameter("age"));
-        int phone=Integer.parseInt(request.getParameter("phone"));
+        String  phone=request.getParameter("phone");
         user0.setUsername(username);
         user0.setAge(age);
         user0.setPhone(phone);

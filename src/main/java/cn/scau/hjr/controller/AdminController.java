@@ -2,7 +2,7 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
-import cn.scau.hjr.util.ShiroUtils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,14 +43,14 @@ public class AdminController {
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public String addUser(HttpServletRequest request)
     {
-        int account=Integer.parseInt(request.getParameter("account"));
+        String account=request.getParameter("account");
         String password=request.getParameter("password");
         String username=request.getParameter("username");
-        password= ShiroUtils.encodeToString(password);
+       // password= ShiroUtils.encodeToString(password);
         String sex=request.getParameter("sex");
 
         System.out.println(request.getParameter("age"));
-        int phone=Integer.parseInt(request.getParameter("phone"));
+         String  phone=request.getParameter("phone");
         System.out.println(phone);
         int age=Integer.parseInt(request.getParameter("age"));
         System.out.println(age);
@@ -82,13 +82,39 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/userManager",method = RequestMethod.GET)
-    public String userManager(HttpServletRequest request)
+    public String userManager(HttpServletRequest request,HttpSession session)
     {
+        int ifindex=0;
+
         Pager pager=null;
-        pager=userService.getUserPager();
-        HttpSession session=request.getSession();
+        String key=request.getParameter("searchUser");
+        if(key!=null)session.setAttribute("key",key);
+
+        try{
+             ifindex=Integer.parseInt(request.getParameter("ifindex"));
+        }catch (Exception e)
+        {
+            ifindex=0;
+        }
+        if(ifindex==1)
+        {
+            session.setAttribute("searchbool",new Boolean(false));
+            session.setAttribute("key",null);
+            pager=userService.getUserPager();
+        }
+        else{
+          String searchName=(String)session.getAttribute("key");
+            System.out.println("查询名字:"+key);
+          if(searchName==null)
+          {
+              pager=userService.getUserPager();
+          }
+          else{
+              pager=userService.getSearchPager(searchName);
+          }
+        }
+
         session.setAttribute("pager",pager);
-        System.out.println("pager:"+pager);
         return "/admin/UserManager";
     }
 
@@ -124,7 +150,7 @@ public class AdminController {
         String username=request.getParameter("username");
         String password=request.getParameter("password");
         int age=Integer.parseInt(request.getParameter("age"));
-        int phone=Integer.parseInt(request.getParameter("phone"));
+        String phone=request.getParameter("phone");
         String sex=request.getParameter("sex");
         user0.setSex(sex);
         user0.setUsername(username);

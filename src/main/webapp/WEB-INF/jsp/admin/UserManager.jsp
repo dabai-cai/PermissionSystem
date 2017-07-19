@@ -23,12 +23,11 @@
 
 HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
 [if lt IE 9]>
-    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 </head>
 <body>
-<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
+<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/userManager">
     <table>
         <tr>
             <td>
@@ -79,7 +78,10 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                     </div>
                     <div class="form-group">
                         <label for="sex" class="control-label">性别:</label>
-                        <input type="text" class="form-control" id="sex" name="sex" placeholder="男">
+                        男
+                        <input type="radio" id="sex" name="sex" value="男">
+                        女
+                        <input type="radio"  name="sex" value="女" checked>
                     </div>
                     <div class="form-group">
                         <label for="age" class="control-label">年龄:</label>
@@ -128,7 +130,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     </div><!-- /.modal -->
 </div>
 
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="/resources/js/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 
@@ -170,8 +172,9 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             String name = user.getUsername();
             String password = user.getPassword();
             String sex = user.getSex();
-            int acount=user.getAccount();
-            int age=0;int phone=0;
+            String acount=user.getAccount();
+            int age=0;
+            String phone=null;
             try{
                 age=user.getAge();
             }catch (NullPointerException npe)
@@ -230,7 +233,27 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                                 密码：<input name="password" type="text" value="<%=password%>" class="form-control input-lg website-input">
                             </div>
                             <div class="modal-body">
-                                性别：<input name="sex" type="text" value="<%=sex%>" class="form-control input-lg website-input">
+
+                                性别：<%
+                                if(sex!=null)
+                                {
+                                    if(sex.equals("男")||sex.equals("male"))
+                                    {
+                                %>
+
+                                男 <input type="radio" name="sex" value="男" checked>
+                                女<input type="radio" name="sex" value="女">
+                                <%
+                                }else{
+                                %>
+                                男 <input type="radio" name="sex" value="男" >
+                                女 <input type="radio" name="sex" value="女" checked>
+                                <%
+                                    }
+                                }
+                            %>
+
+
                             </div>
                             <div class="modal-body">
                                 年龄：<input name="age" type="text" value="<%=age%>" class="form-control input-lg website-input">
@@ -311,8 +334,9 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <tr>
 
         <td>
-            <a  href="/admin/userManager/">首页</a>&nbsp;第
-            <%                for (int i = 1; i <= pager.getTotalPage(); i++) {
+          <a href="/admin/userManager?ifindex=1">首页</a>
+         第
+            <% for (int i = 1; i <= pager.getTotalPage(); i++) {
             %>
             <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
             <%
@@ -358,10 +382,6 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                     validators: {
                         notEmpty: {
                             message: '手机号不能为空'
-                        },
-                        regexp: {
-                            regexp: "^([0-9]{7})?$",
-                            message: '手机号码格式错误'
                         }
                     }
                 }
@@ -369,11 +389,6 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                     validators: {
                         notEmpty: {
                             message: '账号不能为空'
-                        },
-
-                        regexp: {
-                            regexp: "^([0-9]{7})?$",
-                            message: '账号为7位纯数字'
                         }
                     }
                 },
@@ -404,7 +419,6 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
         bv.validate();
         if(bv.isValid())
         {
-
             $.ajax({
                 type:"post",
                 url:"/admin/addUser",
@@ -412,15 +426,12 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                 success:function(data){
                     $("#span-1").text(data.str);
                     $('#exampleModal').modal('hide')
-
                 }
             })
 
 
         }
-
     });
-
 </script>
 
 

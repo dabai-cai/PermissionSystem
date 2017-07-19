@@ -21,5 +21,6 @@ public interface UserService {
    ArrayList<User> getSearchUser(String key);
    int updateByPrimaryKey(User record);
    ArrayList<User> getAllUser();
+   Pager getSearchPager(String name);
 
 }
