@@ -68,7 +68,7 @@
         </init-param>
     </filter>
     <welcome-file-list>
-        <welcome-file>simple.jsp</welcome-file>
+        <welcome-file>/simple.jsp</welcome-file>
     </welcome-file-list>
 
     <!-- session配置 -->

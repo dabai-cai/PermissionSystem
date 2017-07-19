@@ -20,5 +20,6 @@ public interface UserService {
    void delUserById(int id);
    ArrayList<User> getSearchUser(String key);
    int updateByPrimaryKey(User record);
+   ArrayList<User> getAllUser();
 
 }

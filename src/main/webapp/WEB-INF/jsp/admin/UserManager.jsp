@@ -13,7 +13,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Carousel Template for Bootstrap</title>
+    <title>用户管理</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -28,6 +28,23 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <![endif]-->
 </head>
 <body>
+<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
+    <table>
+        <tr>
+            <td>
+                <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate >
+
+            </td>
+            <td>
+                <button type="submit" class="btn btn-lg btn-primary website-submit">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
+                </button>
+            </td>
+        </tr>
+    </table>
+
+
+</form>
 <div class="container text-center">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -39,14 +56,14 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">用户信息修改</h4>
+                <h4 class="modal-title" id="exampleModalLabel">用户添加</h4>
             </div>
 
             <div class="modal-body">
                 <form id="updateform">
                     <div class="form-group">
-                        <label for="loginname" class="control-label">用户名:</label>
-                        <input type="text" class="form-control" id="loginname" name="username">
+                        <label for="username" class="control-label">用户名:</label>
+                        <input type="text" class="form-control" id="username" name="username">
                     </div>
                     <div class="form-group">
                         <label for="account" class="control-label">账号:</label>
@@ -115,118 +132,10 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 
-<script type='text/javascript'>
-    var form = $('#updateform');
-    $(document).ready(function () {
-
-        form.bootstrapValidator({
-            message: '输入值不合法',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                username: {
-                    message: '用户名不合法',
-                    validators: {
-                        notEmpty: {
-                            message: '用户名不能为空'
-                        },
-                        stringLength: {
-                            min: 3,
-                            max: 30,
-                            message: '请输入3到30个字符'
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
-                            message: '用户名只能由字母、数字、点、下划线和汉字组成 '
-                        }
-                    }
-                }
-                , phone: {
-                    validators: {
-                        notEmpty: {
-                            message: '手机号不能为空'
-                        },
-                        regexp: {
-                            regexp: "^([0-9]{7})?$",
-                            message: '手机号码格式错误'
-                        }
-                    }
-                }
-                ,account: {
-                    validators: {
-                        notEmpty: {
-                            message: '账号不能为空'
-                        },
-
-                        regexp: {
-                            regexp: "^([0-9]{7})?$",
-                            message: '账号为7位纯数字'
-                        }
-                    }
-                },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '*新密码不能为空'
-                        }
-                    }
-                },
-                checkPwd: {
-                    validators: {
-                        notEmpty: {
-                            message: '*确认密码不能为空'
-                        },
-                        identical: {
-                            field: 'password',
-                            message: '*两次输入密码不一致'
-                        }
-                    }
-                }
-            }
-        });
-    });
-    $("#submitBtn").click(function () {
-//进行表单验证
-        var bv = form.data('bootstrapValidator');
-        bv.validate();
-        $.ajax({
-            type:"post",
-            url:"/admin/addUser",
-            data:$("#updateform").serialize(),
-            success:function(data){
-                $("#span-1").text(data.str);
-                $('#exampleModal').modal('hide')
-                $('#addModal').modal.show()
-            }
-        })
-
-    });
-</script>
-
-
-
-
-
-
 
 <button onclick="javascript:window.location.href='/admin/index';"
         class="btn btn-primary btn-lg">返回主页
     <span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <table align="center" class="table">
     <caption>
@@ -402,7 +311,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <tr>
 
         <td>
-            <a href="/admin/userManager/">首页</a>&nbsp;第
+            <a  href="/admin/userManager/">首页</a>&nbsp;第
             <%                for (int i = 1; i <= pager.getTotalPage(); i++) {
             %>
             <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
@@ -415,23 +324,107 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     </tbody>
 
 </table>
-<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/searchUser">
-    <table>
-        <tr>
-            <td>
-                <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate >
 
-            </td>
-            <td>
-                <button type="submit" class="btn btn-lg btn-primary website-submit">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
-                </button>
-            </td>
-        </tr>
-    </table>
+<script type='text/javascript'>
+    var form = $('#updateform');
+    //$(document).ready(function () {
+
+        form.bootstrapValidator({
+            message: '输入值不合法',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: '用户名不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 30,
+                            message: '请输入3到30个字符'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                            message: '用户名只能由字母、数字、点、下划线和汉字组成 '
+                        }
+                    }
+                }
+                , phone: {
+                    validators: {
+                        notEmpty: {
+                            message: '手机号不能为空'
+                        },
+                        regexp: {
+                            regexp: "^([0-9]{7})?$",
+                            message: '手机号码格式错误'
+                        }
+                    }
+                }
+                ,account: {
+                    validators: {
+                        notEmpty: {
+                            message: '账号不能为空'
+                        },
+
+                        regexp: {
+                            regexp: "^([0-9]{7})?$",
+                            message: '账号为7位纯数字'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '*新密码不能为空'
+                        }
+                    }
+                },
+                checkPwd: {
+                    validators: {
+                        notEmpty: {
+                            message: '*确认密码不能为空'
+                        },
+                        identical: {
+                            field: 'password',
+                            message: '*两次输入密码不一致'
+                        }
+                    }
+                }
+            }
+        });
+   // });
+    $("#submitBtn").click(function () {
+//进行表单验证
+        var bv = form.data('bootstrapValidator');
+        bv.validate();
+        if(bv.isValid())
+        {
+
+            $.ajax({
+                type:"post",
+                url:"/admin/addUser",
+                data:$("#updateform").serialize(),
+                success:function(data){
+                    $("#span-1").text(data.str);
+                    $('#exampleModal').modal('hide')
+
+                }
+            })
 
 
-</form>
+        }
+
+    });
+
+</script>
+
 
 </body>
+
+
 </html>

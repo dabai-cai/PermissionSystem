@@ -2,6 +2,7 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
+import cn.scau.hjr.util.ShiroUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,9 +103,10 @@ public class UserController {
 
 
 
-        user.setPassword(password);
+        System.out.println(password);
+        user.setPassword(ShiroUtils.encodeToString(password));//密码加密
         HttpSession session=request.getSession();
-        user=userService.getUser(user);//获取用户信息
+
         if(!userService.loginChk(user))
         {
             return "user/error";
@@ -150,15 +152,6 @@ public class UserController {
         resquest.setAttribute("searchUsers",userList);
         return "/user/index";
     }
-
-    @RequestMapping(value = "/test")
-    public String testHtml()
-    {
-        return "/BackGround/index";
-    }
-
-
-
 
 
 
@@ -258,5 +251,14 @@ public class UserController {
         request.setAttribute("searchUsers",new ArrayList<User>());//防止jsp界面get到空指针
         return "/user/index";
     }
+
+    @RequestMapping(value = "testModel")
+    public String testModel(Model model)
+    {
+        ArrayList<User> users=userService.getAllUser();
+        model.addAttribute("users",users);
+        return "test";
+    }
+
 
 }

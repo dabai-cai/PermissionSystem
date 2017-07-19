@@ -2,6 +2,7 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
+import cn.scau.hjr.util.ShiroUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,22 +40,20 @@ public class AdminController {
     /*
     用户管理
      */
-    @RequestMapping(value = "/addUser",method = RequestMethod.GET)
-    public String addUser()
-    {
-        return "/admin/addUser";
-    }
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public String addUser(HttpServletRequest request)
     {
-
         int account=Integer.parseInt(request.getParameter("account"));
         String password=request.getParameter("password");
         String username=request.getParameter("username");
-
+        password= ShiroUtils.encodeToString(password);
         String sex=request.getParameter("sex");
+
+        System.out.println(request.getParameter("age"));
         int phone=Integer.parseInt(request.getParameter("phone"));
+        System.out.println(phone);
         int age=Integer.parseInt(request.getParameter("age"));
+        System.out.println(age);
         User user=new User();
         user.setAccount(account);
 

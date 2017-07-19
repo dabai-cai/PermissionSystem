@@ -8,6 +8,7 @@ import cn.scau.hjr.service.RolePermissionService;
 import cn.scau.hjr.service.RoleService;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
+import cn.scau.hjr.util.ShiroUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,13 +35,13 @@ public class UserServiceImpl implements UserService {
         User user=userDao.selectByAccountOrUsername(record);
         if(user==null)
         {
+            //record.setPassword(ShiroUtils.encodeToString(user.getPassword()));//加密
             userDao.insert(record);//添加用户
 
             RoleUser roleUser=new RoleUser();
             roleUser.setUserId(record.getUserId());
             roleUser.setRoleId(2);//普通用户id
             roleUserMapper.insert(roleUser);//用户关联角色
-            System.out.println("添加成功");
             return true;
 
         }
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean loginChk(User user) {
+
         User temp=userDao.getUserByAccountAndPassword(user);
 
         if(temp!=null)
@@ -63,17 +65,20 @@ public class UserServiceImpl implements UserService {
     public User getUser(User user) {
         User temp=null;
         temp=userDao.getUserByAccountAndPassword(user);
+        temp.setPassword(ShiroUtils.deCodeToString(temp.getPassword()));
         return temp;
     }
 
     public  User selectByPrimaryKey(Integer userId)
     {
         User user=userDao.selectByPrimaryKey(userId);
+        user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
         return user;
     }
 
     public User selectByAccountOrUsername(User user) {
         User user1=userDao.selectByAccountOrUsername(user);
+        user1.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
         return user1;
     }
 
@@ -94,7 +99,6 @@ public class UserServiceImpl implements UserService {
             int totalPage = 0;
             int totalGuest = 0;
             totalGuest=userDao.getAllUserNumber();
-            System.out.println("总数据数目:"+totalGuest);
             totalPage = (totalGuest - 1) / pagesize + 1;//总页数
 
         pager.setPageSize(pagesize);
@@ -108,6 +112,10 @@ public class UserServiceImpl implements UserService {
 
             List userList = new ArrayList<User>();//用来存储留言数据的list
             userList=userDao.getUserListByLimitNumber(start,pagesize);
+            for(User user:(ArrayList<User>)userList)
+            {
+                user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
+            }
             pager.setpagerData(userList);
 
             /*
@@ -127,6 +135,10 @@ public class UserServiceImpl implements UserService {
     public ArrayList<User> getSearchUser(String key) {
         ArrayList<User> userList=new ArrayList<User>();
         userList=userDao.searchUser(key);
+        for(User user:userList)
+        {
+            user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
+        }
         return userList;
 
     }
@@ -135,6 +147,12 @@ public class UserServiceImpl implements UserService {
     public int updateByPrimaryKey(User record) {
         userDao.updateByPrimaryKey(record);
         return 0;
+    }
+
+    @Override
+    public ArrayList<User> getAllUser() {
+
+        return userDao.getAllUser();
     }
 
 
