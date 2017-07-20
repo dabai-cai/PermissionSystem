@@ -129,11 +129,19 @@ public class AdminController {
     public void delUser(HttpServletRequest request, HttpServletResponse response)
     {
         int id=Integer.parseInt(request.getParameter("id"));
+        int pageindex=1;
+        try{
+            pageindex=Integer.parseInt(request.getParameter("pageindex"));
+        }catch (Exception e)
+        {
+            pageindex=1;
+        }
         userService.delUserById(id);
         roleUserService.delByUserId(id);
         System.out.println("删除成功"+id);
         try{
-            response.sendRedirect("/admin/userManager");
+            System.out.println("当前页"+pageindex);
+            response.sendRedirect("/admin/userManager?pageindex="+pageindex);
         }catch (Exception ex)
         {
 
@@ -142,9 +150,16 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/updateUser")
-    public String userUpdate(HttpServletRequest request)
+    public void   userUpdate(HttpServletRequest request,HttpServletResponse response)
     {
         int id=Integer.parseInt(request.getParameter("id"));
+        int pageindex=1;
+        try{
+            pageindex=Integer.parseInt(request.getParameter("pageindex"));
+        }catch (Exception e)
+        {
+            pageindex=1;
+        }
         User user0=new User();
         user0.setUserId(id);
         String username=request.getParameter("username");
@@ -158,21 +173,23 @@ public class AdminController {
         user0.setPhone(phone);
         user0.setPassword(password);
         userService.updateByPrimaryKey(user0);
-        User user=userService.selectByPrimaryKey(id);
+        System.out.println("修改");
+        /*
         Pager pager=null;
         pager=userService.getUserPager();
         HttpSession session=request.getSession();
         session.setAttribute("pager",pager);
         System.out.println("pager:"+pager);
-        return "/admin/UserManager";
-    }
-    @RequestMapping(value="searchUser")
-    public String searchUser(HttpServletRequest resquest)
-    {
-        String key=resquest.getParameter("searchUser");
-        ArrayList<User> userList=userService.getSearchUser(key);
-        resquest.setAttribute("searchUsers",userList);
-        return "/admin/SearchUser";
+        */
+        try{
+            response.sendRedirect(request.getContextPath()+"/admin/userManager?pageindex="+pageindex);
+            System.out.println("可以！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
+        }catch (Exception e)
+        {
+            System.out.println("不行阿斯蒂芬是发送到 发");
+        }
+
+       // return "/admin/UserManager";
     }
 
     @RequestMapping(value = "/index")

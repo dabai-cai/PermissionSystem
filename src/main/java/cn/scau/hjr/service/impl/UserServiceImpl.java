@@ -108,7 +108,6 @@ public class UserServiceImpl implements UserService {
 
             //只取当前页面的留言，并存到List中
 
-
             List userList = new ArrayList<User>();//用来存储留言数据的list
             userList=userDao.getUserListByLimitNumber(start,pagesize);
             for(User user:(ArrayList<User>)userList)
@@ -130,17 +129,6 @@ public class UserServiceImpl implements UserService {
         userDao.deleteByPrimaryKey(id);
     }
 
-    @Override
-    public ArrayList<User> getSearchUser(String key) {
-        ArrayList<User> userList=new ArrayList<User>();
-        userList=userDao.searchUser(key);
-        for(User user:userList)
-        {
-           // user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
-        }
-        return userList;
-
-    }
 
     @Override
     public int updateByPrimaryKey(User record) {
@@ -158,77 +146,29 @@ public class UserServiceImpl implements UserService {
     public Pager getSearchPager(String name) {
         Pager pager = new Pager();//建立分页对象
 
-
         int currentPage = SystemData.getPageOffset();//当前页
         Integer _pagesize = SystemData.getPageSize();
         int pagesize = _pagesize.intValue();//页面大小
         int start=currentPage * pagesize - pagesize;
-
+        ArrayList<User> userList=new ArrayList<User>();
+        userList=userDao.searchUser(name,start,pagesize);
             /*
             得到总页数和总留言数和用户数据
              */
         int totalPage = 0;
         int totalGuest = 0;
-        List<User> userList = new ArrayList<User>();//用来存储留言数据的list
-        userList=userDao.searchUser(name);
-        ArrayList<User> searchUserList=new ArrayList<User>();//保存当前页的数据
-        if(userList.size()!=0)
-        {
-            totalGuest=userList.size();
-            totalPage = (totalGuest - 1) / pagesize + 1;//总页数
-
+        totalGuest=userDao.getSearchUserCount(name);
+        totalPage = (totalGuest - 1) / pagesize + 1;//总页数
             pager.setPageSize(pagesize);
             pager.setPageOffset(SystemData.getPageOffset());
             pager.setTotalPage(totalPage);
             pager.setTotalGuest(totalGuest);
             pager.setStart(start);
-
+            pager.setpagerData(userList);
             //只取当前页面的留言，并存到List中
-
-
-            int ifOutIndex=start*pagesize+pagesize;
-            if(ifOutIndex>=userList.size())
-            {
-                for(int i=start;i<userList.size();i++)
-                {
-                    User user=userList.get(i);
-                    searchUserList.add(user);
-                }
-            }
-            else{
-                for(int i=start;i<start+pagesize;i++)
-                {
-                    User user=userList.get(i);
-                    searchUserList.add(user);
-                }
-
-            }
-
-            for(User user:searchUserList)
-            {
-           //     user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));//解密
-            }
-            pager.setpagerData(searchUserList);
-
-            /*
-            配置pager
-             */
-        }
-        else{//没有数据
-            totalGuest=0;
-            totalPage = 0;
-            pager.setPageSize(pagesize);
-            pager.setPageOffset(SystemData.getPageOffset());
-            pager.setTotalPage(totalPage);
-            pager.setTotalGuest(totalGuest);
-            pager.setStart(start);
-
-            pager.setpagerData(searchUserList);
-        }
-
-
         return pager;
     }
+
 
 
 }

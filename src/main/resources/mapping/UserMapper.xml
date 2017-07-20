@@ -73,7 +73,13 @@
   </select>
 
   <!--模糊查找用户    -->
-  <select id="searchUser" parameterType="java.lang.String" resultMap="BaseResultMap" >
-    select * from user where username LIKE '%${value}%'
+  <select id="searchUser"  resultMap="BaseResultMap" >
+    select * from user  where username LIKE CONCAT(CONCAT('%', #{0}), '%')  ORDER by user_id DESC limit #{1},#{2}
   </select>
+
+  <!---  模糊查找用户的个数   int getSearchUserCount(String key)-->
+  <select id="getSearchUserCount" parameterType="java.lang.String"  resultType="java.lang.Integer">
+    select count(*) from user   where username LIKE '%${value}%'
+  </select>
+
 </mapper>

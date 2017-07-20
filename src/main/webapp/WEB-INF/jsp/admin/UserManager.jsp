@@ -166,6 +166,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <%
         Pager pager =(Pager) session.getAttribute("pager");
         ArrayList userList = (ArrayList) pager.getpagerData();
+        int pageindex=pager.getPageOffset();
         for (int i = 0; i < userList.size(); i++) {
             User user = (User) userList.get(i);
 
@@ -225,7 +226,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                             </h4>
                         </div>
 
-                        <form method="post" action="/admin/updateUser?id=<%=user.getUserId() %>" id="userform">
+                        <form method="post" action="/admin/updateUser?id=<%=user.getUserId()%>&pageindex=<%=pageindex%>" id="userform">
                             <div class="modal-body">
                                 用户名：<input name="username" type="text" value="<%=name%>" class="form-control input-lg website-input">
                             </div>
@@ -250,7 +251,12 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                                 女 <input type="radio" name="sex" value="女" checked>
                                 <%
                                     }
-                                }
+                                }else{
+                                    %>
+                                男 <input type="radio" name="sex" value="男" >
+                                女 <input type="radio" name="sex" value="女" checked>
+                                <%
+                                    }
                             %>
 
 
@@ -316,7 +322,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             </div>
 
 
-            <button class="btn btn-primary btn-lg"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>';"
+            <button class="btn btn-primary btn-lg"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>&pageindex=<%=pageindex%>';"
                     >删除
                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
@@ -337,8 +343,19 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
           <a href="/admin/userManager?ifindex=1">首页</a>
          第
             <% for (int i = 1; i <= pager.getTotalPage(); i++) {
+                if(i!=pageindex)
+                {
+                    %>
+            [<a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>]&nbsp;
+            <%
+                }
+                else{
+                    %>
+            [<%=i%>]
+            <%
+                }
             %>
-            <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>&nbsp;
+
             <%
                 }
             %>页

@@ -136,6 +136,10 @@ public class UserController {
         return "user/index";
     }
 
+
+
+    /*
+    等下再来做，得到pager
     @RequestMapping(value="searchUser")
     public String searchUser(HttpServletRequest resquest)
     {
@@ -145,7 +149,7 @@ public class UserController {
         return "/user/index";
     }
 
-
+   */
 
 
 
