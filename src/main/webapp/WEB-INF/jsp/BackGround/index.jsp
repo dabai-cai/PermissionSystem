@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">  
@@ -43,27 +44,29 @@
           <div class="nav-collapse">
             <ul class="nav">
 			<li><a href="/admin/index">首页</a></li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-					<li><a href="/admin/addUser">新建用户</a></li>
-					<li class="divider"></li>
-					<li><a href="/admin/userManager">管理用户</a></li>
-				</ul>
-			  </li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-					<li><a href="/admin/addRole">新建角色</a></li>
-					<li class="divider"></li>
-					<li><a href="/admin/roleManager">管理角色</a></li>
-				</ul>
-			  </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/admin/addPermission">新建权限</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/admin/PermissionManager">权限管理</a></li>
-                </ul>
-                </li>
+                <shiro:hasRole name="root">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin/addUser">新建用户</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/admin/userManager">管理用户</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin/addRole">新建角色</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/admin/roleManager">管理角色</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin/addPermission">新建权限</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/admin/PermissionManager">权限管理</a></li>
+                        </ul>
+                    </li>
+                </shiro:hasRole>
             </ul>
           </div>
         </div>
@@ -76,11 +79,13 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> 管理</li>
-              <li><a href="/admin/userManager">用户</a></li>
-              <li><a href="roles.html">角色</a></li>
-              <li class="nav-header"><i class="icon-signal"></i> 统计</li>
-              <li class="active"><a href="stats.html">通用</a></li>
-              <li><a href="user-stats.html">用户</a></li>
+                <shiro:hasRole name="root">
+                    <li><a href="/admin/userManager">用户</a></li>
+                    <li><a href="roles.html">角色</a></li>
+                    <li class="nav-header"><i class="icon-signal"></i> 统计</li>
+                    <li class="active"><a href="stats.html">通用</a></li>
+                    <li><a href="user-stats.html">用户</a></li>
+                </shiro:hasRole>
               <li><a href="visitor-stats.html">访问者</a></li>
               <li class="nav-header"><i class="icon-user"></i> 资料</li>
               <li><a href="my-profile.html">我的资料</a></li>

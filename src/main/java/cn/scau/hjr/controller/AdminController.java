@@ -2,8 +2,9 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -82,40 +83,53 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/userManager",method = RequestMethod.GET)
-    public String userManager(HttpServletRequest request,HttpSession session)
+    public String userManager(HttpServletRequest request,HttpSession session,HttpServletResponse response)
     {
-        int ifindex=0;
-
+        Subject subject= SecurityUtils.getSubject();
         Pager pager=null;
-        String key=request.getParameter("searchUser");
-        if(key!=null)session.setAttribute("key",key);
+        if(subject.hasRole("root"))
+        {
+            int ifindex=0;
+            String key=request.getParameter("searchUser");
+            if(key!=null)session.setAttribute("key",key);
 
-        try{
-             ifindex=Integer.parseInt(request.getParameter("ifindex"));
-        }catch (Exception e)
-        {
-            ifindex=0;
-        }
-        if(ifindex==1)
-        {
-            session.setAttribute("searchbool",new Boolean(false));
-            session.setAttribute("key",null);
-            pager=userService.getUserPager();
+            try{
+                ifindex=Integer.parseInt(request.getParameter("ifindex"));
+            }catch (Exception e)
+            {
+                ifindex=0;
+            }
+            if(ifindex==1)
+            {
+                session.setAttribute("searchbool",new Boolean(false));
+                session.setAttribute("key",null);
+                pager=userService.getUserPager();
+            }
+            else{
+                String searchName=(String)session.getAttribute("key");
+                System.out.println("查询名字:"+key);
+                if(searchName==null)
+                {
+                    pager=userService.getUserPager();
+                }
+                else{
+                    pager=userService.getSearchPager(searchName);
+                }
+            }
+
+            session.setAttribute("pager",pager);
+            return "/admin/UserManager";
         }
         else{
-          String searchName=(String)session.getAttribute("key");
-            System.out.println("查询名字:"+key);
-          if(searchName==null)
-          {
-              pager=userService.getUserPager();
-          }
-          else{
-              pager=userService.getSearchPager(searchName);
-          }
-        }
+            try{
+                response.sendRedirect("/user/index");
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-        session.setAttribute("pager",pager);
-        return "/admin/UserManager";
+        }
+      return "/user/error";
     }
 
     @RequestMapping(value = "/userManager",method = RequestMethod.POST)

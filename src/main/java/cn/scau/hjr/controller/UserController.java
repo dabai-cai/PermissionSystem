@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
@@ -91,7 +92,7 @@ public class UserController {
 
 
     @RequestMapping(value={"/login"},method = RequestMethod.POST)
-    public String userLogin(HttpServletRequest request)
+    public String userLogin(HttpServletRequest request, HttpServletResponse response)
     {
         String password=request.getParameter("password");
         String account=request.getParameter("account");
@@ -99,12 +100,12 @@ public class UserController {
         UsernamePasswordToken token=new UsernamePasswordToken(account, password);
         try{
             subject.login(token);
-            return "/admin/test";
+            response.sendRedirect("/admin/index");
         }catch(Exception e){
             e.printStackTrace();
             return "/user/error";
         }
-
+      return "/user/error";
     }
 
     //用户主页
