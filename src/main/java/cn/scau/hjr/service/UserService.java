@@ -5,6 +5,7 @@ import cn.scau.hjr.model.User;
 import cn.scau.hjr.model.User;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Zhangxq on 2016/7/15.
@@ -22,4 +23,7 @@ public interface UserService {
    int updateByPrimaryKey(User record);
    ArrayList<User> getAllUser();
    Pager getSearchPager(String name);
+   Set<String> getUserRoles(String account);
+   Set<String> getUserPermissions(String account);
+   User getUserByAccount(String account);
 }

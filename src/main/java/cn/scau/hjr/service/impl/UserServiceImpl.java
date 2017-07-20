@@ -1,7 +1,6 @@
 package cn.scau.hjr.service.impl;
 
-import cn.scau.hjr.dao.RoleUserMapper;
-import cn.scau.hjr.dao.UserMapper;
+import cn.scau.hjr.dao.*;
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.PermissionService;
 import cn.scau.hjr.service.RolePermissionService;
@@ -13,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Zhangxq on 2016/7/15.
@@ -27,6 +28,12 @@ public class UserServiceImpl implements UserService {
     private UserMapper userDao;
     @Resource(name="roleUserDao")
     private RoleUserMapper roleUserMapper;
+    @Resource
+    private RoleMapper roleMapper;
+    @Resource
+    private PermissionMapper permissionMapper;
+    @Resource
+    private RolePermissionMapper rolePermissionMapper;
 
 
     public boolean addUser(User record) {
@@ -169,6 +176,43 @@ public class UserServiceImpl implements UserService {
         return pager;
     }
 
+    @Override
+    public Set<String> getUserRoles(String account) {
+        User user=userDao.getUserByAccount(account);
+        ArrayList<RoleUser> roleUsers=roleUserMapper.selectByUserId(user.getUserId());
+        Set<String> roles=new HashSet<String>();
+        for(RoleUser roleUser:roleUsers)
+        {
+            Role role=roleMapper.selectByPrimaryKey(roleUser.getRoleId());
+            roles.add(role.getRolename());
+        }
+        return roles;
+    }
+
+    @Override
+    public Set<String> getUserPermissions(String account) {
+        Set<String> permissions=new HashSet<String>();
+        User user=userDao.getUserByAccount(account);
+        ArrayList<RoleUser> roleUsers=roleUserMapper.selectByUserId(user.getUserId());
+        for(RoleUser roleUser:roleUsers)
+        {
+            Role role=roleMapper.selectByPrimaryKey(roleUser.getRoleId());
+            List<RolePermission> RolePermissions=rolePermissionMapper.selectByRoleId(role.getRoleId());
+            for(RolePermission rolePermission:RolePermissions)
+            {
+                Permission permission=permissionMapper.selectByPrimaryKey(rolePermission.getPermissionId());
+                permissions.add(permission.getPermission());
+            }
+        }
+        return permissions;
+    }
+
+    @Override
+    public User getUserByAccount(String account) {
+        User user=new User();
+        user=userDao.getUserByAccount(account);
+        return user;
+    }
 
 
 }

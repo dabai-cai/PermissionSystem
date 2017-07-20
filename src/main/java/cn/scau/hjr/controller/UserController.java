@@ -3,6 +3,10 @@ package cn.scau.hjr.controller;
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,43 +94,17 @@ public class UserController {
     public String userLogin(HttpServletRequest request)
     {
         String password=request.getParameter("password");
-        User user=new User();
-            String account=request.getParameter("account");
-            user.setAccount(account);
-            user.setPassword(password);
-            System.out.println("账号:"+account);
-          System.out.println("密码:"+password);
-     //   user.setPassword(//ShiroUtils.encodeToString(password));//密码加密
-        HttpSession session=request.getSession();
-
-        if(!userService.loginChk(user))
-        {
-            return "user/error";
+        String account=request.getParameter("account");
+        Subject subject= SecurityUtils.getSubject();
+        UsernamePasswordToken token=new UsernamePasswordToken(account, password);
+        try{
+            subject.login(token);
+            return "/admin/test";
+        }catch(Exception e){
+            e.printStackTrace();
+            return "/user/error";
         }
-        else{
-            //判断是否为管理员
-            Role role=this.roleService.getRoleByRolename("root");
-            RoleUser roleUser=null;
-            RoleUser temp=new RoleUser();
-            user=userService.getUser(user);//获取用户信息
-            temp.setRoleId(role.getRoleId());
-            temp.setUserId(user.getUserId());
-            roleUser=roleUserService.selectByUserIdAndRoleId(temp);
-            if(roleUser!=null)
-            {
-                //后台管理界面
 
-                session.setAttribute("rootuser",user);//管理员布置到session
-                return "/BackGround/index";
-            }
-            else{
-                //普通用户
-                session.setAttribute("user",user);
-                ArrayList<User> temp1=new ArrayList<User>();
-                request.setAttribute("searchUsers",temp1);
-                return "user/index";
-            }
-        }
     }
 
     //用户主页

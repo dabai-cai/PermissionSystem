@@ -82,4 +82,8 @@
     select count(*) from user   where username LIKE '%${value}%'
   </select>
 
+  <!--  User getUserByAccount(String account);-->
+  <select id="getUserByAccount" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select * from user  where account = #{0}
+  </select>
 </mapper>
