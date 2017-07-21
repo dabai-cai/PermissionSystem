@@ -52,7 +52,7 @@ public class PermissionServiceImpl implements PermissionService {
         int currentPage = SystemData.getPageOffset();//当前页
         Integer _pagesize = SystemData.getPageSize();
         int pagesize = _pagesize.intValue();//页面大小
-        int start=currentPage * pagesize - pagesize+1;
+        int start=currentPage * pagesize - pagesize;
 
             /*
             得到总页数和总留言数
@@ -79,5 +79,11 @@ public class PermissionServiceImpl implements PermissionService {
     public ArrayList<Permission> getAllPermission() {
         ArrayList<Permission> permissions=permissionMapper.getAllPermission();
         return permissions;
+    }
+
+    @Override
+    public int updateByPrimaryKey(Permission record) {
+        permissionMapper.updateByPrimaryKey(record);
+        return 0;
     }
 }

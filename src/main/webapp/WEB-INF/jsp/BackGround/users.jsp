@@ -81,7 +81,7 @@
               <li class="nav-header"><i class="icon-user"></i>个人信息</li>
               <li><a href="my-profile.jsp">我的资料</a></li>
               <li><a href="#">设置</a></li>
-			  <li><a href="#">退出</a></li>
+			  <li><a href="/">退出</a></li>
             </ul>
           </div>
         </div>

@@ -2,6 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page import="cn.scau.hjr.model.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -32,7 +33,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="my-profile.jsp">Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">登出</a></li>
+                    <li><a href="/">登出</a></li>
                 </ul>
             </div>
             <div class="nav-collapse">
@@ -78,9 +79,9 @@
                     <li><a href="user-stats.html">用户</a></li>
                     <li><a href="visitor-stats.html">游客</a></li>
                     <li class="nav-header"><i class="icon-user"></i> Profile</li>
-                    <li><a href="/admin/profile"></a>个人信息</li>
+                    <li><a href="/admin/profile">个人信息</a></li>
                     <li><a href="#">设置</a></li>
-                    <li><a href="#">登出</a></li>
+                    <li><a href="/">登出</a></li>
                 </ul>
             </div>
         </div>
@@ -113,11 +114,16 @@
                                     </h4>
                                 </div>
                                 <form method="post" action="/admin/addPermission">
+
                                     <div class="modal-body">
-                                        权利名：<input name="permission" type="text" placeholder="教师入口" class="form-control input-lg website-input">
-                                    </div>
-                                    <div>
-                                        url:<input name="url" type="text" placeholder="/admin/teacher">
+                                        <div class="form-group">
+                                            <label for="permission" class="control-label">权利名：</label>
+                                            <input type="text" class="form-control" id="permission" name="permission" placeholder="教师入口" >
+                                        </div>
+                                        <div   class="form-group">
+                                            <label for="url" class="control-label">Url：</label>
+                                            <input name="url" type="text" id="url" placeholder="/admin/teacher">
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -151,55 +157,90 @@
                             </th>
                         </tr>
                     </thread>
+<!---   开启model新代码-->
 
 
-                    <%
-                        Pager pager =(Pager) request.getAttribute("pager");
-                        ArrayList<Permission> permissions=(ArrayList<Permission>)pager.getpagerData();                    int pageindex=pager.getPageOffset();
-                        for (int i = 0; i < permissions.size(); i++) {
-                            Permission p  =  permissions.get(i);
-                            String name = p.getPermission();
-                            int id=p.getPermissionId();
-                            String url=p.getUrl();
+                    <jstl:forEach var="permission" items="${pager.getpagerData()}" varStatus="status">
+                        <tbody>
+                        <tr>
+                            <td>
+                                 ${status.count}
+                            </td>
+                            <td >
+                                ${permission.permissionId}
+                            </td>
+                            <td >
+                                ${permission.permission}
+                            </td>
+                            <td>
+                                ${permission.url}
+                            </td>
 
-                    %>
-                    <tr >
+                            <td>
+
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myMod${status.count}">
+                                    修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                                <!-- 模态框（Modal） -->
+                                <div class="modal fade" id="myMod${status.count}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel${status.count}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel${status.count}">
+                                                    修改权限信息
+                                                </h4>
+                                            </div>
+
+                                            <form method="post" action="/admin/updatePermission?id=${permission.permissionId}&pageindex=${pager.pageOffset}" >
+                                                <div class="modal-body">
+                                                    权限名：<input name="permissionName" type="text" value="${permission.permission}" class="form-control input-lg website-input">
+                                                </div>
+                                                <div class="modal-body">
+                                                    权限Url：<input name="url" type="text" value="${permission.url}" class="form-control input-lg website-input">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        修改
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                        </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                                    </div><!-- /.modal -->
+                                </div>
+                                <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delPermission?id=${permission.permissionId}&pageindex=${pager.pageOffset}';"
+                                >删除
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                            </td>
+                        </tr>
+                        <tr>
+
+                        </tr>
+                        </tbody>
+                    </jstl:forEach>
+                    <!-- 分页 --->
+                    <tr>
                         <td>
-                            <%=i%>
+                            <ul class="pagination">
+                                <li>
+                                    <a href="/admin/PermissionManager/">首页</a>
+                                </li>
+                                <jstl:forEach var="i" begin="1" end="${pager.totalPage}">
+                                    <li>
+                                        <a href="/admin/PermissionManager?pageindex=${i}">${i}</a>
+                                    </li>
+                                </jstl:forEach>
+
+                            </ul>
                         </td>
-                        <td >
-                            <%=id%>
-                        </td>
-                        <td >
-                            <%=name%>
-                        </td>
-                        <td>
-                         <%=url%>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delPermission?id=<%=p.getPermissionId()%>&pageindex=<%=pageindex%>';"
-                            >删除
-                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
-                        </td>
+
                     </tr>
-                    <%
-                        }
-                    %>
-                    <ul class="pagination">
-                        <li>
-                            <a href="/admin/PermissionManager/">首页</a>
-                        </li>
-                        <%       for (int i = 1; i <= pager.getTotalPage(); i++) {
-                        %>
-                        <li>
-                            <a href="/admin/PermissionManager?pageindex=<%=i%>"><%=i%></a>
-                        </li>
-                        <%
-                            }
-                        %>
-                    </ul>
-
-
+                   </tbody>
                 </table>
 
                 <!--- 整合结束 -->

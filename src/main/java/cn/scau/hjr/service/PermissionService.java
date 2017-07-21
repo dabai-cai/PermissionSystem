@@ -15,4 +15,5 @@ public interface PermissionService {
     Permission selectByPrimaryKey(Integer permissionId);
     Pager getPermissionPager();
     ArrayList<Permission> getAllPermission();
+    int updateByPrimaryKey(Permission record);
 }

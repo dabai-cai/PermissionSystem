@@ -32,7 +32,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="my-profile.jsp">Profile</a></li>
+			  <li> <a href="#">个人资料</a>   </li>
               <li class="divider"></li>
               <li><a href="/user/login">登出</a></li>
             </ul>
@@ -82,7 +82,7 @@
               <li class="nav-header"><i class="icon-user"></i> Profile</li>
               <li><a href="/admin/profile"></a>个人信息</li>
               <li><a href="#">设置</a></li>
-			  <li><a href="/user/login">登出</a></li>
+			  <li><a href="/">登出</a></li>
             </ul>
           </div>
         </div>
@@ -92,8 +92,6 @@
 				<h1>角色 <small>角色管理</small></h1>
 			</div>
 	       <!--- 整合开始   -->
-
-
 
 			  <table class="table table-bordered">
 				  <caption>

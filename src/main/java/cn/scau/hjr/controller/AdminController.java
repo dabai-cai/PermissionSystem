@@ -2,11 +2,13 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
+import cn.scau.hjr.util.shiroUtil;
 import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -119,9 +121,11 @@ public class AdminController {
             pageindex=1;
         }
         User user0=new User();
+        User temp=userService.selectByPrimaryKey(id);//为了获取账号来加密密码
         user0.setUserId(id);
         String username=request.getParameter("username");
         String password=request.getParameter("password");
+        password= shiroUtil.encode(password,temp.getAccount());
         int age=Integer.parseInt(request.getParameter("age"));
         String phone=request.getParameter("phone");
         String sex=request.getParameter("sex");
@@ -407,6 +411,7 @@ public class AdminController {
     /*
     权限管理
      */
+    //添加权限
     @RequestMapping(value = "/addPermission")
     public void addPermission(HttpServletRequest request,HttpSession session,HttpServletResponse response)
     {
@@ -417,16 +422,17 @@ public class AdminController {
         permission.setUrl(url);
         permissionService.addPermission(permission);
         try {
-            response.sendRedirect("admin/PermissionManager");
+            response.sendRedirect("/admin/PermissionManager");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    //获取权限信息
     @RequestMapping(value = "/PermissionManager",method = RequestMethod.GET)
-    public String PermissionManager(HttpServletRequest request)
+    public String PermissionManager(HttpServletRequest request,Model model)
     {
         Pager pager=permissionService.getPermissionPager();
-        request.setAttribute("pager",pager);
+        model.addAttribute("pager",pager);
         return "/BackGround/permissions";
     }
 
@@ -443,6 +449,26 @@ public class AdminController {
         } catch (IOException e) {
 
 e.printStackTrace();
+        }
+    }
+    //更新权限
+    @RequestMapping(value = "/updatePermission")
+    public void updatePermission(HttpServletRequest request,HttpServletResponse response)
+    {
+        int id=Integer.parseInt(request.getParameter("id"));
+        String permissionName=request.getParameter("permissionName");
+        String url=request.getParameter("url");
+        Permission permission=new Permission();
+        permission.setUrl(url);
+        permission.setPermission(permissionName);
+        permission.setPermissionId(id);
+        permissionService.updateByPrimaryKey(permission);
+        int pageindex=Integer.parseInt(request.getParameter("pageindex"));
+        try{
+            response.sendRedirect("/admin/PermissionManager?pageindex="+pageindex);
+        }catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 

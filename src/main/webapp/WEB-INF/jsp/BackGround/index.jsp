@@ -49,13 +49,31 @@
                 <shiro:hasRole name="老师">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">老师 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/admin/addUser">录入学生</a></li>
+                            <li><a href="#">录入学生</a></li>
                             <li class="divider"></li>
-                            <li><a href="/admin/users">学生管理</a></li>
+                            <li><a href="#">学生管理</a></li>
+                        </ul>
+                    </li>
+                </shiro:hasRole>
+                <shiro:hasRole name="学生">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">学生 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">校历</a></li>
                         </ul>
                     </li>
                 </shiro:hasRole>
                 <shiro:hasRole name="root">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">管理员入口 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">用户管理</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">角色管理</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">权限管理</a></li>
+                        </ul>
+                    </li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="/admin/addUser">新建用户</a></li>
@@ -101,7 +119,7 @@
               <li class="nav-header"><i class="icon-user"></i> 资料</li>
               <li><a href="my-profile.jsp">我的资料</a></li>
               <li><a href="#">设置</a></li>
-			  <li><a href="#">退出</a></li> 
+			  <li><a href="/">退出</a></li>
             </ul>
           </div>
         </div>
