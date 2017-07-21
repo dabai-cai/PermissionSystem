@@ -2,6 +2,7 @@ package cn.scau.hjr.controller;
 
 import cn.scau.hjr.model.*;
 import cn.scau.hjr.service.*;
+import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -82,63 +83,6 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "/userManager",method = RequestMethod.GET)
-    public String userManager(HttpServletRequest request,HttpSession session,HttpServletResponse response)
-    {
-        Subject subject= SecurityUtils.getSubject();
-        Pager pager=null;
-        if(subject.hasRole("root"))
-        {
-            int ifindex=0;
-            String key=request.getParameter("searchUser");
-            if(key!=null)session.setAttribute("key",key);
-
-            try{
-                ifindex=Integer.parseInt(request.getParameter("ifindex"));
-            }catch (Exception e)
-            {
-                ifindex=0;
-            }
-            if(ifindex==1)
-            {
-                session.setAttribute("searchbool",new Boolean(false));
-                session.setAttribute("key",null);
-                pager=userService.getUserPager();
-            }
-            else{
-                String searchName=(String)session.getAttribute("key");
-                System.out.println("查询名字:"+key);
-                if(searchName==null)
-                {
-                    pager=userService.getUserPager();
-                }
-                else{
-                    pager=userService.getSearchPager(searchName);
-                }
-            }
-
-            session.setAttribute("pager",pager);
-            return "/admin/UserManager";
-        }
-        else{
-            try{
-                response.sendRedirect("/user/index");
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-        }
-      return "/user/error";
-    }
-
-    @RequestMapping(value = "/userManager",method = RequestMethod.POST)
-    public String userManager()
-    {
-        return "/admin/UserManager";
-    }
-
-
     @RequestMapping(value = "/delUser")
     public void delUser(HttpServletRequest request, HttpServletResponse response)
     {
@@ -155,7 +99,7 @@ public class AdminController {
         System.out.println("删除成功"+id);
         try{
             System.out.println("当前页"+pageindex);
-            response.sendRedirect("/admin/userManager?pageindex="+pageindex);
+            response.sendRedirect("/admin/users?pageindex="+pageindex);
         }catch (Exception ex)
         {
 
@@ -196,7 +140,7 @@ public class AdminController {
         System.out.println("pager:"+pager);
         */
         try{
-            response.sendRedirect(request.getContextPath()+"/admin/userManager?pageindex="+pageindex);
+            response.sendRedirect(request.getContextPath()+"/admin/users?pageindex="+pageindex);
             System.out.println("可以！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
         }catch (Exception e)
         {
@@ -249,7 +193,7 @@ public class AdminController {
         roleUser.setRoleId(roleId);
         roleUser.setUserId(userId);
         roleUserService.insert(roleUser);
-        return "/admin/UserManager";
+        return "/BackGround/users";
     }
     //删除用户角色
     @RequestMapping(value = "/roledelUser")
@@ -261,7 +205,7 @@ public class AdminController {
         roleUser.setRoleId(roleId);
         roleUser.setUserId(userId);
         roleUserService.delByRoleIdAndUserId(roleId,userId);
-        return "/admin/UserManager";
+        return "/BackGround/users";
     }
 
     //给角色分配权利
@@ -274,7 +218,7 @@ public class AdminController {
         rolePermission.setPermissionId(permissionId);
         rolePermission.setRoleId(roleId);
         rolePermissionService.insert(rolePermission);
-        return "/admin/RoleManager";
+        return "/BackGround/roles";
     }
 
     //删除角色的权利
@@ -288,7 +232,7 @@ public class AdminController {
         rolePermission.setRoleId(roleId);
         rolePermissionService.delByRoleIdAndPermissionId(rolePermission);
 
-        return "/admin/RoleManager";
+        return "/BackGround/roles";
     }
 
     /*
@@ -302,15 +246,18 @@ public class AdminController {
     @RequestMapping(value = "/addRole",method = RequestMethod.POST)
     public void addRole(HttpServletRequest request,HttpServletResponse response) throws IOException {
         try{
-            String rolename= (String) request.getParameter("role");
+            String rolename= (String) request.getParameter("rolename");
+            String describe=(String )request.getAttribute("roledescribe\t");
             Role role=new Role();
             role.setRolename(rolename);
+            role.setAboutRole(describe);
             roleService.addRole(role);
-            response.sendRedirect("/admin/roleManager");
+            response.sendRedirect("/admin/roles");
         }
         catch (Exception ex)
         {
-
+            ex.printStackTrace();
+            System.out.println("角色添加出错");
         }
     }
     @RequestMapping(value = "/delRole")
@@ -322,9 +269,31 @@ public class AdminController {
             roleUserService.delByRoleId(id);
             roleService.delRoleById(id);
             System.out.println("删除成功");
-            response.sendRedirect("/admin/roleManager");
+            response.sendRedirect("/admin/roles");
         } catch (IOException e) {
             System.out.println("删除失败");
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/updateRole")
+    public void updateRole(HttpServletRequest request,HttpServletResponse response)
+    {
+        int pageindex=Integer.parseInt(request.getParameter("pageindex"));
+        int id=Integer.parseInt(request.getParameter("id"));
+        String rolename=request.getParameter("rolename");
+        String describe=request.getParameter("describe");
+        Role role=new Role();
+        role.setAboutRole(describe);
+        role.setRolename(rolename);
+        role.setRoleId(id);
+        System.out.println(rolename);
+        System.out.println(describe);
+        System.out.println(id);
+        roleService.updateRole(role);
+        try {
+            response.sendRedirect("/admin/roles?pageindex="+pageindex);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -335,20 +304,20 @@ public class AdminController {
     /*
     角色管理界面
      */
-    @RequestMapping(value = "/roleManager",method = RequestMethod.GET)
+    @RequestMapping(value = "/roles",method = RequestMethod.GET)
     public String roleManager(HttpServletRequest request)
     {
         Pager pager=null;
         pager=roleService.getRolePager();
         HttpSession session=request.getSession();
         session.setAttribute("pager",pager);
-        return "/admin/RoleManager";
+        return "/BackGround/roles";
     }
 
-    @RequestMapping(value = "/roleManager",method = RequestMethod.POST)
+    @RequestMapping(value = "/roles",method = RequestMethod.POST)
     public String roleManager()
     {
-        return "/admin/RoleManager";
+        return "/BackGround/roles";
     }
 
 
@@ -439,33 +408,117 @@ public class AdminController {
     权限管理
      */
     @RequestMapping(value = "/addPermission")
-    public String addPermission(HttpServletRequest request,HttpSession session)
+    public void addPermission(HttpServletRequest request,HttpSession session,HttpServletResponse response)
     {
         String permissionName=request.getParameter("permission");
+        String url=request.getParameter("url");
         Permission permission=new Permission();
         permission.setPermission(permissionName);
+        permission.setUrl(url);
         permissionService.addPermission(permission);
-        ArrayList<Permission> permissions=permissionService.getAllPermission();
-        session.setAttribute("permissions",permissions);
-        return "/admin/PermissionManager";
+        try {
+            response.sendRedirect("admin/PermissionManager");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    @RequestMapping(value = "/PermissionManager")
-    public String PermissionManager(HttpSession session)
+    @RequestMapping(value = "/PermissionManager",method = RequestMethod.GET)
+    public String PermissionManager(HttpServletRequest request)
     {
-        ArrayList<Permission> permissions=permissionService.getAllPermission();
-        session.setAttribute("permissions",permissions);
-        return "/admin/PermissionManager";
+        Pager pager=permissionService.getPermissionPager();
+        request.setAttribute("pager",pager);
+        return "/BackGround/permissions";
     }
 
     //删除权利
     @RequestMapping(value = "/delPermission")
-    public String delPermission(HttpServletRequest request,HttpSession session)
+    public void delPermission(HttpServletRequest request,HttpSession session,HttpServletResponse response)
     {
         int id=Integer.parseInt(request.getParameter("id"));
         rolePermissionService.delByPermissionId(id);
         permissionService.delPermissionById(id);
-        ArrayList<Permission> permissions=permissionService.getAllPermission();
-        session.setAttribute("permissions",permissions);
-        return "/admin/PermissionManager";
+        int pageindex=Integer.parseInt(request.getParameter("pageindex"));
+        try {
+            response.sendRedirect("/admin/PermissionManager?pageindex="+pageindex);
+        } catch (IOException e) {
+
+e.printStackTrace();
+        }
+    }
+
+
+    @RequestMapping(value = "/profile",method = RequestMethod.GET)
+    public String profile(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("userId"));
+        User user=userService.selectByPrimaryKey(id);
+        request.setAttribute("user",user);
+        return "/BackGround/my-profile";
+    }
+
+
+
+    //用户管理
+    @RequestMapping(value = "/users",method = RequestMethod.GET)
+    public String users(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+    {
+
+        Subject subject= SecurityUtils.getSubject();
+        Pager pager=null;
+        if(subject.hasRole("root"))
+        {
+            int ifindex=0;
+            String key=request.getParameter("searchUser");
+            if(key!=null)session.setAttribute("key",key);
+
+            try{
+                ifindex=Integer.parseInt(request.getParameter("ifindex"));
+            }catch (Exception e)
+            {
+                ifindex=0;
+            }
+            if(ifindex==1)
+            {
+                session.setAttribute("searchbool",new Boolean(false));
+                session.setAttribute("key",null);
+                pager=userService.getUserPager();
+            }
+            else{
+                String searchName=(String)session.getAttribute("key");
+                System.out.println("查询名字:"+key);
+                if(searchName==null)
+                {
+                    pager=userService.getUserPager();
+                }
+                else{
+                    pager=userService.getSearchPager(searchName);
+                }
+            }
+
+            session.setAttribute("pager",pager);
+            return "/BackGround/users";
+        }
+        else{
+            try{
+                response.sendRedirect("/user/index");
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return "/user/error";
+    }
+
+    @RequestMapping(value = "/users",method = RequestMethod.POST)
+    public String users()
+    {
+        return "/BackGround/users";
+    }
+
+    @RequestMapping(value = "/roles")
+    public String roles()
+    {
+        return "/BackGround/roles";
     }
 }

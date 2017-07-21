@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.scau.hjr.model.Permission" >
     <id column="permission_id" property="permissionId" jdbcType="INTEGER" />
     <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     permission_id, permission
@@ -22,8 +23,8 @@
     <selectKey keyProperty="permissionId" order="AFTER" resultType="java.lang.Integer">
       select last_insert_id()
     </selectKey>
-    insert into permission ( permission)
-    values ( #{permission,jdbcType=VARCHAR})
+    insert into permission ( permission,url)
+    values (#{permission,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.scau.hjr.model.Permission" >
     insert into permission
@@ -44,18 +45,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.scau.hjr.model.Permission" >
-    update permission
-    <set >
-      <if test="permission != null" >
-        permission = #{permission,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where permission_id = #{permissionId,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="cn.scau.hjr.model.Permission" >
     update permission
-    set permission = #{permission,jdbcType=VARCHAR}
+    set permission = #{permission,jdbcType=VARCHAR},
+    url = #{url,jdbcType=VARCHAR}
     where permission_id = #{permissionId,jdbcType=INTEGER}
   </update>
 
@@ -74,8 +68,18 @@
 
   <!-- getAllPermission  -->
   <select id="getAllPermission" resultMap="BaseResultMap" >
-    select * from permission
+    select * from permission order by permission_id DESC
   </select>
 
-  <!--  -->
+
+  <!-- getAllPermission  -->
+  <select id="getAllPermissionLimit" resultMap="BaseResultMap" >
+    select * from permission order by permission_id DESC limit #{0},#{1}
+  </select>
+
+  <!--getPermissionNumber  -->
+  <select id="getPermissionNumber" resultType="java.lang.Integer" >
+    select count(*) from permission
+  </select>
+
 </mapper>

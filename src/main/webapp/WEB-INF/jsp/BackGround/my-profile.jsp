@@ -1,14 +1,17 @@
+<%@ page import="cn.scau.hjr.model.User" %>
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+	User user=(User)request.getAttribute("user");
+%>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-   <title>新增角色 简洁Bootstrap响应式后台管理系统模板下载</title>	
-	<meta name="keywords" content="Bootstrap模板,Bootstrap3模版,Bootstrap模板下载,Bootstrap后台模板,Bootstrap教程,Bootstrap中文,后台管理系统模板,后台模板下载,后台管理系统,后台管理模板" />
-	<meta name="description" content="JS代码网提供Bootstrap模板,后台管理系统模板,后台管理界面,Bootstrap后台板版下载" />
+    <title>个人资料 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="css/bootstrap.css" rel="stylesheet">
-	<link href="css/site.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap.css" rel="stylesheet">
+	<link href="/resources/css/site.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -24,12 +27,12 @@
           </a>
           <a class="brand" href="#">Admin</a>
           <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.html"><i class="icon-user"></i> Admin</a>
+			<a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="my-profile.html">Profile</a></li>
+			  <li><a href="my-profile.jsp">Profile</a></li>
               <li class="divider"></li>
               <li><a href="#">Logout</a></li>
             </ul>
@@ -39,16 +42,16 @@
 			<li><a href="index.jsp">Home</a></li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-user.html">New User</a></li>
+					<li><a href="new-user.jsp">New User</a></li>
 					<li class="divider"></li>
-					<li><a href="users.html">Manage Users</a></li>
+					<li><a href="/admin/users">Manage Users</a></li>
 				</ul>
 			  </li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-role.html">New Role</a></li>
+					<li><a href="new-role.jsp">New Role</a></li>
 					<li class="divider"></li>
-					<li><a href="roles.html">Manage Roles</a></li>
+					<li><a href="roles.jsp">Manage Roles</a></li>
 				</ul>
 			  </li>
 			  <li><a href="stats.html">Stats</a></li>
@@ -64,14 +67,14 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
-              <li><a href="users.html">Users</a></li>
-              <li class="active"><a href="roles.html">Roles</a></li>
+              <li><a href="users.jsp">Users</a></li>
+              <li><a href="roles.jsp">Roles</a></li>
               <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
               <li><a href="stats.html">General</a></li>
-              <li><a href="user-stats.html">User</a></li>
-              <li><a href="visitor-stats.html">Visitor</a></li>
+              <li><a href="user-stats.html">Users</a></li>
+              <li><a href="visitor-stats.html">Visitors</a></li>
               <li class="nav-header"><i class="icon-user"></i> Profile</li>
-              <li><a href="my-profile.html">My profile</a></li>
+              <li class="active"><a href="my-profile.jsp">My profile</a></li>
               <li><a href="#">Settings</a></li>
 			  <li><a href="#">Logout</a></li> 
             </ul>
@@ -80,30 +83,52 @@
         <div class="span9">
 		  <div class="row-fluid">
 			<div class="page-header">
-				<h1>New Role <small>Add a new role</small></h1>
+				<h1>My profile <small>Update info</small></h1>
 			</div>
 			<form class="form-horizontal">
 				<fieldset>
 					<div class="control-group">
-						<label class="control-label" for="role">Role Name</label>
+						<label class="control-label" for="name">Name</label>
 						<div class="controls">
-							<input type="text" class="input-xlarge" id="role" />
+							<input type="text" class="input-xlarge" id="name" value="Admin" />
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="description">Description</label>
+						<label class="control-label" for="email">E-mail</label>
 						<div class="controls">
-							<textarea class="input-xlarge" id="description" rows="3"></textarea>
+							<input type="text" class="input-xlarge" id="email" value="travis@provider.com" />
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="slug">Slug</label>
+						<label class="control-label" for="phone">Phone</label>
 						<div class="controls">
-							<input type="text" class="input-xlarge" id="slug" />
+							<input type="text" class="input-xlarge" id="phone" value="xxx-xxx-xxxx" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="city">City</label>
+						<div class="controls">
+							<input type="text" class="input-xlarge" id="city" value="My City" />
+						</div>
+					</div>	
+					<div class="control-group">
+						<label class="control-label" for="role">Role</label>
+						<div class="controls">
+							<select id="role">
+								<option value="admin" selected>Admin</option>
+								<option value="mod">Moderator</option>
+								<option value="user">User</option>
+							</select>
+						</div>
+					</div>	
+					<div class="control-group">
+						<label class="control-label" for="active">Active?</label>
+						<div class="controls">
+							<input type="checkbox" id="active" value="1" checked />
 						</div>
 					</div>
 					<div class="form-actions">
-						<input type="submit" class="btn btn-success btn-large" value="Save Role" /> <a class="btn" href="roles.html">Cancel</a>
+						<input type="submit" class="btn btn-success btn-large" value="Save Changes" /> <a class="btn" href="users.jsp">Cancel</a>
 					</div>					
 				</fieldset>
 			</form>
@@ -119,8 +144,8 @@
 
     </div>
 
-    <script src="js/jquery.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+    <script src="/resources/js/jquery.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
   </body>
 </html>
 <SCRIPT Language=VBScript><!--

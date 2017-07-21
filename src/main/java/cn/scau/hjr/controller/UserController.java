@@ -96,10 +96,15 @@ public class UserController {
     {
         String password=request.getParameter("password");
         String account=request.getParameter("account");
+        System.out.println(password);
+        System.out.println(account);
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(account, password);
         try{
             subject.login(token);
+            User user=userService.getUserByAccount(account);
+            HttpSession session=request.getSession();
+            session.setAttribute("currentUser",user);//配置当前用户
             response.sendRedirect("/admin/index");
         }catch(Exception e){
             e.printStackTrace();

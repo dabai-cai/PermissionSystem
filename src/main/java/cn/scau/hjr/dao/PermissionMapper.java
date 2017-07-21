@@ -17,8 +17,10 @@ public interface PermissionMapper {
     Permission selectByPrimaryKey(Integer permissionId);
     Permission selectByPermissionName(@Param("permission")String permission);
     void delByPermissionName(@Param("permission")String permission);
+    ArrayList<Permission> getAllPermissionLimit(int start,int pageindex);
     ArrayList<Permission> getAllPermission();
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
+    int getPermissionNumber();
 }

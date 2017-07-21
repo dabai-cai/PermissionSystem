@@ -23,7 +23,5 @@ public interface RoleMapper {
     ArrayList<Role> getAllRole();
     ArrayList<Role> getRoleListByLimitNumber(@Param("start")int start, @Param("pagesize")int pagesize);
     int getAllRoleNumber();
-
-
     int updateByPrimaryKey(Role record);
 }

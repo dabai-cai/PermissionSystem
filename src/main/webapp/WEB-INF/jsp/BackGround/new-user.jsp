@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -25,12 +25,12 @@
           </a>
           <a class="brand" href="#">Admin</a>
           <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.html"><i class="icon-user"></i> Admin</a>
+			<a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="my-profile.html">Profile</a></li>
+			  <li><a href="my-profile.jsp">Profile</a></li>
               <li class="divider"></li>
               <li><a href="#">Logout</a></li>
             </ul>
@@ -40,16 +40,16 @@
 			<li><a href="index.jsp">Home</a></li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-user.html">New User</a></li>
+					<li><a href="new-user.jsp">New User</a></li>
 					<li class="divider"></li>
-					<li><a href="users.html">Manage Users</a></li>
+					<li><a href="users.jsp">Manage Users</a></li>
 				</ul>
 			  </li>
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-role.html">New Role</a></li>
+					<li><a href="new-role.jsp">New Role</a></li>
 					<li class="divider"></li>
-					<li><a href="roles.html">Manage Roles</a></li>
+					<li><a href="roles.jsp">Manage Roles</a></li>
 				</ul>
 			  </li>
 			  <li><a href="stats.html">Stats</a></li>
@@ -65,14 +65,14 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
-              <li class="active"><a href="users.html">Users</a></li>
-              <li><a href="roles.html">Roles</a></li>
+              <li class="active"><a href="users.jsp">Users</a></li>
+              <li><a href="roles.jsp">Roles</a></li>
               <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
               <li><a href="stats.html">General</a></li>
               <li><a href="user-stats.html">Users</a></li>
               <li><a href="visitor-stats.html">Visitors</a></li>
               <li class="nav-header"><i class="icon-user"></i> Profile</li>
-              <li><a href="my-profile.html">My profile</a></li>
+              <li><a href="my-profile.jsp">My profile</a></li>
               <li><a href="#">Settings</a></li>
 			  <li><a href="#">Logout</a></li> 
             </ul>
@@ -126,7 +126,7 @@
 						</div>
 					</div>
 					<div class="form-actions">
-						<input type="submit" class="btn btn-success btn-large" value="Save User" /> <a class="btn" href="users.html">Cancel</a>
+						<input type="submit" class="btn btn-success btn-large" value="Save User" /> <a class="btn" href="users.jsp">Cancel</a>
 					</div>					
 				</fieldset>
 			</form>

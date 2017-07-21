@@ -114,6 +114,8 @@ public class MyRealm extends AuthorizingRealm {
 
         String account=(String)authcToken.getPrincipal();
         User user=userService.getUserByAccount(account);
+        System.out.println(user.getAccount());
+        System.out.println(user.getPassword());
         if(user==null)
         {
             return null;

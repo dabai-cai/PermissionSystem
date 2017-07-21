@@ -1,5 +1,6 @@
 package cn.scau.hjr.service;
 
+import cn.scau.hjr.model.Pager;
 import cn.scau.hjr.model.Permission;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public interface PermissionService {
     boolean addPermission(Permission permission);
     void delPermissionById(int permissionId);
     void delByPermissionName(String permissionName);
-    ArrayList<Permission> getAllPermission();
     Permission selectByPrimaryKey(Integer permissionId);
+    Pager getPermissionPager();
+    ArrayList<Permission> getAllPermission();
 }

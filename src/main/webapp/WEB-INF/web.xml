@@ -74,7 +74,7 @@
         <filter-class>cn.scau.hjr.filter.PagerFilter</filter-class>
         <init-param>
             <param-name>pagesize</param-name>
-            <param-value>3</param-value>
+            <param-value>1</param-value>
         </init-param>
     </filter>
     <welcome-file-list>

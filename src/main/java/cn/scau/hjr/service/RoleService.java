@@ -15,5 +15,6 @@ public interface RoleService {
     ArrayList<Role> getAllRole();
     Pager getRolePager();
     Role selectByPrimaryKey(Integer roleId);
+    void updateRole(Role role);
 
 }

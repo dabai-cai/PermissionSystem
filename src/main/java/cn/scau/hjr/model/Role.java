@@ -3,6 +3,16 @@ package cn.scau.hjr.model;
 public class Role {
     private Integer roleId;
 
+    public String getAboutRole() {
+        return aboutRole;
+    }
+
+    public void setAboutRole(String aboutRole) {
+        this.aboutRole = aboutRole;
+    }
+
+    private String aboutRole;
+
     private String rolename;
 
     public Integer getRoleId() {
@@ -20,4 +30,6 @@ public class Role {
     public void setRolename(String rolename) {
         this.rolename = rolename == null ? null : rolename.trim();
     }
+
+
 }

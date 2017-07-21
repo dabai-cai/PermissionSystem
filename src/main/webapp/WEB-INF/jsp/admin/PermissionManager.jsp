@@ -4,10 +4,7 @@
     Author     : Administrator
 --%>
 
-<%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page import="cn.scau.hjr.model.Role" %>
-<%@ page import="cn.scau.hjr.model.User" %>
 <%@ page import="cn.scau.hjr.model.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

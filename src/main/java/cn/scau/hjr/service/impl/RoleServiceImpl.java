@@ -98,4 +98,9 @@ public class RoleServiceImpl implements RoleService {
         role=roleDao.selectByPrimaryKey(roleId);
         return  role;
     }
+
+    @Override
+    public void updateRole(Role role) {
+        roleDao.updateByPrimaryKey(role);
+    }
 }

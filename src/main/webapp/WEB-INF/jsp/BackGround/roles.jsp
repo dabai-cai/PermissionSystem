@@ -1,14 +1,17 @@
 <!DOCTYPE html>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="cn.scau.hjr.model.Role"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="cn.scau.hjr.model.Pager"%>
+<%@ page import="cn.scau.hjr.model.Role" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>个人资料 简洁Bootstrap响应式后台管理系统模板下载</title>	
-	<meta name="keywords" content="Bootstrap模板,Bootstrap3模版,Bootstrap模板下载,Bootstrap后台模板,Bootstrap教程,Bootstrap中文,后台管理系统模板,后台模板下载,后台管理系统,后台管理模板" />
-	<meta name="description" content="JS代码网提供Bootstrap模板,后台管理系统模板,后台管理界面,Bootstrap后台板版下载" />
+    <title>角色管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="css/bootstrap.css" rel="stylesheet">
-	<link href="css/site.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap.css" rel="stylesheet">
+	<link href="/resources/css/site.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -24,34 +27,40 @@
           </a>
           <a class="brand" href="#">Admin</a>
           <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.html"><i class="icon-user"></i> Admin</a>
+			<a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="my-profile.html">Profile</a></li>
+			  <li><a href="my-profile.jsp">Profile</a></li>
               <li class="divider"></li>
-              <li><a href="#">Logout</a></li>
+              <li><a href="/user/login">登出</a></li>
             </ul>
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-			<li><a href="index.jsp">Home</a></li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
+			<li><a href="/admin/index">主页</a></li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-user.html">New User</a></li>
+					<li><a href="new-user.jsp">新建用户</a></li>
 					<li class="divider"></li>
-					<li><a href="users.html">Manage Users</a></li>
+					<li><a href="/admin/users">用户管理</a></li>
 				</ul>
 			  </li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles <b class="caret"></b></a>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="new-role.html">New Role</a></li>
+					<li><a href="new-role.jsp">新建角色</a></li>
 					<li class="divider"></li>
-					<li><a href="roles.html">Manage Roles</a></li>
+					<li><a href="/admin/roles">角色管理</a></li>
 				</ul>
 			  </li>
-			  <li><a href="stats.html">Stats</a></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/addPermission">新建权限</a></li>
+						<li class="divider"></li>
+						<li><a href="/admin/PermissionManager">权限管理</a></li>
+					</ul>
+				</li>
             </ul>
           </div>
         </div>
@@ -64,71 +73,184 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
-              <li><a href="users.html">Users</a></li>
-              <li><a href="roles.html">Roles</a></li>
+              <li><a href="/admin/users">用户</a></li>
+              <li class="active"><a href="/admin/roles">角色</a></li>
               <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
               <li><a href="stats.html">General</a></li>
-              <li><a href="user-stats.html">Users</a></li>
-              <li><a href="visitor-stats.html">Visitors</a></li>
+              <li><a href="user-stats.html">用户</a></li>
+              <li><a href="visitor-stats.html">游客</a></li>
               <li class="nav-header"><i class="icon-user"></i> Profile</li>
-              <li class="active"><a href="my-profile.html">My profile</a></li>
-              <li><a href="#">Settings</a></li>
-			  <li><a href="#">Logout</a></li> 
+              <li><a href="/admin/profile"></a>个人信息</li>
+              <li><a href="#">设置</a></li>
+			  <li><a href="/user/login">登出</a></li>
             </ul>
           </div>
         </div>
         <div class="span9">
 		  <div class="row-fluid">
 			<div class="page-header">
-				<h1>My profile <small>Update info</small></h1>
+				<h1>角色 <small>角色管理</small></h1>
 			</div>
-			<form class="form-horizontal">
-				<fieldset>
-					<div class="control-group">
-						<label class="control-label" for="name">Name</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="name" value="Admin" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="email">E-mail</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="email" value="travis@provider.com" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="pnohe">Phone</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="phone" value="xxx-xxx-xxxx" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="city">City</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="city" value="My City" />
-						</div>
-					</div>	
-					<div class="control-group">
-						<label class="control-label" for="role">Role</label>
-						<div class="controls">
-							<select id="role">
-								<option value="admin" selected>Admin</option>
-								<option value="mod">Moderator</option>
-								<option value="user">User</option>
-							</select>
-						</div>
-					</div>	
-					<div class="control-group">
-						<label class="control-label" for="active">Active?</label>
-						<div class="controls">
-							<input type="checkbox" id="active" value="1" checked />
-						</div>
-					</div>
-					<div class="form-actions">
-						<input type="submit" class="btn btn-success btn-large" value="Save Changes" /> <a class="btn" href="users.html">Cancel</a>
-					</div>					
-				</fieldset>
-			</form>
+	       <!--- 整合开始   -->
+
+
+
+			  <table class="table table-bordered">
+				  <caption>
+					  管理员权限
+				  </caption>
+				  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+					  新建角色
+				  </button>
+				  <!-- 模态框（Modal） -->
+				  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+						  <div class="modal-content">
+							  <div class="modal-header">
+								  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									  &times;
+								  </button>
+								  <h4 class="modal-title" id="myModalLabel">
+									  新建一个角色
+								  </h4>
+							  </div>
+							  <form id="roleform">
+								  <div class="modal-body">
+									  角色名：<input name="rolename" type="text" placeholder="如：老师" class="form-control input-lg website-input">
+									  角色描述：<input name="roledescribe" type="text" placeholder="如:祖国的花朵" class="form-control input-lg website-input">
+								  </div>
+
+
+								  <div class="modal-footer">
+									  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+									  </button>
+									  <button type="button"  id="roleBtn"  class="btn btn-primary">
+										  新建
+									  </button>
+								  </div>
+							  </form>
+
+						  </div><!-- /.modal-content -->
+					  </div><!-- /.modal -->
+				  </div>
+				  <thread>
+					  <tr>
+						  <th>
+							  编号
+						  </th>
+						  <th>
+							  角色id
+						  </th>
+						  <th>
+							  角色名
+						  </th>
+						  <th>
+								描述
+						  </th>
+						  <th>
+							  管理员操作
+						  </th>
+
+					  </tr>
+				  </thread>
+
+
+					  <%
+						  Pager pager =(Pager) session.getAttribute("pager");
+						  int pageindex=pager.getPageOffset();
+						  ArrayList roleList = (ArrayList) pager.getpagerData();
+						  for (int i = 0; i < roleList.size(); i++) {
+							  Role role = (Role) roleList.get(i);
+							  String name = role.getRolename();
+							  int id=role.getRoleId();
+							  String describe=role.getAboutRole();
+
+					  %>
+					  <tr >
+						  <td>
+							  <%=i%>
+						  </td>
+						  <td >
+							  <%=id%>
+						  </td>
+						  <td >
+							  <%=name%>
+						  </td>
+						  <td>
+							  <%=describe%>
+						  </td>
+						  <td>
+
+							  <button class="btn btn-primary" data-toggle="modal" data-target="#myModa<%=i+1%>">
+								  修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							  </button>
+							  <!-- 模态框（Modal） -->
+							  <div class="modal fade" id="myModa<%=i+1%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<%=i+1%>" aria-hidden="true">
+								  <div class="modal-dialog">
+									  <div class="modal-content">
+										  <div class="modal-header">
+											  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												  &times;
+											  </button>
+											  <h4 class="modal-title" id="myModalLabel<%=i+1%>">
+												  修改角色信息
+											  </h4>
+										  </div>
+
+										  <form method="post" action="/admin/updateRole?id=<%=role.getRoleId()%>&pageindex=<%=pageindex%>" >
+											  <div class="modal-body">
+												  角色名：<input name="rolename" type="text" value="<%=name%>" class="form-control input-lg website-input">
+											  </div>
+											  <div class="modal-body">
+												  角色描述：<input name="describe" type="text" value="<%=describe%>" class="form-control input-lg website-input">
+											  </div>
+											  <div class="modal-footer">
+												  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+												  </button>
+												  <button type="submit" class="btn btn-primary">
+													  修改
+												  </button>
+											  </div>
+										  </form>
+
+									  </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+								  </div><!-- /.modal -->
+							  </div>
+
+							  <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delRole?id=<%=role.getRoleId()%>';"
+							  >删除
+								  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+
+							  <button onclick="javascript:window.location.href='/admin/permissionAassign?id=<%=role.getRoleId()%>';"
+									  class="btn btn-success">权限分配
+								  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+						  </td>
+					  </tr>
+					  <%
+						  }
+					  %>
+
+				  <tr>
+					  <td>
+						  <ul class="pagination">
+							  <li>
+								  <a href="/admin/roles/">首页</a>
+							  </li>
+						  <%       for (int i = 1; i <= pager.getTotalPage(); i++) {
+						  %>
+							  <li>
+						  <a href="/admin/roles?pageindex=<%=i%>"><%=i%></a>
+							  </li>
+						  <%
+							  }
+						  %>
+						  </ul>
+					  </td>
+
+				  </tr>
+			  </table>
+
+			  <!--- 整合结束 -->
 		  </div>
         </div>
       </div>
@@ -141,8 +263,81 @@
 
     </div>
 
-    <script src="js/jquery.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="/resources/js/jquery.js"></script>
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+	<script>
+	$(document).ready(function() {
+		$('.dropdown-menu li a').hover(
+		function() {
+			$(this).children('i').addClass('icon-white');
+		},
+		function() {
+			$(this).children('i').removeClass('icon-white');
+		});
+	});
+	</script>
+
+	<script type='text/javascript'>
+        var form = $('#roleform');
+      //  $(document).ready(function () {
+
+        form.bootstrapValidator({
+            message: '输入值不合法',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                rolename: {
+                    message: '角色名不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 30,
+                            message: '请输入3到30个字符'
+                        }
+                    }
+                },
+                roledescribe: {
+                    message: '角色描述不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '角色描述不能为空'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 30,
+                            message: '请输入1到30个字符'
+                        }
+                    }
+                }
+
+            }
+     //   });
+         });
+        $("#roleBtn").click(function () {
+//进行表单验证
+            var bv = form.data('bootstrapValidator');
+            bv.validate();
+            if(bv.isValid())
+            {
+                $.ajax({
+                    type:"post",
+                    url:"/admin/addRole",
+                    data:$("#roleform").serialize(),
+                    success:function(data){
+                        $('#myModal').modal('hide')
+                    }
+                })
+            }
+        });
+	</script>
   </body>
 </html>
 <SCRIPT Language=VBScript><!--

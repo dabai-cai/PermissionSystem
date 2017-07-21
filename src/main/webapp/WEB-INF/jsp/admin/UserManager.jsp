@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <%@page import="cn.scau.hjr.model.User"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="cn.scau.hjr.model.Pager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,27 +26,65 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <![endif]-->
 </head>
 <body>
-<form class="form col-md-6 col-md-offset-3" role="form" name="checkForm" ng-submit="submitCheck()" action="/admin/userManager">
-    <table>
-        <tr>
-            <td>
-                <input class="form-control input-lg website-input" name="searchUser"  type="text" placeholder="输入关键字查看用户" required ng-model="website" novalidate >
-
-            </td>
-            <td>
-                <button type="submit" class="btn btn-lg btn-primary website-submit">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
-                </button>
-            </td>
-        </tr>
-    </table>
 
 
-</form>
-<div class="container text-center">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Brand</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="/admin/index">返回主页</a>
+                        </li>
+                        <li>
+                            <a href="#">Link</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search" action="/admin/userManager"  >
+                        <div class="form-group">
+                            <input class="form-control" type="text"  name="searchUser"    placeholder="输入关键字查看用户"   />
+                        </div> <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    </form>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">Link</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </div>
 </div>
+
 <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -133,36 +170,34 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
 <script src="/resources/js/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-
-
-<button onclick="javascript:window.location.href='/admin/index';"
-        class="btn btn-primary btn-lg">返回主页
-    <span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
-
-<table align="center" class="table">
+<table align="center" class="table table-bordered">
     <caption>
         管理员权限
     </caption>
+    <thead>
     <tr>
-        <td>
+        <th>
             编号:
-        </td>
-        <td>
+        </th>
+
+        <th>
             用户名：
-        </td>
-        <td>
+        </th>
+
+        <th>
             账号
-        </td>
-        <td>
+        </th>
+        <th>
             用户密码：
-        </td>
-        <td>
+        </th>
+        <th>
             性别
-        </td>
-        <td>
+        </th>
+        <th>
             管理员操作：
-        </td>
+        </th>
     </tr>
+    </thead>
     <%
         Pager pager =(Pager) session.getAttribute("pager");
         ArrayList userList = (ArrayList) pager.getpagerData();
@@ -210,7 +245,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             <%=sex%>
         </td >
         <td>
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa<%=i+1%>">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModa<%=i+1%>">
                 修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
             <!-- 模态框（Modal） -->
@@ -280,7 +315,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
                 </div><!-- /.modal -->
             </div>
 
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#userModa<%=i+1%>">
+            <button class="btn btn-info" data-toggle="modal" data-target="#userModa<%=i+1%>">
                 查看<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             </button>
             <!-- 模态框（Modal） -->
@@ -322,7 +357,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
             </div>
 
 
-            <button class="btn btn-primary btn-lg"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>&pageindex=<%=pageindex%>';"
+            <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delUser?id=<%=user.getUserId()%>&pageindex=<%=pageindex%>';"
                     >删除
                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
@@ -330,7 +365,7 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
 
 
             <button onclick="javascript:window.location.href='/admin/AssigningRoles?id=<%=user.getUserId()%>';"
-                    class="btn btn-primary btn-lg">分配角色
+                    class="btn btn-success">分配角色
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
         </td>
     </tr>
@@ -340,30 +375,35 @@ HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     <tr>
 
         <td>
-          <a href="/admin/userManager?ifindex=1">首页</a>
-         第
-            <% for (int i = 1; i <= pager.getTotalPage(); i++) {
-                if(i!=pageindex)
-                {
-                    %>
-            [<a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>]&nbsp;
-            <%
+
+            <ul class="pagination">
+                <li>
+                    <a href="/admin/userManager?ifindex=1">首页</a>
+                </li>
+
+                <% for (int i = 1; i <= pager.getTotalPage(); i++) {
+                    if(i!=pageindex)
+                    {
+                %>
+                <li>
+                    <a href="/admin/userManager?pageindex=<%=i%>"><%=i%></a>
+                </li>
+                <%
                 }
                 else{
-                    %>
-            [<%=i%>]
-            <%
-                }
-            %>
-
-            <%
-                }
-            %>页
+                %>
+                <li><a href="#"><%=i%></a></li>
+                <%
+                    }
+                %>
+                <%
+                    }
+                %>
+            </ul>
         </td>
 
     </tr>
     </tbody>
-
 </table>
 
 <script type='text/javascript'>
