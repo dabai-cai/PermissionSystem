@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList"%>
-<%@ page import="cn.scau.hjr.model.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <html lang="en">
 <head>

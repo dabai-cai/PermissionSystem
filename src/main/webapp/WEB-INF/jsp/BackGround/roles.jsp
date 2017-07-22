@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="cn.scau.hjr.model.Role"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="cn.scau.hjr.model.Pager"%>
-<%@ page import="cn.scau.hjr.model.Role" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -153,99 +150,89 @@
 				  </thread>
 
 
-					  <%
-						  Pager pager =(Pager) session.getAttribute("pager");
-						  int pageindex=pager.getPageOffset();
-						  ArrayList roleList = (ArrayList) pager.getpagerData();
-						  for (int i = 0; i < roleList.size(); i++) {
-							  Role role = (Role) roleList.get(i);
-							  String name = role.getRolename();
-							  int id=role.getRoleId();
-							  String describe=role.getAboutRole();
+				  <!---  新代码开始 --->
 
-					  %>
-					  <tr >
-						  <td>
-							  <%=i%>
-						  </td>
-						  <td >
-							  <%=id%>
-						  </td>
-						  <td >
-							  <%=name%>
-						  </td>
-						  <td>
-							  <%=describe%>
-						  </td>
-						  <td>
+                  <jstl:forEach var="role" items="${pager.getpagerData()}" varStatus="status">
 
-							  <button class="btn btn-primary" data-toggle="modal" data-target="#myModa<%=i+1%>">
-								  修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							  </button>
-							  <!-- 模态框（Modal） -->
-							  <div class="modal fade" id="myModa<%=i+1%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<%=i+1%>" aria-hidden="true">
-								  <div class="modal-dialog">
-									  <div class="modal-content">
-										  <div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-												  &times;
-											  </button>
-											  <h4 class="modal-title" id="myModalLabel<%=i+1%>">
-												  修改角色信息
-											  </h4>
-										  </div>
+                      <tr>
+                          <td>
+                              ${status.count}
+                          </td>
+                          <td >
+                              ${role.roleId}
+                          </td>
+                          <td >
+                              ${role.rolename}
+                          </td>
+                          <td>
+                              ${role.aboutRole}
+                          </td>
+                          <td>
 
-										  <form method="post" action="/admin/updateRole?id=<%=role.getRoleId()%>&pageindex=<%=pageindex%>" >
-											  <div class="modal-body">
-												  角色名：<input name="rolename" type="text" value="<%=name%>" class="form-control input-lg website-input">
-											  </div>
-											  <div class="modal-body">
-												  角色描述：<input name="describe" type="text" value="<%=describe%>" class="form-control input-lg website-input">
-											  </div>
-											  <div class="modal-footer">
-												  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-												  </button>
-												  <button type="submit" class="btn btn-primary">
-													  修改
-												  </button>
-											  </div>
-										  </form>
+                              <button class="btn btn-primary" data-toggle="modal" data-target="#Moda${status.count}">
+                                  修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                              </button>
+                              <!-- 模态框（Modal） -->
+                              <div class="modal fade" id="Moda${status.count}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel${status.count}" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                  &times;
+                                              </button>
+                                              <h4 class="modal-title" id="ModalLabel${status.count}">
+                                                  修改角色信息
+                                              </h4>
+                                          </div>
 
-									  </div><!-- /.modal-content glyphicon glyphicon-pencil -->
-								  </div><!-- /.modal -->
-							  </div>
+                                          <form method="post" action="/admin/updateRole?id=${role.roleId}&pageindex=${pager.pageOffset}" >
+                                              <div class="modal-body">
+                                                  角色名：<input name="rolename" type="text" value="${role.rolename}" class="form-control input-lg website-input">
+                                              </div>
+                                              <div class="modal-body">
+                                                  角色描述：<input name="describe" type="text" value="${role.aboutRole}" class="form-control input-lg website-input">
+                                              </div>
+                                              <div class="modal-footer">
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                  </button>
+                                                  <button type="submit" class="btn btn-primary">
+                                                      修改
+                                                  </button>
+                                              </div>
+                                          </form>
 
-							  <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delRole?id=<%=role.getRoleId()%>';"
-							  >删除
-								  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                                      </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                                  </div><!-- /.modal -->
+                              </div>
 
-							  <button onclick="javascript:window.location.href='/admin/permissionAassign?id=<%=role.getRoleId()%>';"
-									  class="btn btn-success">权限分配
-								  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-						  </td>
-					  </tr>
-					  <%
-						  }
-					  %>
+                              <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delRole?id=${role.roleId}';"
+                              >删除
+                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
-				  <tr>
-					  <td>
-						  <ul class="pagination">
-							  <li>
-								  <a href="/admin/roles/">首页</a>
-							  </li>
-						  <%       for (int i = 1; i <= pager.getTotalPage(); i++) {
-						  %>
-							  <li>
-						  <a href="/admin/roles?pageindex=<%=i%>"><%=i%></a>
-							  </li>
-						  <%
-							  }
-						  %>
-						  </ul>
-					  </td>
+                              <button onclick="javascript:window.location.href='/admin/permissionAassign?id=${role.roleId}';"
+                                      class="btn btn-success">权限分配
+                                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                          </td>
+                      </tr>
+                  </jstl:forEach>
+                  <!--   分页 --->
+                  <tr>
+                      <td>
+                          <ul class="pagination">
+                              <li>
+                                  <a href="/admin/roles/">首页</a>
+                              </li>
+                              <jstl:forEach var="i" begin="1" end="${pager.totalPage}">
+                                  <li>
+                                      <a href="/admin/roles?pageindex=${pager.pageOffset}">${i}</a>
+                                  </li>
+                              </jstl:forEach>
+                          </ul>
+                      </td>
 
-				  </tr>
+                  </tr>
+				  <!--   新代码 结束
+				     -->
 			  </table>
 
 			  <!--- 整合结束 -->
@@ -258,9 +245,7 @@
       <footer class="well">
         &copy; Admin
       </footer>
-
     </div>
-
 	<script src="/resources/js/jquery.js"></script>
 	<script src="/resources/js/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

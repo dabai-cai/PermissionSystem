@@ -41,9 +41,8 @@ public class AdminController {
     private PermissionService permissionService;
 
 
-    /*
-    用户管理
-     */
+    /**********************************  用户管理 ******************************************/
+    //用户添加
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public String addUser(HttpServletRequest request)
     {
@@ -85,6 +84,7 @@ public class AdminController {
         }
     }
 
+    //删除用户
     @RequestMapping(value = "/delUser")
     public void delUser(HttpServletRequest request, HttpServletResponse response)
     {
@@ -108,7 +108,7 @@ public class AdminController {
         }
 
     }
-
+//更新用户
     @RequestMapping(value = "/updateUser")
     public void   userUpdate(HttpServletRequest request,HttpServletResponse response)
     {
@@ -136,22 +136,13 @@ public class AdminController {
         user0.setPassword(password);
         userService.updateByPrimaryKey(user0);
         System.out.println("修改");
-        /*
-        Pager pager=null;
-        pager=userService.getUserPager();
-        HttpSession session=request.getSession();
-        session.setAttribute("pager",pager);
-        System.out.println("pager:"+pager);
-        */
         try{
             response.sendRedirect(request.getContextPath()+"/admin/users?pageindex="+pageindex);
-            System.out.println("可以！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
+
         }catch (Exception e)
         {
-            System.out.println("不行阿斯蒂芬是发送到 发");
+           e.printStackTrace();
         }
-
-       // return "/admin/UserManager";
     }
 
     @RequestMapping(value = "/index")
@@ -161,7 +152,7 @@ public class AdminController {
     }
 
 
-
+//角色分配
     @RequestMapping(value = "/AssigningRoles")
     public String AssigningRoles(HttpServletRequest request)
     {
@@ -309,12 +300,11 @@ public class AdminController {
     角色管理界面
      */
     @RequestMapping(value = "/roles",method = RequestMethod.GET)
-    public String roleManager(HttpServletRequest request)
+    public String roleManager(HttpServletRequest request,Model model)
     {
         Pager pager=null;
         pager=roleService.getRolePager();
-        HttpSession session=request.getSession();
-        session.setAttribute("pager",pager);
+        model.addAttribute("pager",pager);
         return "/BackGround/roles";
     }
 
@@ -486,13 +476,9 @@ e.printStackTrace();
 
     //用户管理
     @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String users(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+    public String users(HttpServletRequest request, HttpSession session, Model model )
     {
-
-        Subject subject= SecurityUtils.getSubject();
-        Pager pager=null;
-        if(subject.hasRole("root"))
-        {
+            Pager pager=null;
             int ifindex=0;
             String key=request.getParameter("searchUser");
             if(key!=null)session.setAttribute("key",key);
@@ -520,20 +506,8 @@ e.printStackTrace();
                     pager=userService.getSearchPager(searchName);
                 }
             }
-
-            session.setAttribute("pager",pager);
+            model.addAttribute("pager",pager);
             return "/BackGround/users";
-        }
-        else{
-            try{
-                response.sendRedirect("/user/index");
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-        }
-        return "/user/error";
     }
 
     @RequestMapping(value = "/users",method = RequestMethod.POST)
@@ -542,9 +516,5 @@ e.printStackTrace();
         return "/BackGround/users";
     }
 
-    @RequestMapping(value = "/roles")
-    public String roles()
-    {
-        return "/BackGround/roles";
-    }
+
 }
