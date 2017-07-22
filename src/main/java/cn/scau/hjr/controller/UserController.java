@@ -37,7 +37,7 @@ public class UserController {
 
 
     @RequestMapping(value={"/login"},method = RequestMethod.POST)
-    public String userLogin(HttpServletRequest request, HttpServletResponse response)
+    public String userLogin(HttpServletRequest request, HttpServletResponse response,Model model)
     {
         String password=request.getParameter("password");
         String account=request.getParameter("account");
@@ -47,8 +47,7 @@ public class UserController {
         try{
             subject.login(token);///shiro身份验证
             User user=userService.getUserByAccount(account);
-            HttpSession session=request.getSession();
-            session.setAttribute("currentUser",user);//配置当前用户
+            model.addAttribute("currentUser",user);//配置当前用户
             response.sendRedirect("/admin/index");
         }catch(Exception e){
             e.printStackTrace();

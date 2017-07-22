@@ -86,4 +86,9 @@ public class PermissionServiceImpl implements PermissionService {
         permissionMapper.updateByPrimaryKey(record);
         return 0;
     }
+
+    @Override
+    public Permission selectByPermissionName(String permission) {
+        return permissionMapper.selectByPermissionName(permission);
+    }
 }

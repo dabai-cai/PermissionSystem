@@ -42,12 +42,76 @@ public class AdminController {
 
 
     /**********************************  用户管理 ******************************************/
+
+
+
+
+    //个人信息
+    @RequestMapping(value = "/profile",method = RequestMethod.GET)
+    public String profile(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("userId"));
+        User user=userService.selectByPrimaryKey(id);
+        request.setAttribute("user",user);
+        return "/BackGround/my-profile";
+    }
+
+
+
+    //用户管理
+    @RequestMapping(value = "/users",method = RequestMethod.GET)
+    public String users(HttpServletRequest request, HttpSession session, Model model )
+    {
+        Pager pager=null;
+        int ifindex=0;
+        String key=request.getParameter("searchUser");
+        if(key!=null)session.setAttribute("key",key);
+
+        try{
+            ifindex=Integer.parseInt(request.getParameter("ifindex"));
+        }catch (Exception e)
+        {
+            ifindex=0;
+        }
+        if(ifindex==1)
+        {
+            session.setAttribute("searchbool",new Boolean(false));
+            session.setAttribute("key",null);
+            pager=userService.getUserPager();
+        }
+        else{
+            String searchName=(String)session.getAttribute("key");
+            System.out.println("查询名字:"+key);
+            if(searchName==null)
+            {
+                pager=userService.getUserPager();
+            }
+            else{
+                pager=userService.getSearchPager(searchName);
+            }
+        }
+        model.addAttribute("pager",pager);
+        return "/BackGround/users";
+    }
+
+    @RequestMapping(value = "/users",method = RequestMethod.POST)
+    public String users()
+    {
+        return "/BackGround/users";
+    }
+
+
+
+
+
+
     //用户添加
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public String addUser(HttpServletRequest request)
     {
         String account=request.getParameter("account");
         String password=request.getParameter("password");
+        password=shiroUtil.encode(password,account);
         String username=request.getParameter("username");
        // password= ShiroUtils.encodeToString(password);
         String sex=request.getParameter("sex");
@@ -152,69 +216,34 @@ public class AdminController {
     }
 
 
-//角色分配
-    @RequestMapping(value = "/AssigningRoles")
-    public String AssigningRoles(HttpServletRequest request)
+
+
+    @RequestMapping(value = "/roleUser")
+    public void roleUser(HttpServletRequest request,HttpServletResponse response)
     {
-        int id=Integer.parseInt(request.getParameter("id"));
-        User user=userService.selectByPrimaryKey(id);
-        List<Role> roles=this.getRolesNotForUser(id);
-        Set<Role> roleForUser=this.getRolesForUser(id);
-        request.setAttribute("roleForUser",roleForUser);
-        request.setAttribute("user",user);
-        request.setAttribute("roles",roles);
-        return "/admin/AssigningRoles";
-    }
-    @RequestMapping(value = "permissionAassign")
-    public String permissionAassign(HttpServletRequest request)
-    {
-        int id=Integer.parseInt(request.getParameter("id"));
-        Role role=roleService.selectByPrimaryKey(id);
-        List< Permission> permissions=this.getPermissionNotForRole(id);
-        Set<Permission> permissionsForRole=this.getPermissionsForRole(id);
-        request.setAttribute("permissionsForRole",permissionsForRole);
-        request.setAttribute("role",role);
-        request.setAttribute("permissions",permissions);
-        return "/admin/permissionAassign";
+        String[] roles=request.getParameterValues("role");
+        int userId=Integer.parseInt(request.getParameter("userId"));
+        roleUserService.delByUserId(userId);//删除用户拥有的角色
+        for(String rolename:roles)//重新关联用户和角色
+        {
+            RoleUser roleUser=new RoleUser();
+            Role role=roleService.getRoleByRolename(rolename);
+            roleUser.setRoleId(role.getRoleId());
+            roleUser.setUserId(userId);
+            roleUserService.insert(roleUser);
+        }
+        try {
+            response.sendRedirect("/admin/users");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    //给用户分配角色
-    @RequestMapping(value = "/roleForUser")
-    public String roleForUser(HttpServletRequest request)
-    {
-        int userId=Integer.parseInt(request.getParameter("userId"));
-        int roleId=Integer.parseInt(request.getParameter("roleId"));
-        RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(roleId);
-        roleUser.setUserId(userId);
-        roleUserService.insert(roleUser);
-        return "/BackGround/users";
-    }
-    //删除用户角色
-    @RequestMapping(value = "/roledelUser")
-    public String roleDelUser(HttpServletRequest request)
-    {
-        int userId=Integer.parseInt(request.getParameter("userId"));
-        int roleId=Integer.parseInt(request.getParameter("roleId"));
-        RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(roleId);
-        roleUser.setUserId(userId);
-        roleUserService.delByRoleIdAndUserId(roleId,userId);
-        return "/BackGround/users";
-    }
 
-    //给角色分配权利
-    @RequestMapping(value = "/permissionForRole")
-    public String permissionForRole(HttpServletRequest request)
-    {
-        int roleId=Integer.parseInt(request.getParameter("roleId"));
-        int permissionId=Integer.parseInt(request.getParameter("permissionId"));
-        RolePermission rolePermission=new RolePermission();
-        rolePermission.setPermissionId(permissionId);
-        rolePermission.setRoleId(roleId);
-        rolePermissionService.insert(rolePermission);
-        return "/BackGround/roles";
-    }
+
+    /****************************    角色管理    **********************************************/
+//获取用户分配和未分配角色
+
 
     //删除角色的权利
     @RequestMapping(value = "/delPermissionRole")
@@ -230,9 +259,7 @@ public class AdminController {
         return "/BackGround/roles";
     }
 
-    /*
-    角色管理
-     */
+    //添加角色
     @RequestMapping(value = "/addRole",method = RequestMethod.GET)
     public String addRole()
     {
@@ -255,6 +282,7 @@ public class AdminController {
             System.out.println("角色添加出错");
         }
     }
+    //删除角色
     @RequestMapping(value = "/delRole")
     public void delRole(HttpServletRequest request,HttpServletResponse response)
     {
@@ -271,6 +299,7 @@ public class AdminController {
         }
     }
 
+    //更新角色
     @RequestMapping(value = "/updateRole")
     public void updateRole(HttpServletRequest request,HttpServletResponse response)
     {
@@ -316,91 +345,57 @@ public class AdminController {
 
 
 
-
-    /*
-    获取用户分配的角色
-     */
-    private Set getRolesForUser(int id)
+    @RequestMapping(value = "/rolePermission")
+    public void rolePermission(HttpServletRequest request,HttpServletResponse response)
     {
-        List<RoleUser> roleUsers=roleUserService.selectByUserId(id);
-        Set<Role> roles=new HashSet<Role>();
-        for(RoleUser roleUser:roleUsers)
+        String[] permissions=request.getParameterValues("permission");
+        int id=Integer.parseInt(request.getParameter("roleId"));
+        rolePermissionService.delRolePermissionByRoleId(id);
+        for(String permissionName:permissions)
         {
-            Role role=roleService.getRoleById(roleUser.getRoleId());
-            roles.add(role);
+            Permission permission=permissionService.selectByPermissionName(permissionName);
+            RolePermission rolePermission=new RolePermission();
+            rolePermission.setPermissionId(permission.getPermissionId());
+            rolePermission.setRoleId(id);
+            rolePermissionService.insert(rolePermission);
         }
-        return roles;
+        try {
+            response.sendRedirect("/admin/roles");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    /*
-    获取用户未分配的角色
-     */
-    private List<Role> getRolesNotForUser(int id)
-    {
-        List<Role> allRoles=roleService.getAllRole();
-        Set<Role> rolesForUser=this.getRolesForUser(id);
-        List<Role> roles=new ArrayList<Role>();
-        Set<Role> set =rolesForUser;
-        Set rolenameSet=new HashSet<String>();
-        for(Role role:set){
-            rolenameSet.add(role.getRolename());
-        }
-        for(Role role:allRoles)
-        {
-            String rolename=role.getRolename();
-            if(rolenameSet.add(rolename))
-            {
-                roles.add(role);
-            }
 
-        }
-        return roles;
+//获取角色拥有和没有的权利
+    @RequestMapping(value = "permissionAassign")
+    public String permissionAassign(HttpServletRequest request)
+    {
+        int id=Integer.parseInt(request.getParameter("id"));
+        Role role=roleService.selectByPrimaryKey(id);
+        List< Permission> permissions=this.getPermissionNotForRole(id);
+        Set<Permission> permissionsForRole=this.getPermissionsForRole(id);
+        request.setAttribute("permissionsForRole",permissionsForRole);
+        request.setAttribute("role",role);
+        request.setAttribute("permissions",permissions);
+        return "/admin/permissionAassign";
+    }
+    //给角色分配权利
+    @RequestMapping(value = "/permissionForRole")
+    public String permissionForRole(HttpServletRequest request)
+    {
+        int roleId=Integer.parseInt(request.getParameter("roleId"));
+        int permissionId=Integer.parseInt(request.getParameter("permissionId"));
+        RolePermission rolePermission=new RolePermission();
+        rolePermission.setPermissionId(permissionId);
+        rolePermission.setRoleId(roleId);
+        rolePermissionService.insert(rolePermission);
+        return "/BackGround/roles";
     }
 
-    /*
-    获取角色分配的权利
-     */
-    private Set<Permission> getPermissionsForRole(int id)
-    {
-        List<RolePermission> RolePermissions=rolePermissionService.selectByRoleId(id);
-        Set<Permission> permissions=new HashSet<Permission>();
-        for(RolePermission rolePermission:RolePermissions)
-        {
-            Permission permission=permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
-            permissions.add(permission);
-        }
-        return permissions;
-    }
 
-    /*
-    获取角色未分配的权利
-     */
-
-    private List<Permission> getPermissionNotForRole(int id)
-    {
-        List<Permission> allPermissions=permissionService.getAllPermission();
-        Set<Permission> permissionssForRole=this.getPermissionsForRole(id);
-        List<Permission> Permissions=new ArrayList<Permission>();
-        Set<Permission> set =permissionssForRole;
-        Set rolenameSet=new HashSet<String>();
-        for(Permission permission:set){
-            rolenameSet.add(permission.getPermission());
-        }
-        for(Permission permission:allPermissions)
-        {
-            String permissionName=permission.getPermission();
-            if(rolenameSet.add(permissionName))
-            {
-                Permissions.add(permission);
-            }
-
-        }
-        return Permissions;
-    }
-
-    /*
-    权限管理
-     */
+  /**************************************   权限管理  ********************************************/
     //添加权限
     @RequestMapping(value = "/addPermission")
     public void addPermission(HttpServletRequest request,HttpSession session,HttpServletResponse response)
@@ -463,58 +458,46 @@ e.printStackTrace();
     }
 
 
-    @RequestMapping(value = "/profile",method = RequestMethod.GET)
-    public String profile(HttpServletRequest request)
+    /********************************** 角色分配和权利分配的工具类  *************************************/
+    /*
+    获取角色分配的权利
+     */
+    private Set<Permission> getPermissionsForRole(int id)
     {
-        int id=Integer.parseInt(request.getParameter("userId"));
-        User user=userService.selectByPrimaryKey(id);
-        request.setAttribute("user",user);
-        return "/BackGround/my-profile";
+        List<RolePermission> RolePermissions=rolePermissionService.selectByRoleId(id);
+        Set<Permission> permissions=new HashSet<Permission>();
+        for(RolePermission rolePermission:RolePermissions)
+        {
+            Permission permission=permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
+            permissions.add(permission);
+        }
+        return permissions;
     }
 
+    /*
+    获取角色未分配的权利
+     */
 
-
-    //用户管理
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String users(HttpServletRequest request, HttpSession session, Model model )
+    private List<Permission> getPermissionNotForRole(int id)
     {
-            Pager pager=null;
-            int ifindex=0;
-            String key=request.getParameter("searchUser");
-            if(key!=null)session.setAttribute("key",key);
-
-            try{
-                ifindex=Integer.parseInt(request.getParameter("ifindex"));
-            }catch (Exception e)
+        List<Permission> allPermissions=permissionService.getAllPermission();
+        Set<Permission> permissionssForRole=this.getPermissionsForRole(id);
+        List<Permission> Permissions=new ArrayList<Permission>();
+        Set<Permission> set =permissionssForRole;
+        Set rolenameSet=new HashSet<String>();
+        for(Permission permission:set){
+            rolenameSet.add(permission.getPermission());
+        }
+        for(Permission permission:allPermissions)
+        {
+            String permissionName=permission.getPermission();
+            if(rolenameSet.add(permissionName))
             {
-                ifindex=0;
+                Permissions.add(permission);
             }
-            if(ifindex==1)
-            {
-                session.setAttribute("searchbool",new Boolean(false));
-                session.setAttribute("key",null);
-                pager=userService.getUserPager();
-            }
-            else{
-                String searchName=(String)session.getAttribute("key");
-                System.out.println("查询名字:"+key);
-                if(searchName==null)
-                {
-                    pager=userService.getUserPager();
-                }
-                else{
-                    pager=userService.getSearchPager(searchName);
-                }
-            }
-            model.addAttribute("pager",pager);
-            return "/BackGround/users";
-    }
 
-    @RequestMapping(value = "/users",method = RequestMethod.POST)
-    public String users()
-    {
-        return "/BackGround/users";
+        }
+        return Permissions;
     }
-
 
 }

@@ -1,9 +1,6 @@
 <%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page import="cn.scau.hjr.model.User"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="cn.scau.hjr.model.Pager"%>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -39,7 +36,7 @@
 			</div>
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li><a href="index.jsp">Home</a></li>
+					<li><a href="/admin/index">Home</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="new-user.jsp">新建用户</a></li>
@@ -257,7 +254,7 @@
 
 											</div>
 											<div class="modal-body">
-												年龄：<input name="age" type="text" value="${user.sex}" class="form-control input-lg website-input">
+												年龄：<input name="age" type="text" value="${user.age}" class="form-control input-lg website-input">
 											</div>
 											<div class="modal-body">
 												电话：<input name="phone" type="text" value="${user.phone}" class="form-control input-lg website-input">
@@ -301,7 +298,7 @@
 											性别：<span>${user.sex}</span>
 										</div>
 										<div class="modal-body">
-											年龄：<span>${user.sex}</span>
+											年龄：<span>${user.age}</span>
 										</div>
 										<div class="modal-body">
 											电话：<span>${user.phone}</span>
@@ -321,12 +318,44 @@
 							>删除
 								<span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
+							<!--- test start--->
 
+							<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#roleModal${user.userId}">
+								分配角色
+							</button>
+							<!-- 模态框（Modal） -->
+							<div class="modal fade" id="roleModal${user.userId}" tabindex="-1" role="dialog" aria-labelledby="roleLabel${user.userId}" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												&times;
+											</button>
+											<h4 class="modal-title" id="roleLabel${user.userId}">
+												分配多个角色
+											</h4>
+										</div>
+										<form action="/admin/roleUser?userId=${user.userId}" method="post">
+											<div class="modal-body">
+												<jstl:forEach var="rolename" items="${user.hasRole}"><input type="checkbox" name="role" value="${rolename}"checked>${rolename}
+												</jstl:forEach>
+												<jstl:forEach var="rolename" items="${user.lacksRole}">
+													<input type="checkbox" name="role" value="${rolename}">${rolename}
+												</jstl:forEach>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+												</button>
+												<button type="submit"   class="btn btn-primary">
+													分配
+												</button>
+											</div>
+										</form>
 
-
-							<button onclick="javascript:window.location.href='/admin/AssigningRoles?id=${user.userId}';"
-									class="btn btn-success">分配角色
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal -->
+							</div>
+							<!-------test end -------->
 						</td>
 					</tr>
 					</jstl:forEach>

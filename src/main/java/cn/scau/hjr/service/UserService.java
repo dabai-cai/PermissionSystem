@@ -26,4 +26,5 @@ public interface UserService {
    Set<String> getUserRoles(String account);
    Set<String> getUserPermissions(String account);
    User getUserByAccount(String account);
+   Set<String> getUserLacksRoles(String account);
 }

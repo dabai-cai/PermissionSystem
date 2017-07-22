@@ -1,6 +1,7 @@
 package cn.scau.hjr.model;
 
 import java.util.Date;
+import java.util.Set;
 
 public class User {
     private Integer userId;
@@ -19,6 +20,24 @@ public class User {
 
     private String  phone;
 
+    public Set<String> getHasRole() {
+        return hasRole;
+    }
+
+    public void setHasRole(Set<String> hasRole) {
+        this.hasRole = hasRole;
+    }
+
+    public Set<String> getLacksRole() {
+        return lacksRole;
+    }
+
+    public void setLacksRole(Set<String> lacksRole) {
+        this.lacksRole = lacksRole;
+    }
+
+    private Set<String> hasRole;
+    private Set<String> lacksRole;
     public Integer getUserId() {
         return userId;
     }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -127,7 +128,10 @@
 
 						  </div><!-- /.modal-content -->
 					  </div><!-- /.modal -->
-				  </div>
+				  </div><!---  modal end --->
+
+
+
 				  <thread>
 					  <tr>
 						  <th>
@@ -208,6 +212,56 @@
                               <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delRole?id=${role.roleId}';"
                               >删除
                                   <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+
+
+                              <!---  test modal start ------>
+
+
+                              <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#permissionModal${role.roleId}">
+                                  分配权限
+                              </button>
+                              <!-- 模态框（Modal） -->
+                              <div class="modal fade" id="permissionModal${role.roleId}" tabindex="-1" role="dialog" aria-labelledby="permissionLabel${role.roleId}" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                  &times;
+                                              </button>
+                                              <h4 class="modal-title" id="permissionLabel${role.roleId}">
+                                                  分配多个权限
+                                              </h4>
+                                          </div>
+                                          <form action="/admin/rolePermission?roleId=${role.roleId}" method="post">
+                                              <div class="modal-body">
+
+                                             <jstl:forEach var="permissionName" items="${role.hasPermission}">
+                                                 <input  type="checkbox" name="permission" value="${permissionName}" checked>${permissionName}
+                                             </jstl:forEach>
+
+<jstl:forEach var="lackPermission" items="${role.lacksPermission}">
+    <input type="checkbox" name="permission" value="${lackPermission}">${lackPermission}
+</jstl:forEach>
+                                              </div>
+                                              <div class="modal-footer">
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                  </button>
+                                                  <button type="submit"   class="btn btn-primary">
+                                                      分配
+                                                  </button>
+                                              </div>
+                                          </form>
+
+                                      </div><!-- /.modal-content -->
+                                  </div><!-- /.modal -->
+                              </div>
+
+                              <!-- test end    -->
+
+
+
+
+
 
                               <button onclick="javascript:window.location.href='/admin/permissionAassign?id=${role.roleId}';"
                                       class="btn btn-success">权限分配

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public interface RoleUserService {
     RoleUser selectByUserIdAndRoleId(RoleUser roleUser);
     void delByUserId(int userId);
-    void insertRoleUser(RoleUser roleUser);
     ArrayList<RoleUser> selectByUserId(int userId);
     int insert(RoleUser record);
     void delByRoleId(int roleId);

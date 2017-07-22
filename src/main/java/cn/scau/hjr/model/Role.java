@@ -1,5 +1,7 @@
 package cn.scau.hjr.model;
 
+import java.util.Set;
+
 public class Role {
     private Integer roleId;
 
@@ -14,6 +16,24 @@ public class Role {
     private String aboutRole;
 
     private String rolename;
+    private Set<String> hasPermission;
+    private Set<String> lacksPermission;
+
+    public Set<String> getHasPermission() {
+        return hasPermission;
+    }
+
+    public void setHasPermission(Set<String> hasPermission) {
+        this.hasPermission = hasPermission;
+    }
+
+    public Set<String> getLacksPermission() {
+        return lacksPermission;
+    }
+
+    public void setLacksPermission(Set<String> lacksPermission) {
+        this.lacksPermission = lacksPermission;
+    }
 
     public Integer getRoleId() {
         return roleId;

@@ -119,7 +119,8 @@ public class UserServiceImpl implements UserService {
             userList=userDao.getUserListByLimitNumber(start,pagesize);
             for(User user:(ArrayList<User>)userList)
             {
-            //    user.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
+                user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
+                user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
             }
             pager.setpagerData(userList);
 
@@ -171,7 +172,13 @@ public class UserServiceImpl implements UserService {
             pager.setTotalPage(totalPage);
             pager.setTotalGuest(totalGuest);
             pager.setStart(start);
+        for(User user:userList)
+        {
+            user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
+            user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
+        }
             pager.setpagerData(userList);
+
             //只取当前页面的留言，并存到List中
         return pager;
     }
@@ -188,6 +195,8 @@ public class UserServiceImpl implements UserService {
         }
         return roles;
     }
+
+
 
     @Override
     public Set<String> getUserPermissions(String account) {
@@ -212,6 +221,22 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         user=userDao.getUserByAccount(account);
         return user;
+    }
+
+    @Override
+    public Set<String> getUserLacksRoles(String account) {
+        Set<String> lacksRoles=new HashSet<String>();
+        Set<String> hasRoles=this.getUserRoles(account);
+        ArrayList<Role> roles=this.roleMapper.getAllRole();
+        for(Role role:roles)
+        {
+            String rolename=role.getRolename();
+            if(!hasRoles.contains(rolename))
+            {
+                lacksRoles.add(rolename);
+            }
+        }
+        return lacksRoles;
     }
 
 

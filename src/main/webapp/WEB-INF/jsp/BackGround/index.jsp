@@ -1,8 +1,6 @@
-﻿<%@ page import="cn.scau.hjr.model.User" %>
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
-<%  User currentUser=(User)session.getAttribute("currentUser"); %>
 <html lang="en">
   <head>
     <meta charset="utf-8">  
@@ -38,7 +36,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="/admin/profile?userId=<%=currentUser.getUserId()%>">个人资料</a></li>
+			  <li><a href="/admin/profile?userId=${currentUser.userId}">个人资料</a></li>
               <li class="divider"></li>
               <li><a href="#">退出</a></li>
             </ul>

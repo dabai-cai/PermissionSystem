@@ -28,11 +28,6 @@ public class RoleUserServiceImpl implements RoleUserService {
     }
 
     @Override
-    public void insertRoleUser(RoleUser roleUser) {
-        roleUserMapper.insert(roleUser);
-    }
-
-    @Override
     public ArrayList<RoleUser> selectByUserId(int userId) {
         ArrayList<RoleUser> roles=roleUserMapper.selectByUserId(userId);
         return roles;
