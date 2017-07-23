@@ -110,17 +110,19 @@
 									  新建一个角色
 								  </h4>
 							  </div>
-							  <form id="roleform">
+							  <form id="roleform" method="post" action="/admin/addRole">
 								  <div class="modal-body">
 									  角色名：<input name="rolename" type="text" placeholder="如：老师" class="form-control input-lg website-input">
-									  角色描述：<input name="roledescribe" type="text" placeholder="如:祖国的花朵" class="form-control input-lg website-input">
+                                  </div>
+                                  <div class="modal-body">
+									  角色描述：<input name="aboutRole" type="text" placeholder="如:祖国的花朵" class="form-control input-lg website-input">
 								  </div>
 
 
 								  <div class="modal-footer">
 									  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
 									  </button>
-									  <button type="button"  id="roleBtn"  class="btn btn-primary">
+									  <button type="submit"  id="roleBtn"  class="btn btn-primary">
 										  新建
 									  </button>
 								  </div>
@@ -214,10 +216,8 @@
                                   <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
 
-                              <!---  test modal start ------>
 
-
-                              <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#permissionModal${role.roleId}">
+                              <button class="btn btn-success" data-toggle="modal" data-target="#permissionModal${role.roleId}">
                                   分配权限
                               </button>
                               <!-- 模态框（Modal） -->
@@ -256,16 +256,6 @@
                                   </div><!-- /.modal -->
                               </div>
 
-                              <!-- test end    -->
-
-
-
-
-
-
-                              <button onclick="javascript:window.location.href='/admin/permissionAassign?id=${role.roleId}';"
-                                      class="btn btn-success">权限分配
-                                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                           </td>
                       </tr>
                   </jstl:forEach>
@@ -314,66 +304,6 @@
 			$(this).children('i').removeClass('icon-white');
 		});
 	});
-	</script>
-
-	<script type='text/javascript'>
-        var form = $('#roleform');
-      //  $(document).ready(function () {
-
-        form.bootstrapValidator({
-            message: '输入值不合法',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                rolename: {
-                    message: '角色名不合法',
-                    validators: {
-                        notEmpty: {
-                            message: '用户名不能为空'
-                        },
-                        stringLength: {
-                            min: 1,
-                            max: 30,
-                            message: '请输入3到30个字符'
-                        }
-                    }
-                },
-                roledescribe: {
-                    message: '角色描述不合法',
-                    validators: {
-                        notEmpty: {
-                            message: '角色描述不能为空'
-                        },
-                        stringLength: {
-                            min: 1,
-                            max: 30,
-                            message: '请输入1到30个字符'
-                        }
-                    }
-                }
-
-            }
-     //   });
-         });
-        $("#roleBtn").click(function () {
-//进行表单验证
-            var bv = form.data('bootstrapValidator');
-            bv.validate();
-            if(bv.isValid())
-            {
-                $.ajax({
-                    type:"post",
-                    url:"/admin/addRole",
-                    data:$("#roleform").serialize(),
-                    success:function(data){
-                        $('#myModal').modal('hide')
-                    }
-                })
-            }
-        });
 	</script>
   </body>
 </html>
