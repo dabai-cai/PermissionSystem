@@ -7,6 +7,7 @@ import cn.scau.hjr.service.RolePermissionService;
 import cn.scau.hjr.service.RoleService;
 import cn.scau.hjr.service.UserService;
 import cn.scau.hjr.model.User;
+import cn.scau.hjr.util.shiroUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,13 +42,9 @@ public class UserServiceImpl implements UserService {
         User user=userDao.selectByAccountOrUsername(record);
         if(user==null)
         {
-            //record.setPassword(ShiroUtils.encodeToString(user.getPassword()));//加密
+            record.setPassword(shiroUtil.encode(record.getPassword(),record.getAccount()));//加密
             userDao.insert(record);//添加用户
 
-            RoleUser roleUser=new RoleUser();
-            roleUser.setUserId(record.getUserId());
-            roleUser.setRoleId(2);//普通用户id
-            roleUserMapper.insert(roleUser);//用户关联角色
             return true;
 
         }

