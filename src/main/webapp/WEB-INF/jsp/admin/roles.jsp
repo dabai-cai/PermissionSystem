@@ -197,12 +197,12 @@
                                               </h4>
                                           </div>
 
-                                          <form method="post" action="/admin/updateRole?id=${role.roleId}&pageindex=${pager.pageOffset}" >
+                                          <form method="post" action="/admin/updateRole?roleId=${role.roleId}&pageindex=${pager.pageOffset}" >
                                               <div class="modal-body">
                                                   角色名：<input name="rolename" type="text" value="${role.rolename}" class="form-control input-lg website-input">
                                               </div>
                                               <div class="modal-body">
-                                                  角色描述：<input name="describe" type="text" value="${role.aboutRole}" class="form-control input-lg website-input">
+                                                  角色描述：<input name="aboutRole" type="text" value="${role.aboutRole}" class="form-control input-lg website-input">
                                               </div>
                                               <div class="modal-footer">
                                                   <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -274,7 +274,7 @@
                               </li>
                               <jstl:forEach var="i" begin="1" end="${pager.totalPage}">
                                   <li>
-                                      <a href="/admin/roles?pageindex=${pager.pageOffset}">${i}</a>
+                                      <a href="/admin/roles?pageindex=${i}">${i}</a>
                                   </li>
                               </jstl:forEach>
                           </ul>

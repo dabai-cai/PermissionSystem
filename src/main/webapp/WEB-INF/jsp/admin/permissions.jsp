@@ -15,6 +15,7 @@
     <![endif]-->
 </head>
 <body>
+
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
@@ -158,7 +159,7 @@
                                 权限url
                             </th>
                             <th>
-                                管理员操作
+                                管理员操作${errorMsg}
                             </th>
                         </tr>
                     </thread>
@@ -199,9 +200,9 @@
                                                 </h4>
                                             </div>
 
-                                            <form method="post" action="/admin/updatePermission?id=${permission.permissionId}&pageindex=${pager.pageOffset}" >
+                                            <form method="post" action="/admin/updatePermission?permissionId=${permission.permissionId}&pageindex=${pager.pageOffset}" >
                                                 <div class="modal-body">
-                                                    权限名：<input name="permissionName" type="text" value="${permission.permission}" class="form-control input-lg website-input">
+                                                    权限名：<input name="permission" type="text" value="${permission.permission}" class="form-control input-lg website-input">
                                                 </div>
                                                 <div class="modal-body">
                                                     权限Url：<input name="url" type="text" value="${permission.url}" class="form-control input-lg website-input">
@@ -260,6 +261,8 @@
     </footer>
 
 </div>
+
+
 
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>

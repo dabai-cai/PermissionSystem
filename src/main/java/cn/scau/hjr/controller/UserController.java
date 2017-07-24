@@ -32,10 +32,9 @@ public class UserController {
 
 
     @RequestMapping(value={"/login"},method = RequestMethod.POST)
-    public String userLogin(HttpServletRequest request,Model model)
+    public String userLogin(String password,String account,Model model)
     {
-        String password=request.getParameter("password");
-        String account=request.getParameter("account");
+
         password=shiroUtil.encode(password,account);//shiro MD5 加密匹配
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(account, password);

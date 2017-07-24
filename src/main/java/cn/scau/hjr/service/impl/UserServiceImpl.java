@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,11 +45,11 @@ public class UserServiceImpl implements UserService {
         {
             record.setPassword(shiroUtil.encode(record.getPassword(),record.getAccount()));//加密
             userDao.insert(record);//添加用户
-
             return true;
 
         }
         else{
+          //  JOptionPane.showMessageDialog(null, "input error format", "error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -137,6 +138,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateByPrimaryKey(User record) {
+        User user=userDao.selectByPrimaryKey(record.getUserId());
+        record.setPassword(shiroUtil.encode(record.getPassword(),user.getAccount()));//加密
         userDao.updateByPrimaryKey(record);
         return 0;
     }

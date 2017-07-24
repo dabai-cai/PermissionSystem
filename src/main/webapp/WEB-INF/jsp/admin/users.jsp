@@ -90,19 +90,27 @@
 				</ul>
 			</div>
 		</div>
+
 		<div class="span9">
 			<div class="row-fluid">
 				<div class="page-header">
 					<h1>Users <small>All users</small></h1>
 				</div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form class="form-search"  role="search" action="/admin/users"    >
+                            <input class="input-medium search-query" type="text"  name="keyName"    placeholder="输入关键字查询"  value="${keyName}"  /> <button type="submit"  class="btn btn-primary">查找</button>
+                        </form>
+                        <form method="post" action="/admin/users">
+                            <input name="keyName" value="null" type="hidden">
+                            <button type="submit" class="btn btn-primary"> 重置</button>
+                        </form>
+                    </div>
+
+                </div>
 				<!-- 整合开始--->
-				<form class="navbar-form navbar-left" role="search" action="/admin/users"  >
-					<div class="form-group">
-						<input class="form-control" type="text"  name="searchUser"    placeholder="输入关键字查看用户"   />
-					</div> <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-				</form>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加用户
+                   </button>
 				<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -240,7 +248,7 @@
 											</h4>
 										</div>
 
-										<form method="post" action="/admin/updateUser?id=${user.userId}&pageindex=${pager.pageOffset}" id="userform">
+										<form method="post" action="/admin/updateUser?userId=${user.userId}&pageindex=${pager.pageOffset}&keyName=${keyName}" id="userform">
 											<div class="modal-body">
 												用户名：<input name="username" type="text" value="${user.username}" class="form-control input-lg website-input">
 											</div>
@@ -320,7 +328,7 @@
 							</div>
 
 
-							<button class="btn btn-danger"  onclick="javascript:window.location.href='/admin/delUser?id=${user.userId}&pageindex=${pager.pageOffset}';"
+							<button class="btn btn-danger"  onclick="javascript:window.location.href='/admin/delUser?id=${user.userId}&pageindex=${pager.pageOffset}&keyName=${keyName}';"
 							>删除
 								<span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
 
@@ -341,7 +349,7 @@
 												分配多个角色
 											</h4>
 										</div>
-										<form action="/admin/roleUser?userId=${user.userId}&pageindex=${pager.pageOffset}" method="post">
+										<form action="/admin/roleUser?userId=${user.userId}&pageindex=${pager.pageOffset}&keyName=${keyName}" method="post">
 											<div class="modal-body">
 												<jstl:forEach var="rolename" items="${user.hasRole}"><input type="checkbox" name="role" value="${rolename}"checked>${rolename}
 												</jstl:forEach>
@@ -372,12 +380,12 @@
 
 							<ul class="pagination">
 								<li>
-									<a href="/admin/users?ifindex=1">首页</a>
+									<a href="/admin/users?keyName=${keyName}">首页</a>
 								</li>
 								<jstl:forEach var="i" begin="1" end="${pager.totalPage}">
 
 									<li>
-										<a href="/admin/users?pageindex=${i}">${i}</a>
+										<a href="/admin/users?pageindex=${i}&keyName=${keyName}">${i}</a>
 									</li>
 								</jstl:forEach>
 							</ul>
@@ -496,6 +504,7 @@
         }
     });
 </script>
+<script
 </body>
 </html>
 <SCRIPT Language=VBScript><!--

@@ -36,15 +36,33 @@
       #{age,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR})
   </insert>
 
-
+  <!--    <set>
+        <if test="studentName!=null and studentName!='' ">
+            STUDENT_TBL.STUDENT_NAME = #{studentName},
+        </if>
+        <if test="studentSex!=null and studentSex!='' ">
+            STUDENT_TBL.STUDENT_SEX = #{studentSex},
+        </if>
+        <if test="studentBirthday!=null ">
+            STUDENT_TBL.STUDENT_BIRTHDAY = #{studentBirthday},
+        </if>
+        <if test="classEntity!=null and classEntity.classID!=null and classEntity.classID!='' ">
+            STUDENT_TBL.CLASS_ID = #{classEntity.classID}
+        </if>
+    </set>       -->
   <update id="updateByPrimaryKey" parameterType="cn.scau.hjr.model.User" >
     update user
-    set
-      password = #{password,jdbcType=VARCHAR},
-      username = #{username,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
-      phone = #{phone,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR}
+    <set>
+        password = #{password,jdbcType=VARCHAR},
+        username = #{username,jdbcType=VARCHAR},
+        <if test="age!=null and age!=''">
+            age = #{age,jdbcType=INTEGER},
+        </if>
+        <if test="phone!=null and phone!=''">
+            phone = #{phone,jdbcType=VARCHAR},
+        </if>
+        sex = #{sex,jdbcType=VARCHAR}
+    </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 
@@ -74,12 +92,12 @@
 
   <!--模糊查找用户    -->
   <select id="searchUser"  resultMap="BaseResultMap" >
-    select * from user  where username LIKE CONCAT(CONCAT('%', #{0}), '%')  ORDER by user_id DESC limit #{1},#{2}
+    select * from user  where username  LIKE CONCAT(CONCAT('%', #{0}), '%')  ORDER by user_id DESC limit #{1},#{2}
   </select>
 
   <!---  模糊查找用户的个数   int getSearchUserCount(String key)-->
   <select id="getSearchUserCount" parameterType="java.lang.String"  resultType="java.lang.Integer">
-    select count(*) from user   where username LIKE '%${value}%'
+    select count(*) from user   where username   LIKE '%${value}%'
   </select>
 
   <!--  User getUserByAccount(String account);-->
