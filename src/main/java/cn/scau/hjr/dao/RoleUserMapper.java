@@ -28,4 +28,6 @@ public interface RoleUserMapper {
     ArrayList<RoleUser> selectByUserId(@Param("userId")int id);
     void delByRoleId(@Param("roleId")int roleId);
     void delByRoleIdAndUserId(@Param("roleId")int roleId,@Param("userId") int userId);
+    Integer[] getUserGroupByRoleId(@Param("roleId") int roleId,@Param("start")int start,@Param("pagesize") int pagesize);
+    int getUserRoleNumber(@Param("roleId") int roleId);
 }

@@ -311,6 +311,11 @@
 		});
 	});
 	</script>
+  <script>
+      if('${errorMsg}'!=null&&'${errorMsg}'!="") {
+          alert('${errorMsg}')
+      }
+  </script>
   </body>
 </html>
 <SCRIPT Language=VBScript><!--

@@ -104,4 +104,27 @@
   <select id="getUserByAccount" parameterType="java.lang.String"  resultMap="BaseResultMap">
     select * from user  where account = #{account,jdbcType=VARCHAR}
   </select>
+
+    <!--getStudentGroup -->
+    <select id="getStudentGroup" resultMap="BaseResultMap">
+        select * from user  where user_id in
+        <foreach collection="array" item="studentIds"  open="(" separator="," close=")">
+        #{studentIds}
+        </foreach> order by user_id DESC
+    </select>
+
+
+    <!---  根据角色类型模糊查找用户的个数   int getSearchUserCount(String key)-->
+    <select id="searchUserByRole"  resultMap="BaseResultMap">
+        select * from user,role_user  where username   LIKE CONCAT(CONCAT('%', #{0}), '%')
+         and user.user_id=role_user.user_id
+         and role_id=#{1} order by user.user_id desc limit #{2},#{3}
+    </select>
+
+    <!---  根据角色类型模糊查找用户的个数   int getSearchUserCount(String key)-->
+    <select id="searchUserByRoleCount"  resultType="java.lang.Integer">
+        select count(*) from user,role_user  where username   LIKE CONCAT(CONCAT('%', #{0}), '%')
+        and user.user_id=role_user.user_id
+        and role_id=#{1}
+    </select>
 </mapper>

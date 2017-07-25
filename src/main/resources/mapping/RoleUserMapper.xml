@@ -28,31 +28,6 @@
     values ( #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.scau.hjr.model.RoleUser" >
-    insert into role_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="roleId != null" >
-        role_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="roleId != null" >
-        #{roleId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.scau.hjr.model.RoleUser" >
     update role_user
     <set >
@@ -99,4 +74,15 @@
     delete from role_user
     where role_id = #{roleId,jdbcType=INTEGER} and user_id=#{userId}
   </delete>
+
+    <!-- getUserGroupByRoleId  -->
+    <select id="getUserGroupByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        select user_id from role_user where role_id=#{roleId} order by user_id desc limit #{start},${pagesize}
+    </select>
+
+    <!--- getUserRoleNumber  -->
+    <select id="getUserRoleNumber" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        select count(*) from role_user where role_id=#{roleId}
+    </select>
+
 </mapper>

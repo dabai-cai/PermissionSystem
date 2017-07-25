@@ -48,4 +48,6 @@ public class RoleUserServiceImpl implements RoleUserService {
     public void delByRoleIdAndUserId(int roleId, int userId) {
         roleUserMapper.delByRoleIdAndUserId(roleId,userId);
     }
+
+
 }

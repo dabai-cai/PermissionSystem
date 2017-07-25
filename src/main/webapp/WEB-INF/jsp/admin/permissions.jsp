@@ -277,6 +277,11 @@
             });
     });
 </script>
+<script>
+    if('${validateMsg}'!=null&&'${validateMsg}'!='') {
+        alert('${validateMsg}')
+    }
+</script>
 </body>
 </html>
 <SCRIPT Language=VBScript><!--

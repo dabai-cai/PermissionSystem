@@ -28,4 +28,8 @@ public interface UserMapper {
     ArrayList<User> searchUser(String key,int start,int pagesize);
     int getSearchUserCount(String key);
     User getUserByAccount(String account);
+    ArrayList<User> getStudentGroup(@Param("array") Integer[] studentIds);
+    ArrayList<User> searchUserByRole(String keyName,int roleId,int start,int pagesize);
+    int searchUserByRoleCount(String keyName,int roleId);
+    //@Param("start")int start,@Param("pagesize") int pagesize,
 }

@@ -49,5 +49,12 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/test")
+    public String test()
+    {
+        userService.getSearchUserPageByRole("2",17);
+        return "";
+    }
+
 
 }

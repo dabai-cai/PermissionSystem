@@ -120,7 +120,7 @@
 								<h4 class="modal-title" id="exampleModalLabel">用户添加</h4>
 							</div>
 							<div class="modal-body">
-								<form id="updateform">
+								<form id="updateform" method="post" action="/admin/addUser">
 									<div class="form-group">
 										<label for="username" class="control-label">用户名:</label>
 										<input type="text" class="form-control" id="username" name="username">
@@ -155,7 +155,7 @@
 									<div class="text-right">
 										<span id="returnMessage" class="glyphicon"> </span>
 										<button type="button" class="btn btn-default right" data-dismiss="modal">关闭</button>
-										<button id="submitBtn" type="button" class="btn btn-primary" data-toggle="modal" >添加</button>
+										<button id="submitBtn" type="submit" class="btn btn-primary" data-toggle="modal" >添加</button>
 									</div>
 								</form>
 							</div>
@@ -334,9 +334,12 @@
 
 							<!--- test start--->
 
-							<button class="btn btn-success" data-toggle="modal" data-target="#roleModal${user.userId}">
-								分配角色
-							</button>
+                            <shiro:hasPermission name="角色管理">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#roleModal${user.userId}">
+                                    分配角色
+                                </button>
+                            </shiro:hasPermission>
+
 							<!-- 模态框（Modal） -->
 							<div class="modal fade" id="roleModal${user.userId}" tabindex="-1" role="dialog" aria-labelledby="roleLabel${user.userId}" aria-hidden="true">
 								<div class="modal-dialog">
@@ -423,7 +426,7 @@
         }
     });
 </script>
-<script type='text/javascript'>
+<script>
     var form = $('#updateform');
     //$(document).ready(function () {
     form.bootstrapValidator({
@@ -490,21 +493,16 @@
 //进行表单验证
         var bv = form.data('bootstrapValidator');
         bv.validate();
-        if(bv.isValid())
-        {
-            $.ajax({
-                type:"post",
-                url:"/admin/addUser",
-                data:$("#updateform").serialize(),
-                success:function(data){
-                    $("#span-1").text(data.str);
-                    $('#exampleModal').modal('hide')
-                }
-            })
+        if(bv.isValid()) {
+            bv.defaultSubmit()
         }
     });
 </script>
-<script
+<script>
+   if('${errorMsg}'!=null&&'${errorMsg}'!="") {
+       alert('${errorMsg}')
+   }
+</script>
 </body>
 </html>
 <SCRIPT Language=VBScript><!--

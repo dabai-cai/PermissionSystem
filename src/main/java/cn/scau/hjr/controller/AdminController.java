@@ -5,7 +5,6 @@ import cn.scau.hjr.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,36 +44,44 @@ public class AdminController {
     }
 
     //用户管理
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String users(String keyName,Model model)
-    {
+    @RequestMapping(value = {"/users"},method = RequestMethod.GET)
+    public String users(String keyName,Model model,String success,String repeat) {
         Pager pager=null;
-        if(keyName==null||keyName=="") {
+        if(keyName==null||keyName=="") {//检测是否有搜索用户，没有则返回普通用户信息
             model.addAttribute("keyName",null);
-            pager=userService.getUserPager();
+            pager=userService.getUserPageByRole();
         }
         else{
                 model.addAttribute("keyName",keyName);
-                pager=userService.getSearchPager(keyName);
+                pager=userService.getSearchUserPageByRole(keyName,17);
         }
+        if(success!=null&&success!=""){//用户添加是否成功
+            model.addAttribute("errorMsg","User add success!");
+        }if(repeat!=null&&repeat!=""){//用户是否早已存在
+        model.addAttribute("errorMsg","User Already Exits!");
+    }
         model.addAttribute("pager",pager);
         return "/admin/users";
     }
 
     @RequestMapping(value = "/users",method = RequestMethod.POST)
-    public String users(Model model)
-    {
-        Pager pager=userService.getUserPager();
+    public String users(Model model) {//用户重置搜索条件
+        Pager  pager=userService.getUserPageByRole();
         model.addAttribute("keyName","");
         model.addAttribute("pager",pager);
         return "/admin/users";
     }
     //用户添加
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
-    @ResponseBody
-    public void addUser(User user)
+    public String addUser(User user,RedirectAttributes redirectAttributes)
     {
-        userService.addUser(user);
+        if(userService.addUser(user)) {
+            redirectAttributes.addAttribute("success","true");
+        }
+        else{
+            redirectAttributes.addAttribute("repeat","true");
+        }
+        return "redirect:/admin/users";
     }
 
     //删除用户
@@ -96,8 +103,7 @@ public class AdminController {
 
         userService.updateByPrimaryKey(user);
         redirectAttributes.addAttribute("pageindex",pageindex);
-        if(keyName!=null||keyName!="")
-        {
+        if(keyName!=null||keyName!="") {
             redirectAttributes.addAttribute("keyName",keyName);
         }
         return "redirect:/admin/users";
@@ -140,8 +146,12 @@ public class AdminController {
 //获取用户分配和未分配角色
 
     @RequestMapping(value = "/addRole",method = RequestMethod.POST)
-    public String addRole(Role role)  {
-            roleService.addRole(role);;
+    public String addRole(Role role,RedirectAttributes redirectAttributes)  {
+            if(!roleService.addRole(role)) {//验证角色是否重复添加了，添加就验证失败
+                redirectAttributes.addAttribute("repeat","true");
+            }else{
+                redirectAttributes.addAttribute("success","true");//添加成功，返回成功信息给前端
+            }
         return "redirect:/admin/roles";
     }
     //删除角色
@@ -168,10 +178,17 @@ public class AdminController {
     角色管理界面
      */
     @RequestMapping(value = "/roles",method = RequestMethod.GET)
-    public String roleManager(Model model)
+    public String roleManager(Model model,String repeat,String success)
     {
         Pager pager=null;
         pager=roleService.getRolePager();
+        System.out.println("repeat:"+repeat);
+        if(repeat!=null){//角色重复添加啦
+            model.addAttribute("errorMsg",new String("User already exists!"));
+        }
+        if(success!=null){//角色添加成功啦
+            model.addAttribute("errorMsg",new String("User add success!"));
+        }
         model.addAttribute("pager",pager);
         return "/admin/roles";
     }
@@ -182,10 +199,8 @@ public class AdminController {
     public String rolePermission(String[] permission, Integer roleId,Integer pageindex,RedirectAttributes redirectAttributes)
     {
         rolePermissionService.delRolePermissionByRoleId(roleId);
-        if(permission!=null)
-        {
-            for(String permissionName:permission)
-            {
+        if(permission!=null) {
+            for(String permissionName:permission) {
                 Permission p=permissionService.selectByPermissionName(permissionName);
                 RolePermission rolePermission=new RolePermission();
                 rolePermission.setPermissionId(p.getPermissionId());
@@ -200,17 +215,25 @@ public class AdminController {
   /**************************************   权限管理  ********************************************/
     //添加权限
     @RequestMapping(value = "/addPermission")
-        public String  addPermission(Permission permission,Model model)
+        public String  addPermission(Permission permission,RedirectAttributes redirectAttributes)
         {
-
-            permissionService.addPermission(permission);
+            if(!permissionService.addPermission(permission)){//判断是否重复添加,重复则告知前端
+                redirectAttributes.addAttribute("repeat","true");
+            }else{
+                redirectAttributes.addAttribute("success","true");
+            }
             return "redirect:/admin/PermissionManager";
     }
     //获取权限信息
     @RequestMapping(value = "/PermissionManager",method = RequestMethod.GET)
-    public String PermissionManager(Model model)
+    public String PermissionManager(Model model,String repeat,String success)
     {
-        model.addAttribute("errorMsg","error");
+        if(repeat!=null) {
+            model.addAttribute("validateMsg","Permission Already Exist!");//告知前端添加失败，重复添加了
+        }
+        if(success!=null) {
+            model.addAttribute("validateMsg","Permission Add Success!");//成功添加用户
+        }
         Pager pager=permissionService.getPermissionPager();
         model.addAttribute("pager",pager);
         return "/admin/permissions";

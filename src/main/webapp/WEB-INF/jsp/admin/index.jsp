@@ -50,7 +50,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">录入学生</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">学生管理</a></li>
+                            <li><a href="/admin/users">学生管理</a></li>
                         </ul>
                     </li>
                 </shiro:hasPermission>
