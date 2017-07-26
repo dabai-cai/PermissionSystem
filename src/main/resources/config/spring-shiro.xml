@@ -42,10 +42,10 @@
             <value>
                 /user/login=anon
                 /admin/index=authc
-                /admin/PermissionManager=perms[权限管理]
-                /admin/users=perms[用户管理]
-                /admin/roles=perms[角色管理]
-            </value>
+            /admin/PermissionManager=perms[权限管理]
+            /admin/users=perms[用户管理]
+            /admin/roles=perms[角色管理]
+        </value>
         </property>
     </bean>
 

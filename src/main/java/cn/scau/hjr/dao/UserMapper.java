@@ -21,7 +21,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
     User getUserByAccountAndPassword(User user);
-    User selectByAccountOrUsername(User user);
+    User selectByAccount(User user);
     int getAllUserNumber();
     ArrayList<User> getAllUser();
     ArrayList<User> getUserListByLimitNumber(@Param("start") int start, @Param("pagesize") int pagesize);

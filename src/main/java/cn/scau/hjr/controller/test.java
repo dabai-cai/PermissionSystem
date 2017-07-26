@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public class test {
     public static void main(String[] args) {
-        System.out.println(shiroUtil.encode("1","651839985 dsf"));
+        System.out.println(shiroUtil.encode("1","1"));
         JOptionPane.showMessageDialog(null, "input error format", "error", JOptionPane.ERROR_MESSAGE);
     }
 }

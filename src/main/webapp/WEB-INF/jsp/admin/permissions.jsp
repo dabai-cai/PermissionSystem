@@ -5,13 +5,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>角色管理</title>
+    <title>权限管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/resources/css/bootstrap.css" rel="stylesheet">
     <link href="/resources/css/site.css" rel="stylesheet">
     <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="/resources/js/html5.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -85,7 +85,7 @@
                     <li><a href="user-stats.html">用户</a></li>
                     <li><a href="visitor-stats.html">游客</a></li>
                     <li class="nav-header"><i class="icon-user"></i> Profile</li>
-                    <li><a href="/admin/profile">个人信息</a></li>
+                    <li><a href="/user/profile">个人信息</a></li>
                     <li><a href="#">设置</a></li>
                     <li><a href="/">登出</a></li>
                 </ul>
@@ -100,49 +100,65 @@
 
 
 
+                <!-- 整合开始--->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加权限
+                </button>
+                <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">权限添加</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateform" method="post" action="/admin/addPermission">
+                                    <div class="form-group">
+                                        <label  class="control-label">权利名：</label>
+                                        <input type="text" class="form-control" name="permission" placeholder="教师入口" >
+                                    </div>
+                                    <div   class="form-group">
+                                        <label  class="control-label">Url：</label>
+                                        <input name="url" type="text" placeholder="/admin/teacher">
+                                    </div>
+                                    <div class="text-right">
+                                        <span id="returnMessage" class="glyphicon"> </span>
+                                        <button type="button" class="btn btn-default right" data-dismiss="modal">关闭</button>
+                                        <button id="submitBtn" type="submit" class="btn btn-primary" data-toggle="modal" >添加</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <table class="table table-bordered">
                     <caption>
                         管理员权限
                     </caption>
-                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                        新建权利
-                    </button>
-                    <!-- 模态框（Modal） -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <!---添加后的modal   -->
+                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myaddModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                         &times;
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">
-                                        新建一个权利
+                                    <h4 class="modal-title" id="myaddModal">
+                                        添加
                                     </h4>
-                                </div>
-                                <form method="post" action="/admin/addPermission">
-
                                     <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="permission" class="control-label">权利名：</label>
-                                            <input type="text" class="form-control" id="permission" name="permission" placeholder="教师入口" >
-                                        </div>
-                                        <div   class="form-group">
-                                            <label for="url" class="control-label">Url：</label>
-                                            <input name="url" type="text" id="url" placeholder="/admin/teacher">
-                                        </div>
+                                        ${validateMsg}
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">
-                                            新建
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div><!-- /.modal-content -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content glyphicon glyphicon-pencil -->
                         </div><!-- /.modal -->
                     </div>
+
 
                     <thread>
                         <tr>
@@ -263,9 +279,58 @@
 </div>
 
 
-
 <script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+<script>
+    var form = $('#updateform');
+    //$(document).ready(function () {
+    form.bootstrapValidator({
+        message: '输入值不合法',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            permission: {
+                message: '权限名不合法',
+                validators: {
+                    notEmpty: {
+                        message: '权限名不能为空'
+                    },
+                    stringLength: {
+                        min: 3,
+                        max: 30,
+                        message: '请输入2到30个字符'
+                    }
+                }
+            }, url: {
+                message: '权限url不合法',
+                validators: {
+                    notEmpty: {
+                        message: '权限url不能为空'
+                    },
+                    stringLength: {
+                        min: 3,
+                        max: 30,
+                        message: '请输入3到30个字符'
+                    }
+                }
+            }
+        }
+    });
+    // });
+    $("#submitBtn").click(function () {
+//进行表单验证
+        var bv = form.data('bootstrapValidator');
+        bv.validate();
+        if(bv.isValid()) {
+            bv.defaultSubmit()
+        }
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('.dropdown-menu li a').hover(
@@ -278,8 +343,8 @@
     });
 </script>
 <script>
-    if('${validateMsg}'!=null&&'${validateMsg}'!='') {
-        alert('${validateMsg}')
+    if('${validateMsg}'!=null&&'${validateMsg}'!="") {
+        $("#addModal").modal("toggle")
     }
 </script>
 </body>

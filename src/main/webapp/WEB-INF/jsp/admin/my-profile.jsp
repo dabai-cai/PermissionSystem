@@ -1,85 +1,97 @@
-<%@ page import="cn.scau.hjr.model.User" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-	User user=(User)request.getAttribute("user");
-%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>个人资料 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/resources/css/bootstrap.css" rel="stylesheet">
-	<link href="/resources/css/site.css" rel="stylesheet">
-    <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <link href="/resources/css/bootstrap.css" rel="stylesheet">
+      <link href="/resources/css/site.css" rel="stylesheet">
+      <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
+      <!--[if lt IE 9]>
+      <script src="/resources/js/html5.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
+  <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Admin</a>
-          <div class="btn-group pull-right">
-			<a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-			  <li><a href="my-profile.jsp">Profile</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Logout</a></li>
-            </ul>
+          <div class="container-fluid">
+              <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </a>
+              <a class="brand" href="#">Admin</a>
+              <div class="btn-group pull-right">
+                  <a class="btn" href="my-profile.jsp"><i class="icon-user"></i> Admin</a>
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                      <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li> <a href="#">个人资料</a>   </li>
+                      <li class="divider"></li>
+                      <li><a href="/user/login">登出</a></li>
+                  </ul>
+              </div>
+              <div class="nav-collapse">
+                  <ul class="nav">
+                      <li><a href="/admin/index">主页</a></li>
+                      <shiro:hasPermission name="用户管理">
+                          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <b class="caret"></b></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">新建用户</a></li>
+                                  <li class="divider"></li>
+                                  <li><a href="/admin/users">用户管理</a></li>
+                              </ul>
+                          </li>
+                      </shiro:hasPermission>
+                      <shiro:hasPermission name="角色管理">
+                          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">角色 <b class="caret"></b></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">新建角色</a></li>
+                                  <li class="divider"></li>
+                                  <li><a href="/admin/roles">角色管理</a></li>
+                              </ul>
+                          </li>
+                      </shiro:hasPermission>
+                      <shiro:hasPermission name="权限管理">
+                          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限 <b class="caret"></b></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">新建权限</a></li>
+                                  <li class="divider"></li>
+                                  <li><a href="/admin/PermissionManager">权限管理</a></li>
+                              </ul>
+                          </li>
+                      </shiro:hasPermission>
+                  </ul>
+              </div>
           </div>
-          <div class="nav-collapse">
-            <ul class="nav">
-			<li><a href="index.jsp">Home</a></li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-					<li><a href="new-user.jsp">New User</a></li>
-					<li class="divider"></li>
-					<li><a href="/admin/users">Manage Users</a></li>
-				</ul>
-			  </li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-					<li><a href="new-role.jsp">New Role</a></li>
-					<li class="divider"></li>
-					<li><a href="roles.jsp">Manage Roles</a></li>
-				</ul>
-			  </li>
-			  <li><a href="stats.html">Stats</a></li>
-            </ul>
-          </div>
-        </div>
       </div>
-    </div>
+  </div>
 
-    <div class="container-fluid">
+  <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
-              <li><a href="users.jsp">Users</a></li>
-              <li><a href="roles.jsp">Roles</a></li>
-              <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
-              <li><a href="stats.html">General</a></li>
-              <li><a href="user-stats.html">Users</a></li>
-              <li><a href="visitor-stats.html">Visitors</a></li>
-              <li class="nav-header"><i class="icon-user"></i> Profile</li>
-              <li class="active"><a href="my-profile.jsp">My profile</a></li>
-              <li><a href="#">Settings</a></li>
-			  <li><a href="#">Logout</a></li> 
-            </ul>
+          <div class="span3">
+              <div class="well sidebar-nav">
+                  <ul class="nav nav-list">
+                      <li class="nav-header"><i class="icon-wrench"></i> Administration</li>
+                      <shiro:hasPermission name="用户管理">
+                          <li><a href="/admin/users">用户</a></li>
+                      </shiro:hasPermission>
+                      <shiro:hasPermission name="角色管理">
+                          <li class="active"><a href="/admin/roles">角色</a></li>
+                      </shiro:hasPermission>
+                      <li class="nav-header"><i class="icon-signal"></i> Statistics</li>
+                      <li><a href="/user/profile"></a>个人信息</li>
+                      <li><a href="#">设置</a></li>
+                      <li><a href="/">登出</a></li>
+                  </ul>
+              </div>
           </div>
-        </div>
+
+
+
         <div class="span9">
 		  <div class="row-fluid">
 			<div class="page-header">
@@ -90,43 +102,28 @@
 					<div class="control-group">
 						<label class="control-label" for="name">Name</label>
 						<div class="controls">
-							<input type="text" class="input-xlarge" id="name" value="Admin" />
+							<input type="text" class="input-xlarge" id="name" value="${currentUser.username}" />
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="email">E-mail</label>
+						<label class="control-label" for="city">Sex</label>
 						<div class="controls">
-							<input type="text" class="input-xlarge" id="email" value="travis@provider.com" />
+							<input type="text" class="input-xlarge" id="city" value="${currentUser.sex}" />
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="phone">Phone</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="phone" value="xxx-xxx-xxxx" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="city">City</label>
-						<div class="controls">
-							<input type="text" class="input-xlarge" id="city" value="My City" />
-						</div>
-					</div>	
-					<div class="control-group">
-						<label class="control-label" for="role">Role</label>
-						<div class="controls">
-							<select id="role">
-								<option value="admin" selected>Admin</option>
-								<option value="mod">Moderator</option>
-								<option value="user">User</option>
-							</select>
-						</div>
-					</div>	
-					<div class="control-group">
-						<label class="control-label" for="active">Active?</label>
-						<div class="controls">
-							<input type="checkbox" id="active" value="1" checked />
-						</div>
-					</div>
+                    <div class="control-group">
+                        <label class="control-label" for="city">Age</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="age" value="${currentUser.age}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="phone">Phone</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="phone" value="${currentUser.phone}" />
+                        </div>
+                    </div>
+
 					<div class="form-actions">
 						<input type="submit" class="btn btn-success btn-large" value="Save Changes" /> <a class="btn" href="users.jsp">Cancel</a>
 					</div>					
@@ -139,7 +136,7 @@
       <hr>
 
       <footer class="well">
-        &copy; Admin
+        &copy; User
       </footer>
 
     </div>

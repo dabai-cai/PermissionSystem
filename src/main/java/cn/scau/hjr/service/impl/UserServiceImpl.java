@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     public boolean addUser(User record) {
 
-        User user=userDao.selectByAccountOrUsername(record);
+        User user=userDao.selectByAccount(record);
         if(user==null) {
             record.setPassword(shiroUtil.encode(record.getPassword(),record.getAccount()));//加密
             userDao.insert(record);//添加用户
@@ -87,54 +87,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public User selectByAccountOrUsername(User user) {
-        User user1=userDao.selectByAccountOrUsername(user);
+        User user1=userDao.selectByAccount(user);
     //    user1.setPassword(ShiroUtils.deCodeToString(user.getPassword()));
         return user1;
     }
-
-    @Override
-    public Pager getUserPager() {
-
-        Pager pager = new Pager();//建立分页对象
-
-
-            int currentPage = SystemData.getPageOffset();//当前页
-            Integer _pagesize = SystemData.getPageSize();
-            int pagesize = _pagesize.intValue();//页面大小
-            int start=currentPage * pagesize - pagesize;
-
-            /*
-            得到总页数和总留言数
-             */
-            int totalPage = 0;
-            int totalGuest = 0;
-            totalGuest=userDao.getAllUserNumber();
-            totalPage = (totalGuest - 1) / pagesize + 1;//总页数
-
-        pager.setPageSize(pagesize);
-        pager.setPageOffset(SystemData.getPageOffset());
-        pager.setTotalPage(totalPage);
-        pager.setTotalGuest(totalGuest);
-        pager.setStart(start);
-
-            //只取当前页面的留言，并存到List中
-
-            List userList = new ArrayList<User>();//用来存储留言数据的list
-            userList=userDao.getUserListByLimitNumber(start,pagesize);
-            for(User user:(ArrayList<User>)userList)
-            {
-                user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
-                user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
-            }
-            pager.setpagerData(userList);
-
-            /*
-            配置pager
-             */
-
-        return pager;
-    }
-
     @Override
     public void delUserById(int id) {
         roleUserMapper.delByUserId(id);
@@ -156,46 +112,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUser();
     }
 
-    @Override
-    public Pager getSearchPager(String name) {
-        Pager pager = new Pager();//建立分页对象
 
-        int currentPage = SystemData.getPageOffset();//当前页
-        Integer _pagesize = SystemData.getPageSize();
-        int pagesize = _pagesize.intValue();//页面大小
-        int start=currentPage * pagesize - pagesize;
-        /*
-            得到总页数和总留言数和用户数据
-         */
-        int totalPage = 0;
-        int totalGuest = 0;
-        ArrayList<User> userList=new ArrayList<User>();
-        Subject subject=SecurityUtils.getSubject();
-        if(subject.hasRole("root")){
-            userList=userDao.searchUser(name,start,pagesize);
-            totalGuest=userDao.getSearchUserCount(name);
-            for(User user:userList)
-            {
-                user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
-                user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
-            }
-        }else{//教师搜索学生
-
-            Integer[] studentIds=roleUserMapper.getUserGroupByRoleId(17,start,pagesize);
-            userList=userDao.getStudentGroup(studentIds);
-        }
-
-
-            totalPage = (totalGuest - 1) / pagesize + 1;//总页数
-            pager.setPageSize(pagesize);
-            pager.setPageOffset(SystemData.getPageOffset());
-            pager.setTotalPage(totalPage);
-            pager.setTotalGuest(totalGuest);
-            pager.setStart(start);
-            pager.setpagerData(userList);
-            //只取当前页面的留言，并存到List中
-        return pager;
-    }
 
     @Override
     public Set<String> getUserRoles(String account) {
@@ -269,10 +186,6 @@ public class UserServiceImpl implements UserService {
             if(currentSubject.hasRole("root")) {  //返回管理员
                 totalGuest=userDao.getAllUserNumber();
                 userList=userDao.getUserListByLimitNumber(start,pagesize);
-                for(User user:(ArrayList<User>)userList) {
-                    user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
-                    user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
-                }
             }
             else{
                 Integer[] studentIds=roleUserMapper.getUserGroupByRoleId(17,start,pagesize);
@@ -284,6 +197,10 @@ public class UserServiceImpl implements UserService {
 
 
             }
+        for(User user:(ArrayList<User>)userList) {
+            user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
+            user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
+        }
         totalPage = (totalGuest - 1) / pagesize + 1;//总页数
         pager.setPageSize(pagesize);
         pager.setPageOffset(SystemData.getPageOffset());
@@ -314,13 +231,13 @@ public class UserServiceImpl implements UserService {
         if(subject.hasRole("root")){
             userList=userDao.searchUser(name,start,pagesize);
             totalGuest=userDao.getSearchUserCount(name);
-            for(User user:userList) {
-                user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
-                user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
-            }
         }else{//教师搜索学生
             userList=userDao.searchUserByRole(name,roleId,start,pagesize);
             totalGuest=userDao.searchUserByRoleCount(name,roleId);
+        }
+        for(User user:userList) {
+            user.setHasRole(this.getUserRoles(user.getAccount()));//用户拥有的角色
+            user.setLacksRole(this.getUserLacksRoles(user.getAccount()));//用户缺乏的角色
         }
 
         totalPage = (totalGuest - 1) / pagesize + 1;//总页数

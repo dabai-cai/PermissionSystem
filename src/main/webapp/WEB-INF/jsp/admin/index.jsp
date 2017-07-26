@@ -37,7 +37,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li><a href="/admin/profile?userId=${currentUser.userId}">个人资料</a></li>
+			  <li><a href="/user/profile">个人资料</a></li>
               <li class="divider"></li>
               <li><a href="#">退出</a></li>
             </ul>
@@ -45,7 +45,7 @@
           <div class="nav-collapse">
             <ul class="nav">
                     <li><a href="/admin/index">首页</a></li>
-                <shiro:hasPermission name="教师窗口">
+                <shiro:hasPermission name="teacher">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">老师 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">录入学生</a></li>
@@ -57,7 +57,7 @@
                 <shiro:hasPermission name="学生入口">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">学生 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">个人信息</a></li>
+                            <li><a href="/user/profile">个人信息</a></li>
                             <li class="divider"></li>
                             <li><a href="#">校历</a></li>
                         </ul>
@@ -112,7 +112,7 @@
                 </shiro:hasRole>
               <li><a href="visitor-stats.html">访问者</a></li>
               <li class="nav-header"><i class="icon-user"></i> 资料</li>
-              <li><a href="my-profile.jsp">我的资料</a></li>
+              <li><a href="/user/profile">我的资料</a></li>
               <li><a href="#">设置</a></li>
 			  <li><a href="/">退出</a></li>
             </ul>

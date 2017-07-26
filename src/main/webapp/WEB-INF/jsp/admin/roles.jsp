@@ -11,7 +11,7 @@
 	<link href="/resources/css/site.css" rel="stylesheet">
     <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="/resources/js/html5.js"></script>
     <![endif]-->
   </head>
   <body>
@@ -30,7 +30,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-			  <li> <a href="#">个人资料</a>   </li>
+			  <li> <a href="/user/profile">个人资料</a>   </li>
               <li class="divider"></li>
               <li><a href="/user/login">登出</a></li>
             </ul>
@@ -96,48 +96,66 @@
 				<h1>角色 <small>角色管理</small></h1>
 			</div>
 	       <!--- 整合开始   -->
+              <!--  角色添加--->
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">添加角色
+              </button>
+              <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                      aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title" id="exampleModalLabel">角色添加</h4>
+                          </div>
+                          <div class="modal-body">
+                              <form id="updateform" method="post" action="/admin/addRole">
+                                  <div class="form-group">
+                                      <label  class="control-label">角色名：</label>
+                                      <input type="text" class="form-control" name="rolename" placeholder="教师" >
+                                  </div>
+                                  <div   class="form-group">
+                                      <label  class="control-label">角色描述</label>
+                                      <input name="aboutRole" type="text" placeholder="balabalabala">
+                                  </div>
+                                  <div class="text-right">
+                                      <span id="returnMessage" class="glyphicon"> </span>
+                                      <button type="button" class="btn btn-default right" data-dismiss="modal">关闭</button>
+                                      <button id="submitBtn" type="submit" class="btn btn-primary" data-toggle="modal" >添加</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
 			  <table class="table table-bordered">
 				  <caption>
 					  管理员权限
 				  </caption>
-				  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					  新建角色
-				  </button>
-				  <!-- 模态框（Modal） -->
-				  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					  <div class="modal-dialog">
-						  <div class="modal-content">
-							  <div class="modal-header">
-								  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-									  &times;
-								  </button>
-								  <h4 class="modal-title" id="myModalLabel">
-									  新建一个角色
-								  </h4>
-							  </div>
-							  <form id="roleform" method="post" action="/admin/addRole">
-								  <div class="modal-body">
-									  角色名：<input name="rolename" type="text" placeholder="如：老师" class="form-control input-lg website-input">
-                                  </div>
+
+
+                  <!---添加后的modal   -->
+                  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myaddModal" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                      &times;
+                                  </button>
+                                  <h4 class="modal-title" id="myaddModal">
+                                      添加
+                                  </h4>
                                   <div class="modal-body">
-									  角色描述：<input name="aboutRole" type="text" placeholder="如:祖国的花朵" class="form-control input-lg website-input">
-								  </div>
-
-
-								  <div class="modal-footer">
-									  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-									  </button>
-									  <button type="submit"  id="roleBtn"  class="btn btn-primary">
-										  新建
-									  </button>
-								  </div>
-							  </form>
-
-						  </div><!-- /.modal-content -->
-					  </div><!-- /.modal -->
-				  </div><!---  modal end --->
-
+                                      ${errorMsg}
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                  </button>
+                              </div>
+                          </div><!-- /.modal-content glyphicon glyphicon-pencil -->
+                      </div><!-- /.modal -->
+                  </div>
 
 
 				  <thread>
@@ -298,8 +316,8 @@
     </div>
 	<script src="/resources/js/jquery.js"></script>
 	<script src="/resources/js/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 	<script>
 	$(document).ready(function() {
 		$('.dropdown-menu li a').hover(
@@ -311,11 +329,59 @@
 		});
 	});
 	</script>
-  <script>
-      if('${errorMsg}'!=null&&'${errorMsg}'!="") {
-          alert('${errorMsg}')
-      }
-  </script>
+    <script>
+        var form = $('#updateform');
+        //$(document).ready(function () {
+        form.bootstrapValidator({
+            message: '输入值不合法',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                rolename: {
+                    message: '权限名不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '权限名不能为空'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 30,
+                            message: '请输入2到30个字符'
+                        }
+                    }
+                }, aboutRole: {
+                    message: '权限url不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '权限url不能为空'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 30,
+                            message: '请输入3到30个字符'
+                        }
+                    }
+                }
+            }
+        });
+        // });
+        $("#submitBtn").click(function () {
+//进行表单验证
+            var bv = form.data('bootstrapValidator');
+            bv.validate();
+            if(bv.isValid()) {
+                bv.defaultSubmit()
+            }
+        });
+    </script>
+    <script>
+        if('${errorMsg}'!=null&&'${errorMsg}'!="") {
+            $("#addModal").modal("toggle")
+        }
+    </script>
   </body>
 </html>
 <SCRIPT Language=VBScript><!--

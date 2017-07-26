@@ -71,8 +71,8 @@
   </select>
 
   <!-- selectByAccount -->
-  <select id="selectByAccountOrUsername" parameterType="cn.scau.hjr.model.User" resultMap="BaseResultMap">
-    select * from user where account=#{account} or username=#{username}
+  <select id="selectByAccount" parameterType="cn.scau.hjr.model.User" resultMap="BaseResultMap">
+    select * from user where account=#{account}
   </select>
 
   <!-- 得到数据总数   -->

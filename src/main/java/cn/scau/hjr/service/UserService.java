@@ -17,12 +17,10 @@ public interface UserService {
    User getUser(User user);
    User selectByPrimaryKey(Integer userId);
    User selectByAccountOrUsername(User user);
-   Pager getUserPager();
    void delUserById(int id);
 
    int updateByPrimaryKey(User record);
    ArrayList<User> getAllUser();
-   Pager getSearchPager(String name);
    Set<String> getUserRoles(String account);
    Set<String> getUserPermissions(String account);
    User getUserByAccount(String account);

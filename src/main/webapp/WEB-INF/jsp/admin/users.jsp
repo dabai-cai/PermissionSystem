@@ -11,7 +11,7 @@
 	<link href="/resources/css/site.css" rel="stylesheet">
 	<link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
 	<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<script src="/resources/js/html5.js"></script>
 	<![endif]-->
 </head>
 <body>
@@ -84,7 +84,7 @@
 					<li><a href="user-stats.html">用户</a></li>
 					<li><a href="visitor-stats.html">游客</a></li>
 					<li class="nav-header"><i class="icon-user"></i>个人信息</li>
-					<li><a href="my-profile.jsp">我的资料</a></li>
+					<li><a href="/user/profile">我的资料</a></li>
 					<li><a href="#">设置</a></li>
 					<li><a href="/">退出</a></li>
 				</ul>
@@ -162,6 +162,7 @@
 						</div>
 					</div>
 				</div>
+                <!---添加后弹出modal信息  -->
 				<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myaddModal" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -173,7 +174,7 @@
 									添加
 								</h4>
 								<div class="modal-body">
-									用户添加成功
+									${errorMsg}
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -203,6 +204,9 @@
 						<th>
 							用户密码：
 						</th>
+                        <th>
+                            角色:
+                        </th>
 						<th>
 							性别
 						</th>
@@ -228,6 +232,11 @@
 						<td >
 							${user.password}
 						</td>
+                        <td>
+                            <jstl:forEach var="rolename" items="${user.hasRole}">
+                                ${  rolename}
+                            </jstl:forEach>
+                        </td>
 						<td >
 							${user.sex}
 						</td >
@@ -308,6 +317,13 @@
 										<div class="modal-body">
 											密码：<span>${user.password}</span>
 										</div>
+                                        <div class="modal-body">
+                                            角色:<span>
+                                            <jstl:forEach var="rolename" items="${user.hasRole}">
+                                                ${ rolename}
+                                            </jstl:forEach>
+                                        </span>
+                                        </div>
 										<div class="modal-body">
 											性别：<span>${user.sex}</span>
 										</div>
@@ -408,7 +424,7 @@
 </div>
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
     $(document).ready(function() {
@@ -500,7 +516,7 @@
 </script>
 <script>
    if('${errorMsg}'!=null&&'${errorMsg}'!="") {
-       alert('${errorMsg}')
+       $("#addModal").modal("toggle")
    }
 </script>
 </body>

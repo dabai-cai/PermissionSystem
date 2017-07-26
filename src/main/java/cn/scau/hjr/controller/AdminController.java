@@ -33,16 +33,6 @@ public class AdminController {
 
     /**********************************  用户管理 ******************************************/
 
-    //个人信息
-    @RequestMapping(value = "/profile",method = RequestMethod.GET)
-    public String profile(HttpServletRequest request)
-    {
-        int id=Integer.parseInt(request.getParameter("userId"));
-        User user=userService.selectByPrimaryKey(id);
-        request.setAttribute("user",user);
-        return "/admin/my-profile";
-    }
-
     //用户管理
     @RequestMapping(value = {"/users"},method = RequestMethod.GET)
     public String users(String keyName,Model model,String success,String repeat) {
@@ -184,10 +174,10 @@ public class AdminController {
         pager=roleService.getRolePager();
         System.out.println("repeat:"+repeat);
         if(repeat!=null){//角色重复添加啦
-            model.addAttribute("errorMsg",new String("User already exists!"));
+            model.addAttribute("errorMsg",new String("Role already exists!"));
         }
         if(success!=null){//角色添加成功啦
-            model.addAttribute("errorMsg",new String("User add success!"));
+            model.addAttribute("errorMsg",new String("Role add success!"));
         }
         model.addAttribute("pager",pager);
         return "/admin/roles";

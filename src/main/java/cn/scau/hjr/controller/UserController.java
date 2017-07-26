@@ -6,6 +6,7 @@ import cn.scau.hjr.util.shiroUtil;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,10 +50,21 @@ public class UserController {
         }
     }
 
+
+    //个人信息
+    @RequestMapping(value ="profile",method = RequestMethod.GET)
+    public String profile(Model model)
+    {
+        Subject subject=SecurityUtils.getSubject();
+        Session session=subject.getSession();
+        User user=(User)session.getAttribute("currentUser");
+        model.addAttribute("currentUser",user);
+        return "/admin/my-profile";
+    }
+
     @RequestMapping(value = "/test")
     public String test()
     {
-        userService.getSearchUserPageByRole("2",17);
         return "";
     }
 
